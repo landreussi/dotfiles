@@ -41,23 +41,23 @@ super@{ pkgs, ... }:
         # ctrl + alt - z  : yabai -m display --focus prev
         # ctrl + alt - 3  : yabai -m display --focus 3
         
-        # send window to monitor and follow focus
+        # change into screens index
         alt + cmd - 1  : yabai -m window --display 1; yabai -m display --focus 1
-        alt + cmd - right  : yabai -m window --display 1; yabai -m display --focus 1
-
         alt + cmd - 2  : yabai -m window --display 2; yabai -m display --focus 2
-        alt + cmd - left  : yabai -m window --display 2; yabai -m display --focus 2
+        alt + cmd - 3  : yabai -m window --display 3; yabai -m display --focus 3
 
-        # swap screens
-        # alt + cmd + ; : yabai -m window --display recent; yabai -m window --focus west; yabai -m window --display recent
+        # change into screens relative
+        alt + cmd - h  : yabai -m window --display next; yabai -m display --focus next
+        alt + cmd - l  : yabai -m window --display prev; yabai -m display --focus prev
 
-        # focus builtin retina screen
-        alt - 1 : yabai -m display --focus 2
-        alt - left : yabai -m display --focus 2
+        # focus screens index
+        ctrl + cmd - 1 : yabai -m display --focus 1
+        ctrl + cmd - 2 : yabai -m display --focus 2
+        ctrl + cmd - 3 : yabai -m display --focus 3
 
-        # focus external screen
-        alt - 2 : yabai -m display --focus 1
-        alt - right : yabai -m display --focus 1
+        # focus screens relative
+        ctrl + cmd - h : yabai -m display --focus next
+        ctrl + cmd - l : yabai -m display --focus prev
         
         # # move floating window
         # shift + ctrl - a : yabai -m window --move rel:-20:0
