@@ -1,3 +1,0 @@
-[submodule "programs/neovim"]
-	path = programs/neovim
-	url = https://github.com/NvChad/NvChad

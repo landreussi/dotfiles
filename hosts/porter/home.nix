@@ -29,7 +29,7 @@ super@{ config, pkgs, homebrew, ... }:
 
       file = {
         neovim = {
-          source = ../../programs/neovim;
+          source = ../../programs/neovim/nvchad;
           target = ".config/nvim";
           recursive = true;
         };
