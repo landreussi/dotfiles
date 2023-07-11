@@ -1,0 +1,29 @@
+general {
+	interval = 5
+}
+
+order += "ethernet enp5s0"
+order += "battery 0"
+order += "cpu_usage"
+order += "memory"
+order += "tztime local"
+
+ethernet enp5s0 {
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
+}
+
+tztime local {
+        format = "%d/%m/%Y %H:%M"
+}
+
+cpu_usage {
+        format = "CPU: %usage"
+}
+
+memory {
+        format = "MEM: %used / %total"
+        threshold_degraded = "10%"
+        format_degraded = "MEMORY: %free"
+}
+
