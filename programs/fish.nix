@@ -10,7 +10,7 @@ in {
     _pure_set_default pure_show_prefix_root_prompt true
   '';
   loginShellInit = ''
-    set -p fish_function_path /Users/landreussi/.config/fish/functions ${pkgs.fishPlugins.foreign-env}/share/fish/vendor_functions.d
+    set -p fish_function_path $HOME/.config/fish/functions ${pkgs.fishPlugins.foreign-env}/share/fish/vendor_functions.d
     set -e __HM_SESS_VARS_SOURCED
     set -e fish_function_path[1]
     if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -26,7 +26,7 @@ in {
     set -e NIX_PATH
     set -x NIX_PATH ${
       builtins.concatStringsSep " " nixPath
-    } /nix/var/nix/profiles/per-user/landreussi/channels /Users/landreussi/.nix-defexpr/channels
+    } $HOME/.nix-defexpr/channels
   '';
   shellAliases = rec {
     vim = "nvim";
