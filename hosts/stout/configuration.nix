@@ -1,18 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-      ./hardware-configuration.nix
-      ./home.nix
-  ];
+  imports = [ ./hardware-configuration.nix ./home.nix ];
 
   ########## Boot ##########
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   ########## Networking ##########
-  networking.hostName = "stout"; 
-  networking.networkmanager.enable = true;
+  networking.hostName = "stout";
   networking.firewall.enable = true;
 
   ########## TZ ##########
@@ -21,13 +17,14 @@
   ########## Console ##########
   console = {
     font = "Lat2-Terminus16";
-    useXkbConfig = true; 
+    useXkbConfig = true;
   };
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
 
   ########## Video ##########
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  hardware.nvidia.package =
+    config.boot.kernelPackages.nvidiaPackages.legacy_470;
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   services.xserver = {
@@ -35,11 +32,14 @@
     xkbVariant = "intl";
 
     # displayManager.startx.enable = true;
-    windowManager.i3 = { 
+    windowManager.i3 = {
       enable = true;
       configFile = ../../programs/i3/config;
     };
-    xrandrHeads = [{output = "HDMI-2"; primary = true;}];
+    xrandrHeads = [{
+      output = "HDMI-2";
+      primary = true;
+    }];
   };
 
   ########## Sound ##########
@@ -48,8 +48,6 @@
 
   ########## Bluetooth ##########
   hardware.bluetooth.enable = true;
-
-  ########## Home ##########
 
   ########## Global Programs ##########
   environment.systemPackages = with pkgs; [
@@ -71,20 +69,20 @@
       useEmbeddedBitmaps = true;
       defaultFonts = {
         monospace = [ "JetBrainsMono Nerd Font" ];
-	serif = [ "Noto Serif" ];
-	sansSerif = [ "Noto Sans" ];
+        serif = [ "Noto Serif" ];
+        sansSerif = [ "Noto Sans" ];
       };
-   };
+    };
 
-   fonts = with pkgs; [
-     font-awesome
-     lmodern
-     noto-fonts
-     noto-fonts-cjk
-     noto-fonts-emoji
-     (nerdfonts.override { fonts = [ "JetBrainsMono"]; })
-   ];
- };
+    fonts = with pkgs; [
+      font-awesome
+      lmodern
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    ];
+  };
 
   ########## Nixpkgs version ##########
   system.stateVersion = "23.05";

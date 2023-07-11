@@ -11,26 +11,26 @@ super@{ pkgs, config, ... }:
         jq
         git
         brave
-	nixfmt
+        nixfmt
         htop
         neofetch
         blueman
-	spotify-tui
-	lazygit
-	fd
-	fzf
-	go
-	gcc
-	pass
-	tree
-  pinentry
+        spotify-tui
+        lazygit
+        fd
+        fzf
+        go
+        gcc
+        pass
+        tree
+        pinentry
       ];
 
       file = {
         neovim = {
           source = ../../programs/neovim/nvchad;
           target = "/home/landreussi/.config/nvim";
-	  recursive = true;
+          recursive = true;
         };
         i3status = {
           source = ../../programs/i3status;
@@ -43,15 +43,19 @@ super@{ pkgs, config, ... }:
     xdg = {
       enable = true;
       userDirs.enable = true;
-    }; 
+    };
 
     manual.manpages.enable = false;
+    services.spotifyd = import ../../programs/spotifyd.nix super;
+
     programs.fish = import ../../programs/fish.nix super;
     programs.git = import ../../programs/git.nix super // {
       extraConfig.core.sshCommand = "ssh -i ~/.ssh/stout";
     };
     programs.gpg = import ../../programs/gpg.nix super;
-    programs.kitty = import ../../programs/kitty.nix super;
+    programs.kitty = import ../../programs/kitty.nix super // {
+      settings.font_size = 15;
+    };
     programs.neovim = import ../../programs/neovim.nix super;
     programs.ssh = import ../../programs/ssh.nix super // {
       matchBlocks.identityFile =
@@ -63,7 +67,7 @@ super@{ pkgs, config, ... }:
 
   users.users.landreussi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; 
+    extraGroups = [ "wheel" ];
     name = "landreussi";
     home = "/home/landreussi";
   };
