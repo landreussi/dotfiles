@@ -1,9 +1,8 @@
-super@{ pkgs, ... }:
-{
+super@{ pkgs, ... }: {
   enable = true;
-  settings = let 
-      family = "JetBrainsMono Nerd Font";
-      fontWithStyle = style: family + " " + style;  
+  settings = let
+    family = "JetBrainsMono Nerd Font";
+    fontWithStyle = style: family + " " + style;
   in {
     font_family = family;
     bold_font = fontWithStyle "Bold";
@@ -19,7 +18,8 @@ super@{ pkgs, ... }:
     tab_bar_style = "powerline";
     tab_powerline_style = "slanted";
     tab_bar_align = "center";
-    tab_title_template = "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
+    tab_title_template =
+      "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
   };
   # fuck tmux hehe
   extraConfig = ''

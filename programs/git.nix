@@ -10,9 +10,7 @@ rec {
 
   delta = {
     enable = true;
-    options = {
-      line-numbers = true;
-    };
+    options = { line-numbers = true; };
   };
 
   extraConfig = {
@@ -24,7 +22,11 @@ rec {
     color = { ui = true; };
     branch = { autosetuprebase = "always"; };
     pull = { rebase = true; };
-    rebase = { autoSquash = true; autoStash = true; abbreviateCommands = true; };
+    rebase = {
+      autoSquash = true;
+      autoStash = true;
+      abbreviateCommands = true;
+    };
     url = { "git@github.com:" = { insteadOf = "https://github.com/"; }; };
   };
 
@@ -77,7 +79,8 @@ rec {
     # commit interactive
     ci = "co --interactive";
     # create a fixup commit using a fzf commit list selector
-    fixup = ''!git l --no-decorate "$(git merge-base $(git current-branch) origin/develop)".. | fzf | cut -c -7 | xargs -o git commit --fixup'';
+    fixup = ''
+      !git l --no-decorate "$(git merge-base $(git current-branch) origin/develop)".. | fzf | cut -c -7 | xargs -o git commit --fixup'';
 
     df = "diff";
     # diff - show changes not yet staged
@@ -117,10 +120,10 @@ rec {
     # rebase - restart the rebasing process by skipping the current patch.
     rbs = "rb --skip";
 
-    save = if package.version < "2.16.0" then "stash save -u" else "stash push -u";
+    save =
+      if package.version < "2.16.0" then "stash save -u" else "stash push -u";
     pop = "stash pop";
-    snapshot =
-      "!git save \"snapshot: $(date)\" && git stash apply 'stash@{0}'";
+    snapshot = "!git save \"snapshot: $(date)\" && git stash apply 'stash@{0}'";
 
     # pruner: prune everything that is unreachable now.
     #

@@ -24,7 +24,9 @@ in {
     end
     set -e fish_function_path[1]
     set -e NIX_PATH
-    set -x NIX_PATH ${builtins.concatStringsSep " " nixPath} /nix/var/nix/profiles/per-user/landreussi/channels /Users/landreussi/.nix-defexpr/channels
+    set -x NIX_PATH ${
+      builtins.concatStringsSep " " nixPath
+    } /nix/var/nix/profiles/per-user/landreussi/channels /Users/landreussi/.nix-defexpr/channels
   '';
   shellAliases = rec {
     vim = "nvim";
@@ -69,7 +71,8 @@ in {
       '';
     };
     nix-prune = {
-      body = "nix-env --delete-generations old --profile /nix/var/nix/profiles/system; nix-collect-garbage -d";
+      body =
+        "nix-env --delete-generations old --profile /nix/var/nix/profiles/system; nix-collect-garbage -d";
     };
     local-psql = {
       argumentNames = "action";

@@ -1,21 +1,13 @@
 { config, pkgs, ... }:
 
 {
-   imports = [
-    ./home.nix
-  ];
+  imports = [ ./home.nix ];
 
   environment.darwinConfig = "$HOME/dotfiles/hosts/porter/configuration.nix";
 
-  homebrew.casks = [
-    "brave-browser"
-    "ledger-live"
-  ];
+  homebrew.casks = [ "brave-browser" "ledger-live" ];
 
-  homebrew.brews = [
-    "spotifyd"
-    "pinentry"
-  ];
+  homebrew.brews = [ "spotifyd" "pinentry" ];
 
   launchd.user.agents = {
     "spotifyd" = {
@@ -34,7 +26,7 @@
           "--no-daemon"
         ];
         KeepAlive = true;
-	      ThrottleInterval = 30;
+        ThrottleInterval = 30;
       };
     };
   };
