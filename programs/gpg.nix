@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   enable = true;
   settings = rec {
-    default-key = "EB65A9EFCEA9940245F5AAF9515E426DDD3A9FBA";
+    default-key = "45777D1BB49B2383D72BED7DE755DF9796E6E3AE";
     personal-cipher-preferences = "AES256 AES192 AES";
     personal-digest-preferences = "SHA512 SHA384 SHA256";
     personal-compress-preferences = "ZLIB BZIP2 ZIP Uncompressed";

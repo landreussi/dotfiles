@@ -5,7 +5,7 @@ rec {
   package = pkgs.git;
   userName = "Lucas Andreussi";
   userEmail = "lucasandreussi@gmail.com";
-  signing.key = "515E426DDD3A9FBA";
+  signing.key = "E755DF9796E6E3AE";
   signing.signByDefault = true;
 
   delta = {
