@@ -45,11 +45,16 @@ super@{ config, pkgs, homebrew, ... }:
         set -x PATH /opt/homebrew/bin /run/current-system/sw/bin /Users/landreussi/.nix-profile/bin $PATH
       '';
     };
-    programs.git = import ../../programs/git.nix super;
+    programs.git = import ../../programs/git.nix super // {
+      extraConfig.core.sshCommand = "ssh -i ~/.ssh/porter";
+    };
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix super;
     programs.neovim = import ../../programs/neovim.nix super;
-    programs.ssh = import ../../programs/ssh.nix super;
+    programs.ssh = import ../../programs/ssh.nix super // {
+      matchBlocks.identityFile =
+        "${config.users.users.landreussi.home}/.ssh/porter";
+    };
     programs.tmux = import ../../programs/tmux.nix super;
     programs.home-manager.enable = true;
   };

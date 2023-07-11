@@ -12,7 +12,6 @@ in {
     "github.com" = {
       hostname = "github.com";
       user = "git";
-      identityFile = "${home}/.ssh/nixos-ssh";
       extraOptions = {
         PreferredAuthentications = "publickey";
         AddKeysToAgent = "yes";

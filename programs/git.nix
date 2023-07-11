@@ -16,7 +16,6 @@ rec {
   extraConfig = {
     core = {
       commentChar = "@";
-      sshCommand = "ssh -i ~/.ssh/porter";
       editor = "nvim";
     };
     color = { ui = true; };
