@@ -24,16 +24,16 @@ super@{ pkgs, ... }: {
   # fuck tmux hehe
   extraConfig = ''
     include current-theme.conf
-    map cmd+shift+h previous_tab
-    map cmd+shift+l next_tab
-    map cmd+1 goto_tab 1
-    map cmd+2 goto_tab 2
-    map cmd+3 goto_tab 3
-    map cmd+4 goto_tab 4
-    map cmd+5 goto_tab 5
-    map cmd+6 goto_tab 6
-    map cmd+7 goto_tab 7
-    map cmd+8 goto_tab 8
-    map cmd+9 goto_tab 9
+    map ctrl+shift+j previous_tab
+    map ctrl+shift+k next_tab
+    map ctrl+shift+1 goto_tab 1
+    map ctrl+shift+2 goto_tab 2
+    map ctrl+shift+3 goto_tab 3
+    map ctrl+shift+4 goto_tab 4
+    map ctrl+shift+5 goto_tab 5
+    map ctrl+shift+6 goto_tab 6
+    map ctrl+shift+7 goto_tab 7
+    map ctrl+shift+8 goto_tab 8
+    map ctrl+shift+9 goto_tab 9
   '';
 }

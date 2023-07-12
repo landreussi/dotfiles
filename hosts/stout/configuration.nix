@@ -31,7 +31,15 @@
     enable = true;
     xkbVariant = "intl";
 
-    displayManager.startx.enable = true;
+    displayManager.lightdm = {
+      enable = true;
+      background = ./.background-image;
+      greeters.gtk = {
+        enable = true;
+        theme.name = "Adwaita-dark";
+      };
+    };
+
     desktopManager.xterm.enable = false;
     windowManager.i3.enable = true;
     xrandrHeads = [{
@@ -46,6 +54,7 @@
 
   ########## Bluetooth ##########
   hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   ########## Global Programs ##########
   environment.systemPackages = with pkgs; [

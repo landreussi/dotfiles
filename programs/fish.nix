@@ -49,7 +49,7 @@ in {
       description = "Go to the given project";
       body = ''
         set --local prev_dir (pwd)
-        set --local projects_dirs ~/projects/terramagna ~/projects
+        set --local projects_dirs ~/projects
         for proj_dir in $projects_dirs
           if test -d $proj_dir/$project
             set --local project_dir $proj_dir/$project

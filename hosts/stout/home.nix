@@ -14,7 +14,6 @@ super@{ pkgs, config, ... }:
         nixfmt
         htop
         neofetch
-        blueman
         spotify-tui
         lazygit
         fd
@@ -58,13 +57,7 @@ super@{ pkgs, config, ... }:
     manual.manpages.enable = false;
     services.spotifyd = import ../../programs/spotifyd.nix super;
 
-    programs.fish = import ../../programs/fish.nix super // {
-      shellInit = ''
-        if test -z "$DISPLAY"; and test $XDG_VTNR = 1
-          exec startx
-        end
-      '';
-  };
+    programs.fish = import ../../programs/fish.nix super;
     programs.git = import ../../programs/git.nix super // {
       extraConfig.core.sshCommand = "ssh -i ~/.ssh/stout";
     };

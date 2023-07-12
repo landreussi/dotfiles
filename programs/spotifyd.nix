@@ -9,7 +9,7 @@ super@{ pkgs, ... }:
       initial_volume = "100";
       volume_normalisation = true;
       bitrate = 320;
-      device_type = "a_v_r";
+      device_type = "s_t_b";
       device_name = "stout";
     };
   };
