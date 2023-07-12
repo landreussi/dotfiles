@@ -24,6 +24,8 @@ super@{ pkgs, config, ... }:
         pass
         tree
         pinentry
+        scrot
+        ripgrep
       ];
 
       file = {
@@ -32,9 +34,17 @@ super@{ pkgs, config, ... }:
           target = "/home/landreussi/.config/nvim";
           recursive = true;
         };
+        i3 = {
+          source = ../../programs/i3;
+          target = "/home/landreussi/.config/i3";
+        };
         i3status = {
           source = ../../programs/i3status;
           target = "/home/landreussi/.config/i3status";
+        };
+        bg = {
+          source = ./.background-image;
+          target = "/home/landreussi/.background-image";
         };
       };
 
@@ -48,13 +58,40 @@ super@{ pkgs, config, ... }:
     manual.manpages.enable = false;
     services.spotifyd = import ../../programs/spotifyd.nix super;
 
-    programs.fish = import ../../programs/fish.nix super;
+    programs.fish = import ../../programs/fish.nix super // {
+      shellInit = ''
+        if test -z "$DISPLAY"; and test $XDG_VTNR = 1
+          exec startx
+        end
+      '';
+  };
     programs.git = import ../../programs/git.nix super // {
       extraConfig.core.sshCommand = "ssh -i ~/.ssh/stout";
     };
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix super // {
-      settings.font_size = 15;
+      # TODO: solve this code duplication :cry:
+      settings = let
+        family = "JetBrainsMono Nerd Font";
+        fontWithStyle = style: family + " " + style;
+      in {
+        font_family = family;
+        bold_font = fontWithStyle "Bold";
+        italic_font = fontWithStyle "Italic";
+        bold_italic_font = fontWithStyle "Bold Italic";
+        font_size = 14;
+
+        scrollback_lines = 1000;
+        mouse_hide_wait = -1;
+        url_style = "straight";
+
+        tab_bar_margin_width = 0;
+        tab_bar_style = "powerline";
+        tab_powerline_style = "slanted";
+        tab_bar_align = "center";
+        tab_title_template =
+          "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
+  };
     };
     programs.neovim = import ../../programs/neovim.nix super;
     programs.ssh = import ../../programs/ssh.nix super // {

@@ -31,11 +31,9 @@
     enable = true;
     xkbVariant = "intl";
 
-    # displayManager.startx.enable = true;
-    windowManager.i3 = {
-      enable = true;
-      configFile = ../../programs/i3/config;
-    };
+    displayManager.startx.enable = true;
+    desktopManager.xterm.enable = false;
+    windowManager.i3.enable = true;
     xrandrHeads = [{
       output = "HDMI-2";
       primary = true;
