@@ -25,6 +25,10 @@ super@{ config, pkgs, homebrew, ... }:
         ripgrep
         spotify-tui
         tree
+
+        # Work stuff
+        rust-analyzer
+        sccache
       ];
 
       file = {

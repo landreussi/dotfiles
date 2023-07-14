@@ -25,6 +25,9 @@ super@{ pkgs, config, ... }:
         pinentry
         scrot
         ripgrep
+        # Work stuff
+        rust-analyzer
+        sccache
       ];
 
       file = {
@@ -84,7 +87,7 @@ super@{ pkgs, config, ... }:
         tab_bar_align = "center";
         tab_title_template =
           "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
-  };
+      };
     };
     programs.neovim = import ../../programs/neovim.nix super;
     programs.ssh = import ../../programs/ssh.nix super // {
