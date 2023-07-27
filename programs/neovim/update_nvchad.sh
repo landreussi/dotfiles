@@ -1,5 +1,3 @@
-#!/bin/bash
-
 mv nvchad/lua/custom custom
 rm -rf nvchad
 git clone https://github.com/NvChad/NvChad nvchad --depth 1

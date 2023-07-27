@@ -25,10 +25,19 @@ super@{ config, pkgs, homebrew, ... }:
         ripgrep
         spotify-tui
         tree
-
-        # Work stuff
+        # Rust
         rust-analyzer
         sccache
+        # TS/Node
+        nodejs
+        nodePackages.typescript-language-server
+        yarn
+        # Python
+        nodePackages.pyright
+        # Nix
+        rnix-lsp
+        # Lua
+        lua-language-server
       ];
 
       file = {
@@ -59,7 +68,6 @@ super@{ config, pkgs, homebrew, ... }:
       matchBlocks.identityFile =
         "${config.users.users.landreussi.home}/.ssh/porter";
     };
-    programs.tmux = import ../../programs/tmux.nix super;
     programs.home-manager.enable = true;
   };
   services.yabai = import ../../programs/yabai.nix super;

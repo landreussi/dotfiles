@@ -13,6 +13,7 @@ super@{ pkgs, ... }: {
     scrollback_lines = 1000;
     mouse_hide_wait = -1;
     url_style = "straight";
+    enabled_layouts = "horizontal";
 
     tab_bar_margin_width = 0;
     tab_bar_style = "powerline";

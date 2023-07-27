@@ -25,9 +25,19 @@ super@{ pkgs, config, ... }:
         pinentry
         scrot
         ripgrep
-        # Work stuff
+        # Rust
         rust-analyzer
         sccache
+        # TS/Node
+        nodejs
+        nodePackages.typescript-language-server
+        yarn
+        # Python
+        nodePackages.pyright
+        # Nix
+        rnix-lsp
+        # Lua
+        lua-language-server
       ];
 
       file = {
@@ -80,6 +90,7 @@ super@{ pkgs, config, ... }:
         scrollback_lines = 1000;
         mouse_hide_wait = -1;
         url_style = "straight";
+        enabled_layouts = "horizontal";
 
         tab_bar_margin_width = 0;
         tab_bar_style = "powerline";
@@ -94,7 +105,6 @@ super@{ pkgs, config, ... }:
       matchBlocks.identityFile =
         "${config.users.users.landreussi.home}/.ssh/stout";
     };
-    programs.tmux = import ../../programs/tmux.nix super;
     programs.home-manager.enable = true;
   };
 
