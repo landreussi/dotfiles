@@ -19,6 +19,7 @@ super@{ pkgs, config, ... }:
         fd
         fzf
         go
+        gh
         gcc
         pass
         tree
