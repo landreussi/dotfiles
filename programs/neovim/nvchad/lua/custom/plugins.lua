@@ -49,8 +49,9 @@ local plugins = {
       },
     },
   },
-  { 
-      "simrat39/rust-tools.nvim", 
+  { "rust-lang/rust.vim", lazy = false },
+  {
+      "simrat39/rust-tools.nvim",
       lazy = false,
       config = function()
           local rt = require("rust-tools")
@@ -64,7 +65,6 @@ local plugins = {
                 vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
         				-- Enable completion triggered by <c-x><c-o>
         				vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-        
         				-- Mappings.
         				-- See `:help vim.lsp.*` for documentation on any of the below functions
         				local bufopts = { noremap=true, silent=true, buffer=bufnr }
@@ -83,12 +83,11 @@ local plugins = {
         				vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
         				vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
         				vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+
+                vim.g.rustfmt_autosave = 1
+                vim.g.rustfmt_command = 'cargo fmt'
+                vim.g.rustfmt_fail_silently = 0
               end,
-              ["rust-analyzer"] = {
-                 checkOnSave = {
-                  command = "rustfmt"
-                }
-              }
             },
           })
       end
