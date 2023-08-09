@@ -20,15 +20,15 @@ super@{ pkgs, config, ... }:
         fzf
         go
         gh
-        gcc
         pass
         tree
         pinentry
         scrot
         ripgrep
+        # C/C++
+        gcc
         # Rust
         rust-analyzer
-        sccache
         # TS/Node
         nodejs
         nodePackages.typescript-language-server

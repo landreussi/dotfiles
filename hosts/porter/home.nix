@@ -25,9 +25,10 @@ super@{ config, pkgs, homebrew, ... }:
         ripgrep
         spotify-tui
         tree
+        # C/C++
+        gcc
         # Rust
         rust-analyzer
-        sccache
         # TS/Node
         nodejs
         nodePackages.typescript-language-server
