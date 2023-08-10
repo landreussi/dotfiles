@@ -39,6 +39,8 @@ super@{ pkgs, config, ... }:
         rnix-lsp
         # Lua
         lua-language-server
+        # Solana
+        solana-cli
       ];
 
       file = {
@@ -71,7 +73,11 @@ super@{ pkgs, config, ... }:
     manual.manpages.enable = false;
     services.spotifyd = import ../../programs/spotifyd.nix super;
 
-    programs.fish = import ../../programs/fish.nix super;
+    programs.fish = import ../../programs/fish.nix super // {
+      shellInit = ''
+        set -x PATH $HOME/.cargo/bin $PATH
+      '';
+    };
     programs.git = import ../../programs/git.nix super // {
       extraConfig.core.sshCommand = "ssh -i ~/.ssh/stout";
     };

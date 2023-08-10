@@ -56,7 +56,7 @@ super@{ config, pkgs, homebrew, ... }:
 
     programs.fish = import ../../programs/fish.nix super // {
       shellInit = ''
-        set -x PATH /opt/homebrew/bin /run/current-system/sw/bin /Users/landreussi/.nix-profile/bin $PATH
+        set -x PATH /opt/homebrew/bin /run/current-system/sw/bin $HOME/.nix-profile/bin $HOME/.cargo/bin $PATH
       '';
     };
     programs.git = import ../../programs/git.nix super // {
