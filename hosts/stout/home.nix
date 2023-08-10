@@ -29,6 +29,7 @@ super@{ pkgs, config, ... }:
         gcc
         # Rust
         rust-analyzer
+        sccache
         # TS/Node
         nodejs
         nodePackages.typescript-language-server

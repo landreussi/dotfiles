@@ -1,5 +1,4 @@
 local plugins = {
-  "folke/trouble.nvim",
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -92,6 +91,7 @@ local plugins = {
           })
       end
   },
+  { "folke/trouble.nvim", lazy = false },
   "mfussenegger/nvim-dap",
   -- Isnt working, might try it later...
   -- {
