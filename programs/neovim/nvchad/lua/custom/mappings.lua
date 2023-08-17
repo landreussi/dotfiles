@@ -7,14 +7,14 @@ M.general = {
     ["<tab>"] = { "<cmd> wincmd w <CR>", "Cycle windows" },
     ["L"] = {
       function()
-        require("nvchad_ui.tabufline").tabuflineNext()
+        require("nvchad.tabufline").tabuflineNext()
       end,
       "Goto next buffer",
     },
 
     ["H"] = {
       function()
-        require("nvchad_ui.tabufline").tabuflinePrev()
+        require("nvchad.tabufline").tabuflinePrev()
       end,
       "Goto prev buffer",
     },
