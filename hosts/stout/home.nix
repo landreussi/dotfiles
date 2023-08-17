@@ -79,9 +79,7 @@ super@{ pkgs, config, ... }:
         set -x PATH $HOME/.cargo/bin $PATH
       '';
     };
-    programs.git = import ../../programs/git.nix super // {
-      extraConfig.core.sshCommand = "ssh -i ~/.ssh/stout";
-    };
+    programs.git = import ../../programs/git.nix super;
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix super // {
       # TODO: solve this code duplication :cry:
@@ -109,10 +107,7 @@ super@{ pkgs, config, ... }:
       };
     };
     programs.neovim = import ../../programs/neovim.nix super;
-    programs.ssh = import ../../programs/ssh.nix super // {
-      matchBlocks.identityFile =
-        "${config.users.users.landreussi.home}/.ssh/stout";
-    };
+    programs.ssh = import ../../programs/ssh.nix super;
     programs.home-manager.enable = true;
   };
 

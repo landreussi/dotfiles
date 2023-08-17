@@ -42,6 +42,7 @@ in {
 
     cdot = "cd ~/dotfiles";
     nix-opt = "nix-store --optimise";
+    nix-shell = "nix-shell --command fish";
   };
   functions = {
     workon = {

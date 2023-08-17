@@ -9,6 +9,7 @@ in {
   serverAliveCountMax = 5;
   hashKnownHosts = true;
   matchBlocks = {
+    identityFile = "${config.users.users.landreussi.home}/.ssh/key";
     "github.com" = {
       hostname = "github.com";
       user = "git";
