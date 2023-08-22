@@ -108,6 +108,7 @@ super@{ pkgs, config, ... }:
     };
     programs.neovim = import ../../programs/neovim.nix super;
     programs.ssh = import ../../programs/ssh.nix super;
+    programs.direnv = import ../../programs/direnv.nix super;
     programs.home-manager.enable = true;
   };
 

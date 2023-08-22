@@ -25,8 +25,6 @@ super@{ config, pkgs, homebrew, ... }:
         ripgrep
         spotify-tui
         tree
-        # C/C++
-        gcc
         # Rust
         rust-analyzer
         sccache
@@ -65,6 +63,7 @@ super@{ config, pkgs, homebrew, ... }:
     programs.kitty = import ../../programs/kitty.nix super;
     programs.neovim = import ../../programs/neovim.nix super;
     programs.ssh = import ../../programs/ssh.nix super;
+    programs.direnv = import ../../programs/direnv.nix super;
     programs.home-manager.enable = true;
   };
   services.yabai = import ../../programs/yabai.nix super;

@@ -17,7 +17,7 @@ rec {
     core = {
       commentChar = "@";
       editor = "nvim";
-      sshCommand = "ssh -i ~/.ssh/key";
+      sshCommand = "ssh -i ~/.ssh/id_rsa";
     };
     color = { ui = true; };
     branch = { autosetuprebase = "always"; };
