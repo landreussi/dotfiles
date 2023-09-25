@@ -114,7 +114,7 @@ super@{ pkgs, config, ... }:
 
   users.users.landreussi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     name = "landreussi";
     home = "/home/landreussi";
   };

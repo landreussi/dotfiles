@@ -59,6 +59,7 @@
   environment.systemPackages = with pkgs; [
     curl
     coreutils
+    docker-compose
     lxappearance
     xdg_utils
     xdg-user-dirs
@@ -66,6 +67,15 @@
     wget
   ];
   programs.gnupg.agent.enable = true;
+
+  ########## Docker ##########
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 
   ########## Fonts ##########
   fonts = {
