@@ -46,6 +46,7 @@
 
   services.nix-daemon.enable = true;
   nix.package = pkgs.nix;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   homebrew.enable = true;
   networking.computerName = "porter";
