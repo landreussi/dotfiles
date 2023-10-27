@@ -14,10 +14,10 @@ rec {
   };
 
   extraConfig = {
+    credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     core = {
       commentChar = "@";
       editor = "nvim";
-      sshCommand = "ssh -i ~/.ssh/id_rsa";
     };
     color = { ui = true; };
     branch = { autosetuprebase = "always"; };
@@ -27,7 +27,6 @@ rec {
       autoStash = true;
       abbreviateCommands = true;
     };
-    url = { "git@github.com:" = { insteadOf = "https://github.com/"; }; };
   };
 
   aliases = {
