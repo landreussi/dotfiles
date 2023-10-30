@@ -3,7 +3,7 @@
 rec {
   enable = true;
   package = pkgs.git;
-  userName = "Lucas Andreussi";
+  userName = "landreussi";
   userEmail = "lucasandreussi@gmail.com";
   signing.key = "E755DF9796E6E3AE";
   signing.signByDefault = true;
