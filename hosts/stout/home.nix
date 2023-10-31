@@ -25,6 +25,7 @@ super@{ pkgs, config, ... }:
         pinentry
         scrot
         ripgrep
+        xclip
         # C/C++
         gcc
         # Rust
