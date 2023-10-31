@@ -45,6 +45,10 @@ local plugins = {
         "python",
         "zig",
         "solidity",
+
+        -- devops
+        "hcl",
+        "terraform",
       },
     },
   },
