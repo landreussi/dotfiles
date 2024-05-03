@@ -1,4 +1,4 @@
-super@{ pkgs, config, ... }:
+super@{ pkgs, config, lib, ... }:
 
 {
   imports = [ <home-manager/nixos> ];
@@ -20,6 +20,8 @@ super@{ pkgs, config, ... }:
         fzf
         go
         gh
+        grpcurl
+        logseq
         pass
         tree
         pinentry
@@ -32,7 +34,6 @@ super@{ pkgs, config, ... }:
         rust-analyzer
         sccache
         # TS/Node
-        nodejs
         nodePackages.typescript-language-server
         yarn
         # Python
@@ -41,8 +42,6 @@ super@{ pkgs, config, ... }:
         rnix-lsp
         # Lua
         lua-language-server
-        # Solana
-        solana-cli
       ];
 
       file = {
@@ -65,7 +64,7 @@ super@{ pkgs, config, ... }:
         };
       };
 
-      stateVersion = "23.05";
+      stateVersion = "23.11";
     };
     xdg = {
       enable = true;
@@ -84,28 +83,30 @@ super@{ pkgs, config, ... }:
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix super // {
       # TODO: solve this code duplication :cry:
-      settings = let
-        family = "JetBrainsMono Nerd Font";
-        fontWithStyle = style: family + " " + style;
-      in {
-        font_family = family;
-        bold_font = fontWithStyle "Bold";
-        italic_font = fontWithStyle "Italic";
-        bold_italic_font = fontWithStyle "Bold Italic";
-        font_size = 14;
+      settings =
+        let
+          family = "JetBrainsMono Nerd Font";
+          fontWithStyle = style: family + " " + style;
+        in
+        {
+          font_family = family;
+          bold_font = fontWithStyle "Bold";
+          italic_font = fontWithStyle "Italic";
+          bold_italic_font = fontWithStyle "Bold Italic";
+          font_size = 14;
 
-        scrollback_lines = 1000;
-        mouse_hide_wait = -1;
-        url_style = "straight";
-        enabled_layouts = "horizontal";
+          scrollback_lines = 1000;
+          mouse_hide_wait = -1;
+          url_style = "straight";
+          enabled_layouts = "horizontal";
 
-        tab_bar_margin_width = 0;
-        tab_bar_style = "powerline";
-        tab_powerline_style = "slanted";
-        tab_bar_align = "center";
-        tab_title_template =
-          "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
-      };
+          tab_bar_margin_width = 0;
+          tab_bar_style = "powerline";
+          tab_powerline_style = "slanted";
+          tab_bar_align = "center";
+          tab_title_template =
+            "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
+        };
     };
     programs.neovim = import ../../programs/neovim.nix super;
     programs.ssh = import ../../programs/ssh.nix super;

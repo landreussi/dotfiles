@@ -79,7 +79,7 @@
 
   ########## Fonts ##########
   fonts = {
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
     fontDir.enable = true;
     fontconfig = {
       useEmbeddedBitmaps = true;
@@ -90,7 +90,7 @@
       };
     };
 
-    fonts = with pkgs; [
+    packages = with pkgs; [
       font-awesome
       lmodern
       noto-fonts
@@ -102,6 +102,10 @@
 
   ########## Nix ##########
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  system.stateVersion = "23.05";
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0"
+    "nix-2.15.3"
+  ];
+  system.stateVersion = "23.11";
 }
 
