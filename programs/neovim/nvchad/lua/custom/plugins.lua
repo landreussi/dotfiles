@@ -8,7 +8,7 @@ local plugins = {
   },
   {
     "kylechui/nvim-surround",
-    version = "*",   -- Use for stability; omit to use `main` branch for the latest features
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup({
@@ -62,7 +62,7 @@ local plugins = {
       rt.setup({
         server = {
           -- The default doesn't work, so we need to override it.
-          on_attach = function(_, bufnr)
+          on_attach = function(client, bufnr)
             -- Hover actions
             vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
             -- Code action groups
@@ -95,8 +95,13 @@ local plugins = {
             local path = client.workspace_folders[1].name
 
             if path == vim.fn.expand("~/projects/tm") then
-              client.config.settings["rust-analyzer"].check.overrideCommand = { "rust-analyzer-check" }
-              client.config.settings["rust-analyzer"].linkedProjects = { string.format("%s/rust-project.json", path) }
+              client.config.settings["rust-analyzer"].cargo.buildScripts.overrideCommand = {
+                "bazel", "build", "--@rules_rust//:error_format=json", "//...",
+                "--noshow_progress", "--ui_event_filters=-INFO", "--keep_going"
+              }
+              client.config.settings["rust-analyzer"].check.overrideCommand = {
+                "rust-analyzer-check"
+              }
             end
 
             return true
