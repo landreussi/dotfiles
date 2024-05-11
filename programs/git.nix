@@ -30,10 +30,6 @@ rec {
   };
 
   aliases = {
-    # list all aliases
-    aliases =
-      "!git config --get-regexp '^alias\\.' | cut -c 7- | sed 's/ / = /'";
-
     # list all tags
     tags = "tag -n1 --list";
     # list all stashes
