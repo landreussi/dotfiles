@@ -16,6 +16,7 @@ super@{ config, pkgs, homebrew, ... }:
         fzf
         gh
         go
+        grpcurl
         htop
         jq
         lazygit
@@ -25,6 +26,10 @@ super@{ config, pkgs, homebrew, ... }:
         ripgrep
         spotify-tui
         tree
+        wget
+        # Docker
+        colima
+        docker
         # Rust
         rust-analyzer
         sccache

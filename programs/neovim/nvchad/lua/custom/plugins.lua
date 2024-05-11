@@ -62,7 +62,7 @@ local plugins = {
       rt.setup({
         server = {
           -- The default doesn't work, so we need to override it.
-          on_attach = function(client, bufnr)
+          on_attach = function(_, bufnr)
             -- Hover actions
             vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
             -- Code action groups
@@ -88,7 +88,6 @@ local plugins = {
             vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
 
             vim.g.rustfmt_autosave = 1
-            vim.g.rustfmt_command = 'cargo fmt'
             vim.g.rustfmt_fail_silently = 0
           end,
           on_init = function(client)

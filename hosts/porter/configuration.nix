@@ -5,7 +5,7 @@
 
   environment.darwinConfig = "$HOME/dotfiles/hosts/porter/configuration.nix";
 
-  homebrew.casks = [ "brave-browser" "ledger-live" ];
+  homebrew.casks = [ "brave-browser" "ledger-live" "logseq" ];
 
   homebrew.brews = [ "spotifyd" "pinentry" ];
 
