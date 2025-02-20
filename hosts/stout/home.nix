@@ -9,10 +9,10 @@ super@{ pkgs, config, lib, ... }:
     (final: _: {
       rust-analyzer-unwrapped = final.stdenv.mkDerivation rec {
         pname = "rust-analyzer-unwrapped";
-        version = "2024-03-18";
+        version = "2024-09-16";
         src = builtins.fetchurl {
           url = "https://github.com/rust-lang/rust-analyzer/releases/download/${version}/rust-analyzer-x86_64-unknown-linux-gnu.gz";
-          sha256 = "sha256:1kdfs87fsxr25zrnmnswg8sllrrshn1riydbw2g5zymzv78yxz8j";
+          sha256 = "sha256:3d524eb3cb796109ccd09db2533382076070a26abe2cf338321fef527cc3cd9f";
         };
 
         dontUnpack = true;
@@ -65,6 +65,7 @@ super@{ pkgs, config, lib, ... }:
         scrot
         ripgrep
         xclip
+        libreoffice
         # C/C++
         gcc
         # Rust
@@ -73,6 +74,8 @@ super@{ pkgs, config, lib, ... }:
         # TS/Node
         nodePackages.typescript-language-server
         yarn
+        # Needed for copilot (OH GOD WHY, WHYYYYYYY?)
+        nodejs
         # Python
         nodePackages.pyright
         # Nix
