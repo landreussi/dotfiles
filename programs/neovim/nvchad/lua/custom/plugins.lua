@@ -109,17 +109,8 @@ local plugins = {
       })
     end
   },
-  { "folke/trouble.nvim", lazy = false },
+  { "folke/trouble.nvim", lazy = false, opts = {}, cmd = "Trouble" },
   "mfussenegger/nvim-dap",
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    lazy = false,
-    config = function()
-      require("copilot").setup({})
-    end
-  }
 }
 
 return plugins
