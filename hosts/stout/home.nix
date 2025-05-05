@@ -48,10 +48,9 @@ super@{ pkgs, config, lib, ... }:
         jq
         git
         brave
-        nixfmt
+        nixfmt-classic
         htop
         neofetch
-        spotify-tui
         lazygit
         fd
         fzf
@@ -77,9 +76,9 @@ super@{ pkgs, config, lib, ... }:
         # Needed for copilot (OH GOD WHY, WHYYYYYYY?)
         nodejs
         # Python
-        nodePackages.pyright
-        # Nix
-        rnix-lsp
+        pyright
+        # Nix this shit is unmantained, fuck this!
+        # rnix-lsp
         # Lua
         lua-language-server
       ];
@@ -104,7 +103,7 @@ super@{ pkgs, config, lib, ... }:
         };
       };
 
-      stateVersion = "23.11";
+      stateVersion = "24.11";
     };
     xdg = {
       enable = true;

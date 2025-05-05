@@ -18,7 +18,7 @@ M.general = {
       end,
       "Goto prev buffer",
     },
-    ["<leader>ld"] = { "<cmd> Trouble <CR>", "Toggle diagnostics" },
+    ["<leader>ld"] = { "<cmd> Trouble diagnostics<CR>", "Toggle diagnostics" },
     ["<leader>lf"] = { "<cmd> Trouble lsp_document_diagnostics <CR>", "Toggle file diagnostics" },
     ["<leader>lw"] = { "<cmd> Trouble lsp_workspace_diagnostics <CR>", "Toggle workspace diagnostics" },
     ["<leader>ll"] = { "<cmd> Trouble loclist <CR>", "Toggle loclist diagnostics" },

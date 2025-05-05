@@ -25,11 +25,11 @@
   ########## Video ##########
   hardware.nvidia.package =
     config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
+  hardware.nvidia.nvidiaSettings = true;
+  hardware.graphics.enable = true;
   services.xserver = {
     enable = true;
-    xkbVariant = "intl";
+    xkb.variant = "intl";
 
     displayManager.lightdm = {
       enable = true;
@@ -49,19 +49,21 @@
   };
 
   ########## Sound ##########
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
+  services.pipewire = { 
+    enable = true;
+    alsa.enable = true;
+  };
   ########## Bluetooth ##########
   hardware.bluetooth.enable = true;
 
   ########## Global Programs ##########
   environment.systemPackages = with pkgs; [
+    alsa-utils
     curl
     coreutils
     docker-compose
     lxappearance
-    xdg_utils
+    xdg-utils
     xdg-user-dirs
     xclip
     wget
@@ -94,7 +96,7 @@
       font-awesome
       lmodern
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
@@ -103,9 +105,9 @@
   ########## Nix ##########
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
+    "electron-27.3.11"
     "nix-2.15.3"
   ];
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.11";
 }
 
