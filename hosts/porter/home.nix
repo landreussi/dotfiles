@@ -13,10 +13,10 @@ super@{ config, pkgs, homebrew, ... }:
     (final: _: {
       rust-analyzer-unwrapped = final.stdenv.mkDerivation rec {
         pname = "rust-analyzer-unwrapped";
-        version = "2024-03-18";
+        version = "2025-02-17";
         src = builtins.fetchurl {
           url = "https://github.com/rust-lang/rust-analyzer/releases/download/${version}/rust-analyzer-aarch64-apple-darwin.gz";
-          sha256 = "sha256:0691y3q0d20bvybvn9i7l62v019g45wq8pjqrl2gmwqravjchbjn";
+          sha256 = "sha256:131079d1e0f32dab431805aeedcfcc9577ae60f4b4fdb76cf2e9d50518d4c945";
         };
 
         dontUnpack = true;
