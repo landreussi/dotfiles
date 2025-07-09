@@ -7,27 +7,7 @@
 
   homebrew.casks = [ "brave-browser" "ledger-live" "logseq" ];
 
-  homebrew.brews = [ "spotifyd" "pinentry" ];
-
-  launchd.user.agents = {
-    "spotifyd" = {
-      serviceConfig = {
-        ProgramArguments = [
-          "/opt/homebrew/opt/spotifyd/bin/spotifyd"
-          "--initial-volume=100"
-          "--volume-normalisation"
-          "--bitrate=320"
-          "--backend=portaudio"
-          "--volume-controller=soft-volume"
-          "--device-type=computer"
-          "--device-name=porter"
-          "--no-daemon"
-        ];
-        KeepAlive = true;
-        ThrottleInterval = 30;
-      };
-    };
-  };
+  homebrew.brews = [ "pinentry" ];
 
   fonts.packages = with pkgs; [
     font-awesome
