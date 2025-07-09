@@ -61,7 +61,7 @@ super@{ config, pkgs, homebrew, ... }:
         neofetch
         pass
         ripgrep
-        spotify-tui
+        spotify-player
         tree
         wget
         gcc
@@ -76,9 +76,9 @@ super@{ config, pkgs, homebrew, ... }:
         nodePackages.typescript-language-server
         yarn
         # Python
-        nodePackages.pyright
+        pyright
         # Nix
-        rnix-lsp
+        nixd
         # Lua
         lua-language-server
       ];
@@ -91,7 +91,7 @@ super@{ config, pkgs, homebrew, ... }:
         };
       };
 
-      stateVersion = "23.11";
+      stateVersion = "24.11";
     };
 
     manual.manpages.enable = false;

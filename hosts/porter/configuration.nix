@@ -14,13 +14,11 @@
       serviceConfig = {
         ProgramArguments = [
           "/opt/homebrew/opt/spotifyd/bin/spotifyd"
-          "--username=landreussi"
-          "--password-cmd=pass spotify"
           "--initial-volume=100"
           "--volume-normalisation"
           "--bitrate=320"
           "--backend=portaudio"
-          "--volume-controller=softvol"
+          "--volume-controller=soft-volume"
           "--device-type=computer"
           "--device-name=porter"
           "--no-daemon"
@@ -31,22 +29,21 @@
     };
   };
 
-  fonts = {
-    fontDir.enable = true;
-
-    fonts = with pkgs; [
-      font-awesome
-      lmodern
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    ];
-  };
+  fonts.packages = with pkgs; [
+    font-awesome
+    lmodern
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
 
   services.nix-daemon.enable = true;
-  nix.package = pkgs.nix;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    package = pkgs.nix;
+    enable = true;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
 
   homebrew.enable = true;
   networking.computerName = "porter";

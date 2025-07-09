@@ -77,8 +77,8 @@ super@{ pkgs, config, lib, ... }:
         nodejs
         # Python
         pyright
-        # Nix this shit is unmantained, fuck this!
-        # rnix-lsp
+        # Nix 
+        nixd
         # Lua
         lua-language-server
       ];
