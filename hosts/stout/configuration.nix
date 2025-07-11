@@ -23,13 +23,14 @@
   users.defaultUserShell = pkgs.fish;
 
   ########## Video ##########
-  hardware.nvidia.package =
-    config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  hardware.nvidia.nvidiaSettings = true;
-  hardware.graphics.enable = true;
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    open = true;
+  };
   services.xserver = {
     enable = true;
     xkb.variant = "intl";
+    videoDrivers = [ "nvidia" ];
 
     displayManager.lightdm = {
       enable = true;
@@ -43,13 +44,13 @@
     desktopManager.xterm.enable = false;
     windowManager.i3.enable = true;
     xrandrHeads = [{
-      output = "HDMI-2";
+      output = "HDMI-0";
       primary = true;
     }];
   };
 
   ########## Sound ##########
-  services.pipewire = { 
+  services.pipewire = {
     enable = true;
     alsa.enable = true;
   };
@@ -104,10 +105,10 @@
 
   ########## Nix ##########
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-27.3.11"
-    "nix-2.15.3"
-  ];
+  nixpkgs.config = {
+    permittedInsecurePackages = [ "electron-27.3.11" "nix-2.15.3" ];
+    allowUnfree = true;
+  };
   system.stateVersion = "24.11";
 }
 
