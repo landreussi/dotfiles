@@ -7,43 +7,6 @@ super@{ config, pkgs, homebrew, ... }:
     home = "/Users/landreussi";
   };
 
-  nixpkgs.overlays = [
-    # Rust analyzer overlay
-    # TODO: make this a separated module
-    (final: _: {
-      rust-analyzer-unwrapped = final.stdenv.mkDerivation rec {
-        pname = "rust-analyzer-unwrapped";
-        version = "2024-03-18";
-        src = builtins.fetchurl {
-          url = "https://github.com/rust-lang/rust-analyzer/releases/download/${version}/rust-analyzer-aarch64-apple-darwin.gz";
-          sha256 = "sha256:0691y3q0d20bvybvn9i7l62v019g45wq8pjqrl2gmwqravjchbjn";
-        };
-
-        dontUnpack = true;
-
-        nativeBuildInputs = with final; [ gzip ];
-        buildInputs = with final; [ gcc ];
-
-        doInstallCheck = true;
-        installCheckPhase = ''
-          runHook preInstallCheck
-          versionOutput="$($out/bin/rust-analyzer --version)"
-          echo "'rust-analyzer --version' returns: $versionOutput"
-          runHook postInstallCheck
-        '';
-
-        buildPhase = ''
-          runHook preBuild
-          mkdir -p $out/bin
-          gzip -c -d $src > $out/bin/rust-analyzer
-          chmod +x $out/bin/rust-analyzer
-          runHook postBuild
-        '';
-      };
-    }
-    )
-  ];
-
   home-manager.users.landreussi = {
     home = {
       username = "landreussi";

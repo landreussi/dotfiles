@@ -90,21 +90,6 @@ local plugins = {
             vim.g.rustfmt_autosave = 1
             vim.g.rustfmt_fail_silently = 0
           end,
-          on_init = function(client)
-            local path = client.workspace_folders[1].name
-
-            if path == vim.fn.expand("~/projects/tm") then
-              client.config.settings["rust-analyzer"].cargo.buildScripts.overrideCommand = {
-                "bazel", "build", "--@rules_rust//:error_format=json", "//...",
-                "--noshow_progress", "--ui_event_filters=-INFO", "--keep_going"
-              }
-              client.config.settings["rust-analyzer"].check.overrideCommand = {
-                "rust-analyzer-check"
-              }
-            end
-
-            return true
-          end,
         },
       })
     end
