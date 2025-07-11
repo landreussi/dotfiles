@@ -64,6 +64,7 @@ super@{ pkgs, config, lib, ... }:
         scrot
         ripgrep
         xclip
+        spotify-player
         libreoffice
         # C/C++
         gcc
@@ -111,8 +112,6 @@ super@{ pkgs, config, lib, ... }:
     };
 
     manual.manpages.enable = false;
-    services.spotifyd = import ../../programs/spotifyd.nix super;
-
     programs.fish = import ../../programs/fish.nix super // {
       shellInit = ''
         set -x PATH $HOME/.cargo/bin $PATH
