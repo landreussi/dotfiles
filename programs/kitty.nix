@@ -25,6 +25,8 @@ super@{ pkgs, ... }: {
   # fuck tmux hehe
   extraConfig = ''
     include current-theme.conf
+    map ctrl+alt+left neighboring_window left
+    map ctrl+alt+right neighboring_window right
     map ctrl+shift+j previous_tab
     map ctrl+shift+k next_tab
     map ctrl+shift+1 goto_tab 1
