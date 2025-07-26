@@ -1,11 +1,11 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [ ./home.nix ];
 
   environment.darwinConfig = "$HOME/dotfiles/hosts/porter/configuration.nix";
 
-  homebrew.casks = [ "brave-browser" "ledger-live" "logseq" ];
+  homebrew.casks = [ "brave-browser" "ledger-live" "logseq" "upscayl" ];
 
   homebrew.brews = [ "pinentry" ];
 
