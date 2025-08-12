@@ -112,6 +112,7 @@ super@{ pkgs, config, lib, ... }:
     programs.direnv = import ../../programs/direnv.nix super;
     programs.home-manager.enable = true;
   };
+  services.ollama.enable = true;
 
   users.users.landreussi = {
     isNormalUser = true;

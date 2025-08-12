@@ -54,7 +54,7 @@ super@{ config, pkgs, homebrew, ... }:
         };
       };
 
-      stateVersion = "24.11";
+      stateVersion = "25.05";
     };
 
     manual.manpages.enable = false;
@@ -71,7 +71,7 @@ super@{ config, pkgs, homebrew, ... }:
     programs.ssh = import ../../programs/ssh.nix super;
     programs.direnv = import ../../programs/direnv.nix super;
     programs.home-manager.enable = true;
+
+    services.ollama.enable = true;
   };
-  services.yabai = import ../../programs/yabai.nix super;
-  services.skhd = import ../../programs/skhd.nix super;
 }

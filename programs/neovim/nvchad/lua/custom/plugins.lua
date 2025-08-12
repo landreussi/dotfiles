@@ -106,7 +106,7 @@ local plugins = {
     opts = {
       -- add any opts here
       -- for example
-      provider = "claude",
+      provider = "ollama",
       providers = {
         ---@type AvanteSupportedProvider
         claude = {
@@ -140,12 +140,16 @@ local plugins = {
         ---@type AvanteSupportedProvider
         ollama = {
           endpoint = "http://127.0.0.1:11434",
+          model = "codellama",
           timeout = 30000, -- Timeout in milliseconds
           extra_request_body = {
             temperature = 0.75,
             num_ctx = 20480,
             keep_alive = "5m",
           },
+          is_env_set = function()
+            return true
+          end,
         },
       },
     },
