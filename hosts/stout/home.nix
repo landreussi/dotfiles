@@ -112,7 +112,11 @@ super@{ pkgs, config, lib, ... }:
     programs.direnv = import ../../programs/direnv.nix super;
     programs.home-manager.enable = true;
   };
-  services.ollama.enable = true;
+  services.ollama = {
+    enable = true;
+    loadModels = [ "gemma2" ];
+    acceleration = "cuda";
+  };
 
   users.users.landreussi = {
     isNormalUser = true;
