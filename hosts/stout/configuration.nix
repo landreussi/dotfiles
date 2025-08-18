@@ -99,7 +99,7 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      nerd-fonts.jetbrains-mono
     ];
   };
 
@@ -109,6 +109,6 @@
     permittedInsecurePackages = [ "electron-27.3.11" "nix-2.15.3" ];
     allowUnfree = true;
   };
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
 

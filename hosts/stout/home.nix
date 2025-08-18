@@ -67,7 +67,7 @@ super@{ pkgs, config, lib, ... }:
         };
       };
 
-      stateVersion = "24.11";
+      stateVersion = "25.05";
     };
     xdg = {
       enable = true;
