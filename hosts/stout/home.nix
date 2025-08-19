@@ -29,6 +29,7 @@ super@{ pkgs, config, lib, ... }:
         xclip
         spotify-player
         libreoffice
+        obs-studio
         # C/C++
         gcc
         # Rust
