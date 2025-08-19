@@ -26,6 +26,8 @@
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     open = true;
+    modesetting.enable = true;
+    powerManagement.enable = true;
   };
   services.xserver = {
     enable = true;
