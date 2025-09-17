@@ -118,6 +118,7 @@ super@{ pkgs, config, lib, ... }:
     loadModels = [ "gemma2" ];
     acceleration = "cuda";
   };
+  services.udisks2.enable = true;
 
   users.users.landreussi = {
     isNormalUser = true;
