@@ -110,8 +110,12 @@
   boot = {
     kernelParams = [ "acpi_enforce_resources=lax" ];
     kernelModules = [ "i2c-dev" "i2c-piix4" ];
-    extraModprobeConfig =
-      ''options nvidia NVreg_RegistryDwords="RMUseSwI2c=0x01;RMI2cSpeed=100"'';
+    extraModprobeConfig = ''
+      options nvidia NVreg_RegistryDwords="RMUseSwI2c=0x01;RMI2cSpeed=100"
+      options nvidia NVreg_PreserveVideoMemoryAllocations=1
+      options nvidia NVreg_TemporaryFilePath=/var/tmp
+      options nvidia NVreg_DynamicPowerManagement=0x02
+    '';
   };
   hardware.i2c.enable = true;
   services.hardware.openrgb = {
