@@ -27,6 +27,10 @@ super@{ pkgs, config, lib, ... }:
         scrot
         ripgrep
         xclip
+        lxappearance
+        feh
+        gruvbox-material-gtk-theme
+        adwaita-icon-theme
         spotify-player
         libreoffice
         obs-studio
@@ -79,6 +83,9 @@ super@{ pkgs, config, lib, ... }:
     programs.fish = import ../../programs/fish.nix super // {
       shellInit = ''
         set -x PATH $PATH $HOME/.cargo/bin 
+        if not set -q DISPLAY; and test "$(tty)" = /dev/tty1
+            exec startx
+        end
       '';
     };
     programs.git = import ../../programs/git.nix super;

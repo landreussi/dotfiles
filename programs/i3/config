@@ -22,6 +22,7 @@ set $i3lock i3lock -c 000000
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $i3lock --nofork
+exec_always feh --bg-scale /home/landreussi/.background-image
 
 
 # Color modifiers
@@ -163,7 +164,9 @@ bindsym $win+$alt+j exec "amixer -q set Master 5%-"
 bindsym $win+$alt+k exec "amixer -q set Master 5%+"
 bindsym $win+$alt+l exec "amixer -q set Capture toggle"
 
-# bindsym $win+r mode "resize"
+bindsym $win+Shift+z exec "systemctl suspend"
+bindsym $win+Shift+a exec "reboot"
+bindsym $win+Shift+q exec "shutdown 0"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)

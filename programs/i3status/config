@@ -23,7 +23,8 @@ tztime local {
 }
 
 cpu_usage {
-   format = "CPU: %usage"
+   format        = "CPU: %usage"
+   max_threshold = 80
 }
 
 memory {

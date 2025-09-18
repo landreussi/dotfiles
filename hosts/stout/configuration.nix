@@ -24,23 +24,44 @@
 
   ########## Video ##########
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     open = true;
     modesetting.enable = true;
     powerManagement.enable = true;
   };
+
+  systemd.services."nvidia-sleep" = {
+    description = "Handle NVIDIA GPU during suspend/resume";
+    wantedBy = [
+      "sleep.target"
+      "suspend.target"
+      "hibernate.target"
+      "hybrid-sleep.target"
+    ];
+    serviceConfig.Type = "oneshot";
+    serviceConfig.ExecStart =
+      "/run/current-system/sw/bin/nvidia-smi --gpu-reset";
+    serviceConfig.ExecStop =
+      "/run/current-system/sw/bin/nvidia-smi --persistence-mode=1";
+  };
+
   services.xserver = {
     enable = true;
     xkb.variant = "intl";
     videoDrivers = [ "nvidia" ];
 
-    displayManager.lightdm = {
+    # displayManager.lightdm = {
+    #   enable = true;
+    #   background = ./.background-image;
+    #   greeters.gtk = {
+    #     enable = true;
+    #     theme.name = "Adwaita-dark";
+    #   };
+    # };
+
+    displayManager.startx = {
       enable = true;
-      background = ./.background-image;
-      greeters.gtk = {
-        enable = true;
-        theme.name = "Adwaita-dark";
-      };
+      generateScript = true;
     };
 
     desktopManager.xterm.enable = false;
@@ -67,10 +88,8 @@
     docker-compose
     i2c-tools
     liquidctl
-    lxappearance
     xdg-utils
     xdg-user-dirs
-    xclip
     wget
   ];
   programs.gnupg.agent.enable = true;
@@ -110,12 +129,6 @@
   boot = {
     kernelParams = [ "acpi_enforce_resources=lax" ];
     kernelModules = [ "i2c-dev" "i2c-piix4" ];
-    extraModprobeConfig = ''
-      options nvidia NVreg_RegistryDwords="RMUseSwI2c=0x01;RMI2cSpeed=100"
-      options nvidia NVreg_PreserveVideoMemoryAllocations=1
-      options nvidia NVreg_TemporaryFilePath=/var/tmp
-      options nvidia NVreg_DynamicPowerManagement=0x02
-    '';
   };
   hardware.i2c.enable = true;
   services.hardware.openrgb = {
