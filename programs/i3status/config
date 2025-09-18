@@ -1,5 +1,9 @@
 general {
-	interval = 5
+	 interval       = 5
+   colors         = true
+   color_good     = "#BEDA93"
+   color_bad      = "#EC7777"
+   color_degraded = "#F4D582"
 }
 
 order += "ethernet enp5s0"
@@ -9,21 +13,22 @@ order += "memory"
 order += "tztime local"
 
 ethernet enp5s0 {
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+   format_up   = "E: %ip (%speed)"
+   format_down = "E: down"
 }
 
+
 tztime local {
-        format = "%d/%m/%Y %H:%M"
+   format = "%d/%m/%Y %H:%M "
 }
 
 cpu_usage {
-        format = "CPU: %usage"
+   format = "CPU: %usage"
 }
 
 memory {
-        format = "MEM: %used / %total"
-        threshold_degraded = "10%"
-        format_degraded = "MEMORY: %free"
+   format             = "MEM: %used / %total"
+   threshold_degraded = "10%"
+   threshold_critical = "5%"
 }
 
