@@ -98,7 +98,7 @@ super@{ pkgs, ... }:
       enable = true;
       enableSshSupport = true;
       enableFishIntegration = true;
-      pinentry = { package = pkgs.pinentry; };
+      pinentry = { package = pkgs.pinentry-curses; };
     };
     programs.home-manager.enable = true;
   };
