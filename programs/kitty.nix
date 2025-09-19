@@ -1,5 +1,8 @@
-super@{ pkgs, ... }: {
+{
   enable = true;
+  shellIntegration.enableFishIntegration = true;
+  enableGitIntegration = true;
+  darwinLaunchOptions = [ "--override font_size=17" ];
   settings = let
     family = "JetBrainsMono Nerd Font";
     fontWithStyle = style: family + " " + style;
@@ -8,7 +11,7 @@ super@{ pkgs, ... }: {
     bold_font = fontWithStyle "Bold";
     italic_font = fontWithStyle "Italic";
     bold_italic_font = fontWithStyle "Bold Italic";
-    font_size = 17;
+    font_size = 13;
 
     scrollback_lines = 1000;
     mouse_hide_wait = -1;

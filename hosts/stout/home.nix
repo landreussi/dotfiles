@@ -89,31 +89,7 @@ super@{ pkgs, ... }:
       '';
     };
     programs.git = import ../../programs/git.nix super;
-    programs.kitty = import ../../programs/kitty.nix super // {
-      # TODO: solve this code duplication :cry:
-      settings = let
-        family = "JetBrainsMono Nerd Font";
-        fontWithStyle = style: family + " " + style;
-      in {
-        font_family = family;
-        bold_font = fontWithStyle "Bold";
-        italic_font = fontWithStyle "Italic";
-        bold_italic_font = fontWithStyle "Bold Italic";
-        font_size = 14;
-
-        scrollback_lines = 1000;
-        mouse_hide_wait = -1;
-        url_style = "straight";
-        enabled_layouts = "horizontal";
-
-        tab_bar_margin_width = 0;
-        tab_bar_style = "powerline";
-        tab_powerline_style = "slanted";
-        tab_bar_align = "center";
-        tab_title_template =
-          "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
-      };
-    };
+    programs.kitty = import ../../programs/kitty.nix;
     programs.neovim = import ../../programs/neovim.nix super;
     programs.direnv = import ../../programs/direnv.nix super;
     programs.ssh = import ../../programs/ssh.nix;
