@@ -23,7 +23,6 @@ set $i3lock i3lock -c 000000
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $i3lock --nofork
 exec_always feh --bg-scale /home/landreussi/.background-image
-exec_always openrgb --profile tokio
 
 
 # Color modifiers
@@ -52,14 +51,14 @@ bindsym $win+d exec "dmenu_run -nf '#BBBBBB' -nb '#0B1216' -sb '#294453' -sf '#E
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindsym $win+d exec --no-startup-id i3-dmenu-desktop
 
-# change focus
-bindsym $win+j focus left
-bindsym $win+k focus down
-bindsym $win+l focus up
-bindsym $win+semicolon focus right
-
 # print and move to img folder
 bindsym $win+Shift+s exec "scrot -s '%Y-%m-%d_$wx$h_scrot.png' -e 'mv $f ~/imgs/'"
+
+# change focus
+bindsym $win+h focus left
+bindsym $win+j focus down
+bindsym $win+k focus up
+bindsym $win+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $win+Left focus left
@@ -68,10 +67,10 @@ bindsym $win+Up focus up
 bindsym $win+Right focus right
 
 # move focused window
-bindsym $win+Shift+j move left
-bindsym $win+Shift+k move down
-bindsym $win+Shift+l move up
-bindsym $win+Shift+semicolon move right
+bindsym $win+Shift+h move left
+bindsym $win+Shift+j move down
+bindsym $win+Shift+k move up
+bindsym $win+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $win+Shift+Left move left
@@ -80,10 +79,10 @@ bindsym $win+Shift+Up move up
 bindsym $win+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $win+h split h
+bindsym $win+Ctrl+h split h
 
 # split in vertical orientation
-bindsym $win+v split v
+bindsym $win+Ctrl+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $win+f fullscreen toggle
@@ -154,10 +153,10 @@ bindsym $win+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 # i won't use resize mode.
-bindsym $win+Ctrl+Left resize grow width 5 px or 5 ppt
-bindsym $win+Ctrl+Down resize shrink height 5 px or 5 ppt
-bindsym $win+Ctrl+Up resize grow height 5 px or 5 ppt
-bindsym $win+Ctrl+Right resize shrink width 5 px or 5 ppt
+bindsym $win+$alt+Left resize grow width 5 px or 5 ppt
+bindsym $win+$alt+Down resize shrink height 5 px or 5 ppt
+bindsym $win+$alt+Up resize grow height 5 px or 5 ppt
+bindsym $win+$alt+Right resize shrink width 5 px or 5 ppt
 
 # Volume:
 bindsym $win+$alt+h exec "amixer -q set Master toggle"
@@ -165,9 +164,9 @@ bindsym $win+$alt+j exec "amixer -q set Master 5%-"
 bindsym $win+$alt+k exec "amixer -q set Master 5%+"
 bindsym $win+$alt+l exec "amixer -q set Capture toggle"
 
-bindsym $win+Shift+z exec "systemctl suspend"
-bindsym $win+Shift+a exec "reboot"
-bindsym $win+Shift+q exec "shutdown 0"
+bindsym $win+$alt+z exec "systemctl suspend"
+bindsym $win+$alt+a exec "reboot"
+bindsym $win+$alt+q exec "shutdown 0"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -185,7 +184,7 @@ bar {
     #             border   background  text
     focused_workspace   #458588 #458588 #282828
     active_workspace    #3c3836 #504945 #ebdbb2
-    inactive_workspace  #3c3836 #282828 #a89984
+    inactive_workspace  #3c3836 #32302F #a89984
     urgent_workspace    #cc241d #cc241d #fbf1c7
     binding_mode        #d79921 #d79921 #282828
   }

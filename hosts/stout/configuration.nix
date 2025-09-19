@@ -1,11 +1,47 @@
 { config, pkgs, ... }:
 
-{
+let
+  openrgb = pkgs.openrgb.overrideAttrs (old: {
+    src = pkgs.fetchFromGitLab {
+      owner = "landreussi";
+      repo = "OpenRGB";
+      rev = "release_candidate_1.0rc1-9280d3d5";
+      sha256 = "sha256-LxiuoniXaR5BlNGYkRhOKLHHdq7VPRPHrUOXWOwMnTE=";
+    };
+    postPatch = ''
+      patchShebangs scripts/build-udev-rules.sh
+      substituteInPlace scripts/build-udev-rules.sh \
+        --replace-fail "/bin/env chmod" "${pkgs.coreutils}/bin/chmod"
+    '';
+  });
+in {
   imports = [ ./hardware-configuration.nix ./home.nix ];
 
+  ###### RGB (fps++) ######
+  hardware.i2c.enable = true;
+  systemd.services.openrgb = {
+    after = [ "network.target" ];
+    wants = [ "dev-usb.device" ];
+    wantedBy = [ "multi-user.target" "systemd-suspend.service" ];
+    serviceConfig = {
+      ExecStart =
+        "${openrgb}/bin/openrgb --server --server-port 6742 --profile theme";
+      Restart = "always";
+      StateDirectory = "OpenRGB";
+      WorkingDirectory = "/var/lib/OpenRGB";
+    };
+  };
+
   ########## Boot ##########
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+    kernelParams =
+      [ "acpi_enforce_resources=lax" "mem_sleep_default=deep" "acpi=force" ];
+    kernelModules = [ "i2c-dev" "i2c-piix4" ];
+  };
 
   ########## Networking ##########
   networking.hostName = "stout";
@@ -29,8 +65,6 @@
     powerManagement.enable = true;
     open = true;
   };
-
-  systemd.sleep.extraConfig = "SuspendState=freeze";
 
   services.xserver = {
     enable = true;
@@ -59,25 +93,28 @@
   hardware.bluetooth.enable = true;
 
   ########## Global Programs ##########
-  environment.systemPackages = with pkgs; [
-    alsa-utils
-    curl
-    coreutils
-    docker-compose
-    i2c-tools
-    liquidctl
-    xdg-utils
-    xdg-user-dirs
-    wget
-  ];
+  environment.systemPackages = with pkgs;
+    [
+      alsa-utils
+      curl
+      coreutils
+      i2c-tools
+      liquidctl
+      xdg-utils
+      xdg-user-dirs
+      wget
+    ] ++ [ openrgb ];
 
   ########## Docker ##########
   virtualisation.docker = {
     enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
+    extraPackages = with pkgs; [ docker-compose ];
+    enableOnBoot = false;
+    # because of this docker is starting on boot for the user, make it start manually when you need it.
+    # rootless = {
+    #   enable = true;
+    #   setSocketVariable = true;
+    # };
   };
 
   ########## Fonts ##########
@@ -102,41 +139,64 @@
       nerd-fonts.jetbrains-mono
     ];
   };
-  ###### RGB (fps++) ######
-  boot = {
-    kernelParams = [ "acpi_enforce_resources=lax" ];
-    kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  };
-  hardware.i2c.enable = true;
-
-  services.hardware.openrgb = {
-    enable = true;
-    motherboard = "amd";
-    package = pkgs.openrgb.overrideAttrs (old: {
-    src = pkgs.fetchFromGitLab {
-      owner = "landreussi";
-      repo = "OpenRGB";
-      rev = "release_candidate_1.0rc1-9280d5";
-      sha256 = "sha256-3RH4ddWA/GCY/p7jylRgVUn1lvlwvIEVw2gpYzkMMLk=";
+  ######### Utils #########
+  # Workaround to make ollama work in a service without starting it!
+  # If stable make a module and try to start it in home.
+  systemd.services.ollama = {
+    wantedBy = [ ];
+    after = [ ];
+    serviceConfig = {
+      ExecStart = "${pkgs.ollama-cuda}/bin/ollama serve";
+      Environment = [
+        "HOME=/var/lib/ollama"
+        "OLLAMA_MODELS=/var/lib/ollama/models"
+        "OLLAMA_HOST=127.0.0.1:11434"
+      ];
+      DeviceAllow = [
+        "char-nvidiactl"
+        "char-nvidia-caps"
+        "char-nvidia-frontend"
+        "char-nvidia-uvm"
+        "char-drm"
+        "char-fb"
+        "char-kfd"
+      ];
+      DevicePolicy = "closed";
+      LockPersonality = true;
+      MemoryDenyWriteExecute = true;
+      NoNewPrivileges = true;
+      PrivateDevices = false;
+      PrivateTmp = true;
+      PrivateUsers = true;
+      ProcSubset = "all";
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      ProtectSystem = "strict";
+      ReadWritePaths = [ "/var/lib/ollama" "/var/lib/ollama/models" ];
+      RemoveIPC = true;
+      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      StateDirectory = "ollama";
+      SupplementaryGroups = "render";
+      SystemCallArchitectures = "native";
+      SystemCallFilter = [ "@system-service @resources" "~@privileged" ];
+      Type = "exec";
+      UMask = "0077";
+      WorkingDirectory = "/var/lib/ollama";
     };
-    postPatch = ''
-      patchShebangs scripts/build-udev-rules.sh
-      substituteInPlace scripts/build-udev-rules.sh \
-        --replace-fail /usr/bin/env "${pkgs.coreutils}/bin/env"
-    '';
-  });
   };
 
-  systemd.services.openrgb = {
-    after = [ "network.target" ];
-    wants = [ "dev-usb.device" ];
-    # wantedBy = [ "multi-user.target" "systemd-suspend.service" ];
-    # serviceConfig = {
-    #   ExecStartPost = ''
-    #     ${openrgb}/bin/openrgb --profile tokio
-    #   '';
-    # };
-  };
+  services.udisks2.enable = true;
+  services.fwupd.enable = true;
+  security.polkit.enable = true;
 
   ########## Nix ##########
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

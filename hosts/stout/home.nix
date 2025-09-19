@@ -102,13 +102,6 @@ super@{ pkgs, ... }:
     };
     programs.home-manager.enable = true;
   };
-  services.ollama = {
-    enable = true;
-    loadModels = [ "gemma2" ];
-    acceleration = "cuda";
-  };
-  services.udisks2.enable = true;
-  services.fwupd.enable = true;
 
   users.users.landreussi = {
     isNormalUser = true;

@@ -11,5 +11,9 @@
       identitiesOnly = true;
       hostname = "github.com";
     };
+    "gitlab.com" = {
+      identitiesOnly = true;
+      hostname = "gitlab.com";
+    };
   };
 }
