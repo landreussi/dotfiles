@@ -89,7 +89,7 @@ super@{ pkgs, config, lib, ... }:
       '';
     };
     programs.git = import ../../programs/git.nix super;
-    programs.gpg = import ../../programs/gpg.nix super;
+    programs.gpg = import ../../programs/gpg.nix;
     programs.kitty = import ../../programs/kitty.nix super // {
       # TODO: solve this code duplication :cry:
       settings = let
@@ -126,6 +126,7 @@ super@{ pkgs, config, lib, ... }:
     acceleration = "cuda";
   };
   services.udisks2.enable = true;
+  services.fwupd.enable = true;
 
   users.users.landreussi = {
     isNormalUser = true;

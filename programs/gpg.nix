@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{
   enable = true;
   settings = rec {
     default-key = "45777D1BB49B2383D72BED7DE755DF9796E6E3AE";

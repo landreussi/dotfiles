@@ -25,39 +25,17 @@
   ########## Video ##########
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.latest;
-    open = true;
     modesetting.enable = true;
     powerManagement.enable = true;
+    open = true;
   };
 
-  systemd.services."nvidia-sleep" = {
-    description = "Handle NVIDIA GPU during suspend/resume";
-    wantedBy = [
-      "sleep.target"
-      "suspend.target"
-      "hibernate.target"
-      "hybrid-sleep.target"
-    ];
-    serviceConfig.Type = "oneshot";
-    serviceConfig.ExecStart =
-      "/run/current-system/sw/bin/nvidia-smi --gpu-reset";
-    serviceConfig.ExecStop =
-      "/run/current-system/sw/bin/nvidia-smi --persistence-mode=1";
-  };
+  systemd.sleep.extraConfig = "SuspendState=freeze";
 
   services.xserver = {
     enable = true;
     xkb.variant = "intl";
     videoDrivers = [ "nvidia" ];
-
-    # displayManager.lightdm = {
-    #   enable = true;
-    #   background = ./.background-image;
-    #   greeters.gtk = {
-    #     enable = true;
-    #     theme.name = "Adwaita-dark";
-    #   };
-    # };
 
     displayManager.startx = {
       enable = true;
@@ -92,7 +70,6 @@
     xdg-user-dirs
     wget
   ];
-  programs.gnupg.agent.enable = true;
 
   ########## Docker ##########
   virtualisation.docker = {

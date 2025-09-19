@@ -1,16 +1,17 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 let home = config.users.users.landreussi.home;
 in {
-  enable = false;
+  enable = true;
   forwardAgent = true;
+  addKeysToAgent = "yes";
   compression = true;
   serverAliveInterval = 30;
   serverAliveCountMax = 5;
   hashKnownHosts = true;
   matchBlocks = {
-    identityFile = "${config.users.users.landreussi.home}/.ssh/id_rsa";
     "github.com" = {
+      identityFile = "${home}/.ssh/id_rsa";
       hostname = "github.com";
       user = "git";
       extraOptions = {
