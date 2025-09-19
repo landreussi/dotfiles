@@ -23,6 +23,7 @@ set $i3lock i3lock -c 000000
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $i3lock --nofork
 exec_always feh --bg-scale /home/landreussi/.background-image
+exec_always openrgb --profile tokio
 
 
 # Color modifiers
@@ -177,7 +178,7 @@ bar {
   font pango:JetBrainsMono Nerd Font Propo 9
   status_command i3status
 	colors {
-    background #282828
+    background #32302F
     statusline #ebdbb2
     separator  #665c54
 

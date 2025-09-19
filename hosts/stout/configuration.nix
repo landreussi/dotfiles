@@ -1,20 +1,6 @@
 { config, pkgs, ... }:
 
-let
-  openrgb = pkgs.openrgb.overrideAttrs (old: {
-    src = pkgs.fetchFromGitLab {
-      owner = "landreussi";
-      repo = "OpenRGB";
-      rev = "release_candidate_1.0rc1-9280d5";
-      sha256 = "sha256-3RH4ddWA/GCY/p7jylRgVUn1lvlwvIEVw2gpYzkMMLk=";
-    };
-    postPatch = ''
-      patchShebangs scripts/build-udev-rules.sh
-      substituteInPlace scripts/build-udev-rules.sh \
-        --replace-fail /usr/bin/env "${pkgs.coreutils}/bin/env"
-    '';
-  });
-in {
+{
   imports = [ ./hardware-configuration.nix ./home.nix ];
 
   ########## Boot ##########
@@ -126,18 +112,30 @@ in {
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";
-    package = openrgb;
+    package = pkgs.openrgb.overrideAttrs (old: {
+    src = pkgs.fetchFromGitLab {
+      owner = "landreussi";
+      repo = "OpenRGB";
+      rev = "release_candidate_1.0rc1-9280d5";
+      sha256 = "sha256-3RH4ddWA/GCY/p7jylRgVUn1lvlwvIEVw2gpYzkMMLk=";
+    };
+    postPatch = ''
+      patchShebangs scripts/build-udev-rules.sh
+      substituteInPlace scripts/build-udev-rules.sh \
+        --replace-fail /usr/bin/env "${pkgs.coreutils}/bin/env"
+    '';
+  });
   };
 
   systemd.services.openrgb = {
-    after = [ "network.target" "systemd-suspend.service" ];
+    after = [ "network.target" ];
     wants = [ "dev-usb.device" ];
-    wantedBy = [ "multi-user.target" "systemd-suspend.service" ];
-    serviceConfig = {
-      ExecStartPost = ''
-        ${openrgb}/bin/openrgb --profile tokio
-      '';
-    };
+    # wantedBy = [ "multi-user.target" "systemd-suspend.service" ];
+    # serviceConfig = {
+    #   ExecStartPost = ''
+    #     ${openrgb}/bin/openrgb --profile tokio
+    #   '';
+    # };
   };
 
   ########## Nix ##########
