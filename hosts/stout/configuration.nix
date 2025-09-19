@@ -1,6 +1,20 @@
 { config, pkgs, ... }:
 
-{
+let
+  openrgb = pkgs.openrgb.overrideAttrs (old: {
+    src = pkgs.fetchFromGitLab {
+      owner = "landreussi";
+      repo = "OpenRGB";
+      rev = "release_candidate_1.0rc1-9280d5";
+      sha256 = "sha256-3RH4ddWA/GCY/p7jylRgVUn1lvlwvIEVw2gpYzkMMLk=";
+    };
+    postPatch = ''
+      patchShebangs scripts/build-udev-rules.sh
+      substituteInPlace scripts/build-udev-rules.sh \
+        --replace-fail /usr/bin/env "${pkgs.coreutils}/bin/env"
+    '';
+  });
+in {
   imports = [ ./hardware-configuration.nix ./home.nix ];
 
   ########## Boot ##########
@@ -108,30 +122,23 @@
     kernelModules = [ "i2c-dev" "i2c-piix4" ];
   };
   hardware.i2c.enable = true;
+
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";
-    package = pkgs.openrgb.overrideAttrs (old: {
-      src = pkgs.fetchFromGitLab {
-        owner = "landreussi";
-        repo = "OpenRGB";
-        rev = "release_candidate_1.0rc1-9280d3d5";
-        sha256 = "sha256-3RH4ddWA/GCY/p7jylRgVUn1lvlwvIEVw2gpYzkMMLk=";
-      };
-      # The postPatch in nixpkgs is meant for v0.9 of OpenRGB, but the upstream is
-      # more like a 1.1-ish thing, and the udev rules script changed.
-      postPatch = ''
-        patchShebangs scripts/build-udev-rules.sh
-        substituteInPlace scripts/build-udev-rules.sh \
-          --replace-fail /usr/bin/env "${pkgs.coreutils}/bin/env"
-      '';
-    });
+    package = openrgb;
   };
 
-  # Pull in changes from https://github.com/NixOS/nixpkgs/commit/63b416944c7821a13bd1aafb86d3df3de6765f0b
-  # These two lines can be removed once we're on NixOS 25.11.
-  systemd.services.openrgb.after = [ "network.target" ];
-  systemd.services.openrgb.wants = [ "dev-usb.device" ];
+  systemd.services.openrgb = {
+    after = [ "network.target" "systemd-suspend.service" ];
+    wants = [ "dev-usb.device" ];
+    wantedBy = [ "multi-user.target" "systemd-suspend.service" ];
+    serviceConfig = {
+      ExecStartPost = ''
+        ${openrgb}/bin/openrgb --profile tokio
+      '';
+    };
+  };
 
   ########## Nix ##########
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
