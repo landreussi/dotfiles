@@ -1,5 +1,12 @@
-{
+{ config, ... }:
+
+let home = config.users.users.landreussi.home;
+in {
   enable = true;
+  publicKeys = [{
+    source = "${home}/.gnupg/gpg";
+    trust = 5;
+  }];
   settings = rec {
     default-key = "45777D1BB49B2383D72BED7DE755DF9796E6E3AE";
     personal-cipher-preferences = "AES256 AES192 AES";

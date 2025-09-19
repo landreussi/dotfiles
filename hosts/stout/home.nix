@@ -1,4 +1,4 @@
-super@{ pkgs, config, lib, ... }:
+super@{ pkgs, ... }:
 
 {
   imports = [ <home-manager/nixos> ];
@@ -23,7 +23,6 @@ super@{ pkgs, config, lib, ... }:
         logseq
         pass
         tree
-        pinentry
         scrot
         ripgrep
         xclip
@@ -83,13 +82,13 @@ super@{ pkgs, config, lib, ... }:
     programs.fish = import ../../programs/fish.nix super // {
       shellInit = ''
         set -x PATH $PATH $HOME/.cargo/bin 
+        set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
         if not set -q DISPLAY; and test "$(tty)" = /dev/tty1
             exec startx
         end
       '';
     };
     programs.git = import ../../programs/git.nix super;
-    programs.gpg = import ../../programs/gpg.nix;
     programs.kitty = import ../../programs/kitty.nix super // {
       # TODO: solve this code duplication :cry:
       settings = let
@@ -116,8 +115,15 @@ super@{ pkgs, config, lib, ... }:
       };
     };
     programs.neovim = import ../../programs/neovim.nix super;
-    programs.ssh = import ../../programs/ssh.nix super;
     programs.direnv = import ../../programs/direnv.nix super;
+    programs.ssh = import ../../programs/ssh.nix;
+    programs.gpg = import ../../programs/gpg.nix super;
+    services.gpg-agent = {
+      enable = true;
+      enableSshSupport = true;
+      enableFishIntegration = true;
+      pinentry = { package = pkgs.pinentry; };
+    };
     programs.home-manager.enable = true;
   };
   services.ollama = {
