@@ -4,16 +4,15 @@
   enableGitIntegration = true;
   darwinLaunchOptions = [ "--override font_size=17" ];
   settings = let
-    family = "JetBrainsMono Nerd Font";
+    family = "JetBrainsMono Nerd Font Mono";
     fontWithStyle = style: family + " " + style;
   in {
     font_family = family;
     bold_font = fontWithStyle "Bold";
     italic_font = fontWithStyle "Italic";
     bold_italic_font = fontWithStyle "Bold Italic";
-    font_size = 13;
+    font_size = 12;
 
-    scrollback_lines = 1000;
     mouse_hide_wait = -1;
     url_style = "straight";
     enabled_layouts = "horizontal";

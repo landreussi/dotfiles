@@ -110,11 +110,6 @@ in {
     enable = true;
     extraPackages = with pkgs; [ docker-compose ];
     enableOnBoot = false;
-    # because of this docker is starting on boot for the user, make it start manually when you need it.
-    # rootless = {
-    #   enable = true;
-    #   setSocketVariable = true;
-    # };
   };
 
   ########## Fonts ##########
@@ -124,7 +119,7 @@ in {
     fontconfig = {
       useEmbeddedBitmaps = true;
       defaultFonts = {
-        monospace = [ "JetBrainsMono Nerd Font" ];
+        monospace = [ "JetBrainsMono Nerd Font Mono" ];
         serif = [ "Noto Serif" ];
         sansSerif = [ "Noto Sans" ];
       };
@@ -139,61 +134,8 @@ in {
       nerd-fonts.jetbrains-mono
     ];
   };
-  ######### Utils #########
-  # Workaround to make ollama work in a service without starting it!
-  # If stable make a module and try to start it in home.
-  systemd.services.ollama = {
-    wantedBy = [ ];
-    after = [ ];
-    serviceConfig = {
-      ExecStart = "${pkgs.ollama-cuda}/bin/ollama serve";
-      Environment = [
-        "HOME=/var/lib/ollama"
-        "OLLAMA_MODELS=/var/lib/ollama/models"
-        "OLLAMA_HOST=127.0.0.1:11434"
-      ];
-      DeviceAllow = [
-        "char-nvidiactl"
-        "char-nvidia-caps"
-        "char-nvidia-frontend"
-        "char-nvidia-uvm"
-        "char-drm"
-        "char-fb"
-        "char-kfd"
-      ];
-      DevicePolicy = "closed";
-      LockPersonality = true;
-      MemoryDenyWriteExecute = true;
-      NoNewPrivileges = true;
-      PrivateDevices = false;
-      PrivateTmp = true;
-      PrivateUsers = true;
-      ProcSubset = "all";
-      ProtectClock = true;
-      ProtectControlGroups = true;
-      ProtectHome = true;
-      ProtectHostname = true;
-      ProtectKernelLogs = true;
-      ProtectKernelModules = true;
-      ProtectKernelTunables = true;
-      ProtectProc = "invisible";
-      ProtectSystem = "strict";
-      ReadWritePaths = [ "/var/lib/ollama" "/var/lib/ollama/models" ];
-      RemoveIPC = true;
-      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
-      RestrictNamespaces = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
-      StateDirectory = "ollama";
-      SupplementaryGroups = "render";
-      SystemCallArchitectures = "native";
-      SystemCallFilter = [ "@system-service @resources" "~@privileged" ];
-      Type = "exec";
-      UMask = "0077";
-      WorkingDirectory = "/var/lib/ollama";
-    };
-  };
 
+  ######### Utils #########
   services.udisks2.enable = true;
   services.fwupd.enable = true;
   security.polkit.enable = true;
@@ -203,6 +145,7 @@ in {
   nixpkgs.config = {
     permittedInsecurePackages = [ "electron-27.3.11" "nix-2.15.3" ];
     allowUnfree = true;
+    cudaSupport = true;
   };
   system.stateVersion = "25.05";
 }

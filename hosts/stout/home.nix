@@ -1,4 +1,4 @@
-super@{ pkgs, ... }:
+super@{ pkgs, lib, ... }:
 
 {
   imports = [ <home-manager/nixos> ];
@@ -41,8 +41,6 @@ super@{ pkgs, ... }:
         # TS/Node
         nodePackages.typescript-language-server
         yarn
-        # Needed for copilot (OH GOD WHY, WHYYYYYYY?)
-        nodejs
         # Python
         pyright
         # Nix 
@@ -83,9 +81,6 @@ super@{ pkgs, ... }:
       shellInit = ''
         set -x PATH $PATH $HOME/.cargo/bin 
         set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
-        if not set -q DISPLAY; and test "$(tty)" = /dev/tty1
-            exec startx
-        end
       '';
     };
     programs.git = import ../../programs/git.nix super;
@@ -94,12 +89,9 @@ super@{ pkgs, ... }:
     programs.direnv = import ../../programs/direnv.nix super;
     programs.ssh = import ../../programs/ssh.nix;
     programs.gpg = import ../../programs/gpg.nix super;
-    services.gpg-agent = {
-      enable = true;
-      enableSshSupport = true;
-      enableFishIntegration = true;
-      pinentry = { package = pkgs.pinentry-curses; };
-    };
+    services.gpg-agent = import ../../services/gpg-agent.nix super;
+    services.ollama.enable = true;
+    systemd.user.services.ollama.Install = lib.mkForce { };
     programs.home-manager.enable = true;
   };
 
