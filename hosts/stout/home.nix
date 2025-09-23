@@ -84,6 +84,7 @@ super@{ pkgs, lib, ... }:
       '';
     };
     programs.git = import ../../programs/git.nix super;
+    programs.helix = import ../../programs/helix.nix;
     programs.kitty = import ../../programs/kitty.nix;
     programs.neovim = import ../../programs/neovim.nix super;
     programs.direnv = import ../../programs/direnv.nix super;
