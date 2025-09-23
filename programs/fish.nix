@@ -1,6 +1,9 @@
-{ pkgs, config, ... }:
-
-let nixPath = config.nix.nixPath;
+{
+  pkgs,
+  config,
+  ...
+}: let
+  nixPath = config.nix.nixPath;
 in {
   enable = true;
   interactiveShellInit = ''
@@ -30,6 +33,8 @@ in {
   '';
   shellAliases = rec {
     vim = "nvim";
+    h = ''
+      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; hx "$arg"'';
     ".." = "cd ..";
     "..." = "cd ../..";
     "...." = "cd ../../..";
@@ -60,6 +65,8 @@ in {
             end
             if test -f $project_dir/shell.nix
               nix-shell
+            else if test -f $project_dir/flake.nix
+              nix develop
             end
             function __on_exit --on-event fish_exit --inherit-variable prev_dir
               cd $prev_dir
@@ -72,8 +79,7 @@ in {
       '';
     };
     nix-prune = {
-      body =
-        "nix-env --delete-generations old --profile /nix/var/nix/profiles/system; nix-collect-garbage -d";
+      body = "nix-env --delete-generations old --profile /nix/var/nix/profiles/system; nix-collect-garbage -d";
     };
     local-psql = {
       argumentNames = "action";
