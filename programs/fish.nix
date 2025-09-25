@@ -33,8 +33,8 @@ in {
   '';
   shellAliases = rec {
     vim = "nvim";
-    h = ''
-      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; hx "$arg"'';
+    hx = ''
+      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; ${pkgs.helix}/bin/hx "$arg"'';
     ".." = "cd ..";
     "..." = "cd ../..";
     "...." = "cd ../../..";
@@ -50,6 +50,17 @@ in {
     nix-shell = "nix-shell --command fish";
   };
   functions = {
+    nix = {
+      argumentNames = "cmd";
+      description = "Override Nix commands";
+      body = ''
+        if test $cmd = "develop"
+          command nix develop --command fish
+        else
+          command nix $argv
+        end
+      '';
+    };
     workon = {
       argumentNames = "project";
       description = "Go to the given project";

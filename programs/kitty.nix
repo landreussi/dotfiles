@@ -20,8 +20,11 @@
     tab_bar_style = "powerline";
     tab_powerline_style = "slanted";
     tab_bar_align = "center";
-    tab_title_template = "{index} {tab.active_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
+    tab_title_template = "{index} {tab.active_oldest_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
     enabled_layouts = "tall,stack";
+    sync_to_monitor = true;
+    bell_on_tab = "🔔 ";
+    window_border_width = "0pt";
   };
   extraConfig = ''
     include current-theme.conf
@@ -30,7 +33,7 @@
     map ctrl+shift+z next_layout
     map --when-focus-on var:in_editor ctrl+shift+; combine : toggle_layout stack : neighboring_window right
     map --when-focus-on title:terminal ctrl+shift+; combine : neighboring_window left : toggle_layout stack
-    map ctrl+shift+enter launch --title=terminal --cwd=current --copy-env
+    map ctrl+shift+enter launch --title=terminal --cwd=current --copy-env --bias=-20
     map ctrl+shift+j previous_tab
     map ctrl+shift+k next_tab
     map ctrl+shift+1 goto_tab 1

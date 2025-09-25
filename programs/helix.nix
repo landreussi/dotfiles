@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   enable = true;
   settings = {
     theme = "gruvbox-material";
@@ -9,6 +7,7 @@
       cursorline = true;
       lsp = {
         display-messages = true;
+        display-progress-messages = true;
         display-inlay-hints = true;
       };
       cursor-shape.insert = "bar";
@@ -17,6 +16,19 @@
       completion-replace = false;
       color-modes = true;
       popup-border = "popup";
+      default-yank-register = "+";
+      statusline = {
+        left = ["mode" "file-name" "read-only-indicator" "file-modification-indicator"];
+        right = ["diagnostics" "position" "file-encoding"];
+      };
+      end-of-line-diagnostics = "hint";
+      inline-diagnostics = {
+        cursor-line = "warning";
+        other-lines = "warning";
+      };
+    };
+    keys.normal = {
+      Z = {Z = ":bc";};
     };
   };
   languages.language-server.rust-analyzer.config = {
@@ -53,11 +65,11 @@
   languages.language = [
     {
       name = "python";
-      language-servers = [ "pylyzer" ];
+      language-servers = ["pylyzer"];
     }
     {
       name = "rust";
-      language-servers = [ "rust-analyzer" ];
+      language-servers = ["rust-analyzer"];
     }
     {
       name = "nix";

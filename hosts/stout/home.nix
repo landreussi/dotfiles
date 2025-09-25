@@ -98,6 +98,7 @@ super@{ pkgs, lib, ... }:
 
   users.users.landreussi = {
     isNormalUser = true;
+    useDefaultShell = true;
     extraGroups = [ "wheel" "docker" ];
     name = "landreussi";
     home = "/home/landreussi";

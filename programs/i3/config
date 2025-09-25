@@ -158,11 +158,14 @@ bindsym $win+$alt+Down resize shrink height 5 px or 5 ppt
 bindsym $win+$alt+Up resize grow height 5 px or 5 ppt
 bindsym $win+$alt+Right resize shrink width 5 px or 5 ppt
 
-# Volume:
+# Media:
 bindsym $win+$alt+h exec "amixer -q set Master toggle"
 bindsym $win+$alt+j exec "amixer -q set Master 5%-"
 bindsym $win+$alt+k exec "amixer -q set Master 5%+"
 bindsym $win+$alt+l exec "amixer -q set Capture toggle"
+bindsym $win+$alt+o exec "spotify_player playback previous"
+bindsym $win+$alt+p exec "spotify_player playback play-pause"
+bindsym $win+$alt+bracketleft exec "spotify_player playback next"
 
 bindsym $win+$alt+z exec "systemctl suspend"
 bindsym $win+$alt+a exec "reboot"

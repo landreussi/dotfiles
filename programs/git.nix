@@ -1,6 +1,4 @@
-{ lib, pkgs, ... }:
-
-rec {
+{pkgs, ...}: rec {
   enable = true;
   package = pkgs.git;
   userName = "Lucas Andreussi";
@@ -10,19 +8,18 @@ rec {
 
   delta = {
     enable = true;
-    options = { line-numbers = true; };
+    options = {line-numbers = true;};
   };
 
   extraConfig = {
-    credential."https://github.com".helper =
-      "!${pkgs.gh}/bin/gh auth git-credential";
+    credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     core = {
       commentChar = "@";
       editor = "nvim";
     };
-    color = { ui = true; };
-    branch = { autosetuprebase = "always"; };
-    pull = { rebase = true; };
+    color = {ui = true;};
+    branch = {autosetuprebase = "always";};
+    pull = {rebase = true;};
     rebase = {
       autoSquash = true;
       autoStash = true;
@@ -87,8 +84,7 @@ rec {
     # diff - show changes by word, not line
     dw = "!git diff --word-diff";
     # diff deep
-    dd =
-      "diff --check --dirstat --find-copies --find-renames --histogram --color";
+    dd = "diff --check --dirstat --find-copies --find-renames --histogram --color";
 
     fe = "fetch --prune";
     feo = "fe origin";
@@ -99,10 +95,8 @@ rec {
     lp = "log --patch";
     # log with one line per item.
     l = "log --oneline --no-merges";
-    ll =
-      "log --graph --topo-order --date=short --abbrev-commit --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset'";
-    lll =
-      "log --graph --topo-order --date=iso8601-strict --no-abbrev-commit --abbrev=40 --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn <%ce>]%Creset %Cblue%G?%Creset'";
+    ll = "log --graph --topo-order --date=short --abbrev-commit --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset'";
+    lll = "log --graph --topo-order --date=iso8601-strict --no-abbrev-commit --abbrev=40 --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn <%ce>]%Creset %Cblue%G?%Creset'";
 
     # rebase - forward-port local commits to the updated upstream head.
     rb = "rebase";
@@ -117,7 +111,9 @@ rec {
     rbs = "rb --skip";
 
     save =
-      if package.version < "2.16.0" then "stash save -u" else "stash push -u";
+      if package.version < "2.16.0"
+      then "stash save -u"
+      else "stash push -u";
     pop = "stash pop";
     snapshot = "!git save \"snapshot: $(date)\" && git stash apply 'stash@{0}'";
 
@@ -128,8 +124,7 @@ rec {
     # reducing the total repository size.
     #
     #By [CodeGnome](http://www.codegnome.com/)
-    pruner =
-      "!git prune --expire=now && git reflog expire --expire-unreachable=now --rewrite --all && git fetch --prune";
+    pruner = "!git prune --expire=now && git reflog expire --expire-unreachable=now --rewrite --all && git fetch --prune";
 
     # repacker: repack a repo the way Linus recommends.
     #

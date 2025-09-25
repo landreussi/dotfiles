@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   openrgb = pkgs.openrgb.overrideAttrs (old: {
     src = pkgs.fetchFromGitLab {
       owner = "landreussi";
@@ -15,17 +17,16 @@ let
     '';
   });
 in {
-  imports = [ ./hardware-configuration.nix ./home.nix ];
+  imports = [./hardware-configuration.nix ./home.nix];
 
   ###### RGB (fps++) ######
   hardware.i2c.enable = true;
   systemd.services.openrgb = {
-    after = [ "network.target" ];
-    wants = [ "dev-usb.device" ];
-    wantedBy = [ "multi-user.target" "systemd-suspend.service" ];
+    after = ["network.target"];
+    wants = ["dev-usb.device"];
+    wantedBy = ["multi-user.target" "systemd-suspend.service"];
     serviceConfig = {
-      ExecStart =
-        "${openrgb}/bin/openrgb --server --server-port 6742 --profile theme";
+      ExecStart = "${openrgb}/bin/openrgb --server --server-port 6742 --profile theme";
       Restart = "always";
       StateDirectory = "OpenRGB";
       WorkingDirectory = "/var/lib/OpenRGB";
@@ -38,9 +39,8 @@ in {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
-    kernelParams =
-      [ "acpi_enforce_resources=lax" "mem_sleep_default=deep" "acpi=force" ];
-    kernelModules = [ "i2c-dev" "i2c-piix4" ];
+    kernelParams = ["acpi_enforce_resources=lax" "mem_sleep_default=deep" "acpi=force"];
+    kernelModules = ["i2c-dev" "i2c-piix4"];
   };
 
   ########## Networking ##########
@@ -68,8 +68,11 @@ in {
 
   services.xserver = {
     enable = true;
-    xkb.variant = "intl";
-    videoDrivers = [ "nvidia" ];
+    xkb = {
+      variant = "intl";
+      options = "caps:escape";
+    };
+    videoDrivers = ["nvidia"];
 
     displayManager.startx = {
       enable = true;
@@ -78,10 +81,12 @@ in {
 
     desktopManager.xterm.enable = false;
     windowManager.i3.enable = true;
-    xrandrHeads = [{
-      output = "HDMI-0";
-      primary = true;
-    }];
+    xrandrHeads = [
+      {
+        output = "HDMI-0";
+        primary = true;
+      }
+    ];
   };
 
   ########## Sound ##########
@@ -103,12 +108,13 @@ in {
       xdg-utils
       xdg-user-dirs
       wget
-    ] ++ [ openrgb ];
+    ]
+    ++ [openrgb];
 
   ########## Docker ##########
   virtualisation.docker = {
     enable = true;
-    extraPackages = with pkgs; [ docker-compose ];
+    extraPackages = with pkgs; [docker-compose];
     enableOnBoot = false;
   };
 
@@ -119,9 +125,9 @@ in {
     fontconfig = {
       useEmbeddedBitmaps = true;
       defaultFonts = {
-        monospace = [ "JetBrainsMono Nerd Font Mono" ];
-        serif = [ "Noto Serif" ];
-        sansSerif = [ "Noto Sans" ];
+        monospace = ["JetBrainsMono Nerd Font Mono"];
+        serif = ["Noto Serif"];
+        sansSerif = ["Noto Sans"];
       };
     };
 
@@ -141,12 +147,11 @@ in {
   security.polkit.enable = true;
 
   ########## Nix ##########
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config = {
-    permittedInsecurePackages = [ "electron-27.3.11" "nix-2.15.3" ];
+    permittedInsecurePackages = ["electron-27.3.11" "nix-2.15.3"];
     allowUnfree = true;
     cudaSupport = true;
   };
   system.stateVersion = "25.05";
 }
-
