@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -34,7 +35,7 @@ in {
   shellAliases = rec {
     vim = "nvim";
     hx = ''
-      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; ${pkgs.helix}/bin/hx "$arg"'';
+      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; ${lib.getExe pkgs.helix} "$arg"'';
     ".." = "cd ..";
     "..." = "cd ../..";
     "...." = "cd ../../..";

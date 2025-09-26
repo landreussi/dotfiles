@@ -1,7 +1,9 @@
-super@{ pkgs, lib, ... }:
-
-{
-  imports = [ <home-manager/nixos> ];
+super @ {
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [<home-manager/nixos>];
 
   home-manager.users.landreussi = {
     home = {
@@ -43,7 +45,7 @@ super@{ pkgs, lib, ... }:
         yarn
         # Python
         pyright
-        # Nix 
+        # Nix
         nixd
         # Lua
         lua-language-server
@@ -67,6 +69,33 @@ super@{ pkgs, lib, ... }:
           source = ./.background-image;
           target = "/home/landreussi/.background-image";
         };
+        gattino-kitten = with pkgs; {
+          source = pkgs.stdenv.mkDerivation {
+            name = "gattino";
+            src =
+              fetchFromGitHub
+              {
+                owner = "salvozappa";
+                repo = "gattino";
+                rev = "main";
+                sha256 = "sha256-YqSjWAsXH4wXhK/er/OhKb+gTXz8LGk2XKXSkJMtipk=";
+              };
+            postPatch = ''
+              substituteInPlace gattino.config.json \
+                  --replace-fail "/usr/local/bin/ollama" "${lib.getExe pkgs.ollama}"
+
+            '';
+            installPhase = ''
+              runHook preInstall
+
+              mkdir -p $out
+              cp -r gattino.py gattino.config.json src $out/
+
+              runHook postInstall
+            '';
+          };
+          target = "/home/landreussi/.config/kitty/gattino";
+        };
       };
 
       stateVersion = "25.05";
@@ -77,12 +106,14 @@ super@{ pkgs, lib, ... }:
     };
 
     manual.manpages.enable = false;
-    programs.fish = import ../../programs/fish.nix super // {
-      shellInit = ''
-        set -x PATH $PATH $HOME/.cargo/bin 
-        set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
-      '';
-    };
+    programs.fish =
+      import ../../programs/fish.nix super
+      // {
+        shellInit = ''
+          set -x PATH $PATH $HOME/.cargo/bin
+          set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+        '';
+      };
     programs.git = import ../../programs/git.nix super;
     programs.helix = import ../../programs/helix.nix super;
     programs.kitty = import ../../programs/kitty.nix;
@@ -92,14 +123,14 @@ super@{ pkgs, lib, ... }:
     programs.gpg = import ../../programs/gpg.nix super;
     services.gpg-agent = import ../../services/gpg-agent.nix super;
     services.ollama.enable = true;
-    systemd.user.services.ollama.Install = lib.mkForce { };
+    systemd.user.services.ollama.Install = lib.mkForce {};
     programs.home-manager.enable = true;
   };
 
   users.users.landreussi = {
     isNormalUser = true;
     useDefaultShell = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = ["wheel" "docker"];
     name = "landreussi";
     home = "/home/landreussi";
   };

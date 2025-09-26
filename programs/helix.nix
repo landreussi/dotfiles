@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   enable = true;
   settings = {
     theme = "gruvbox-material";
@@ -59,17 +63,21 @@
     };
     references.excludeImports = true;
   };
+  languages.language-server.gpt = {
+    command = lib.getExe pkgs.helix-gpt;
+    args = ["--handler" "ollama" "--logFile" "~/.cache/helix/helix-gpt.log"];
+  };
   languages.language-server.yaml-language-server.config = {
     yaml.keyOrdering = false;
   };
   languages.language = [
     {
       name = "python";
-      language-servers = ["pylyzer"];
+      language-servers = ["pylyzer" "gpt"];
     }
     {
       name = "rust";
-      language-servers = ["rust-analyzer"];
+      language-servers = ["rust-analyzer" "gpt"];
     }
     {
       name = "nix";

@@ -34,6 +34,7 @@
     map --when-focus-on var:in_editor ctrl+shift+; combine : toggle_layout stack : neighboring_window right
     map --when-focus-on title:terminal ctrl+shift+; combine : neighboring_window left : toggle_layout stack
     map ctrl+shift+enter launch --title=terminal --cwd=current --copy-env --bias=-20
+    map ctrl+shift+o kitten gattino/gattino.py
     map ctrl+shift+j previous_tab
     map ctrl+shift+k next_tab
     map ctrl+shift+1 goto_tab 1
