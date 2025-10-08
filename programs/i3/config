@@ -176,7 +176,7 @@ bindsym $win+$alt+q exec "for i in $(seq 1 10); do i3-resurrect save -w \\"$i\\"
 # finds out, if available)
 bar {
   position top
-  output HDMI-1
+  output HDMI-0
   tray_output none 
   font pango:JetBrainsMono Nerd Font Propo 9
   status_command i3status

@@ -90,9 +90,6 @@ in {
         return 1
       '';
     };
-    nix-prune = {
-      body = "nix-env --delete-generations old --profile /nix/var/nix/profiles/system; nix-collect-garbage -d";
-    };
     local-psql = {
       argumentNames = "action";
       description = "Start or stop local PostgreSQL instance";

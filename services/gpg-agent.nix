@@ -1,8 +1,8 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   enable = true;
   enableSshSupport = true;
   enableFishIntegration = true;
-  pinentry = { package = pkgs.pinentry-curses; };
+  enableExtraSocket = true;
+  grabKeyboardAndMouse = false;
+  pinentry = {package = pkgs.pinentry-curses;};
 }

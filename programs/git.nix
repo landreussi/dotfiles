@@ -15,7 +15,7 @@
     credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     core = {
       commentChar = "@";
-      editor = "nvim";
+      editor = "hx";
     };
     color = {ui = true;};
     branch = {autosetuprebase = "always";};
