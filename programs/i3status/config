@@ -1,5 +1,5 @@
 general {
-	 interval       = 5
+   interval       = 5
    colors         = true
    color_good     = "#BEDA93"
    color_bad      = "#EC7777"
@@ -9,12 +9,17 @@ general {
 order += "ethernet enp5s0"
 order += "battery 0"
 order += "cpu_usage"
+order += "disk /"
 order += "memory"
 order += "tztime local"
 
 ethernet enp5s0 {
    format_up   = "E: %ip (%speed)"
    format_down = "E: down"
+}
+
+disk "/" {
+   format = "DISK: %avail left"
 }
 
 

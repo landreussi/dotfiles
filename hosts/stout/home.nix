@@ -36,8 +36,6 @@ in {
         gruvbox-material-gtk-theme
         adwaita-icon-theme
         spotify-player
-        heroic-unwrapped
-        gogdl
         bluetui
         libreoffice
         obs-studio
@@ -112,6 +110,7 @@ in {
     };
 
     manual.manpages.enable = false;
+    programs.delta = import ../../programs/delta.nix;
     programs.fish =
       import ../../programs/fish.nix super
       // {

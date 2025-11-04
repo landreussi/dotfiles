@@ -3,13 +3,14 @@
   pkgs,
   ...
 }: let
-  openrgb = pkgs.openrgb.overrideAttrs (old: {
+  openrgb = pkgs.openrgb-with-all-plugins.overrideAttrs (old: {
     src = pkgs.fetchFromGitLab {
       owner = "landreussi";
       repo = "OpenRGB";
       rev = "release_candidate_1.0rc1-9280d3d5";
       sha256 = "sha256-LxiuoniXaR5BlNGYkRhOKLHHdq7VPRPHrUOXWOwMnTE=";
     };
+    patches = [];
     postPatch = ''
       patchShebangs scripts/build-udev-rules.sh
       substituteInPlace scripts/build-udev-rules.sh \
@@ -26,7 +27,7 @@ in {
     wants = ["dev-usb.device"];
     wantedBy = ["multi-user.target" "systemd-suspend.service"];
     serviceConfig = {
-      ExecStart = "${openrgb}/bin/openrgb --server --server-port 6742 --profile theme";
+      ExecStart = "${openrgb}/bin/openrgb --server --server-port 6742 --profile /home/landreussi/.config/OpenRGB/theme.orp";
       Restart = "always";
       StateDirectory = "OpenRGB";
       WorkingDirectory = "/var/lib/OpenRGB";
@@ -93,7 +94,7 @@ in {
     desktopManager.xterm.enable = false;
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [dmenu i3status i3-resurrect picom];
+      extraPackages = with pkgs; [dmenu i3status i3-resurrect];
     };
     xrandrHeads = [
       {
@@ -153,7 +154,7 @@ in {
       lmodern
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       nerd-fonts.jetbrains-mono
     ];
   };

@@ -1,5 +1,5 @@
 local plugins = {
-{
+  {
     "neovim/nvim-lspconfig",
     config = function()
       require "plugins.configs.lspconfig"
@@ -55,7 +55,7 @@ local plugins = {
   { "rust-lang/rust.vim", lazy = false },
   {
     "mrcjkb/rustaceanvim",
-    version = '^6',  
+    version = '^6',
     lazy = false,
   },
   { "folke/trouble.nvim", lazy = false, opts = {}, cmd = "Trouble" },
@@ -67,56 +67,56 @@ local plugins = {
     version = false, -- Never set this value to "*"! Never!
     ---@module 'avante'
     ---@type avante.Config
-    opts = {
-      -- add any opts here
-      -- for example
-      provider = "ollama",
-      providers = {
-        ---@type AvanteSupportedProvider
-        claude = {
-          endpoint = "https://api.anthropic.com",
-          model = "claude-opus-4-20250514",
-          timeout = 30000, -- Timeout in milliseconds
-          context_window = 200000,
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 32000,
-          },
-        },
-        openai = {
-          endpoint = "https://api.openai.com/v1",
-          model = "o4-mini",
-          timeout = 30000, -- Timeout in milliseconds
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 32768,
-          },
-        },
-        gemini = {
-          endpoint = "https://generativelanguage.googleapis.com/v1beta",
-          model = "gemini-2.0-flash",
-          timeout = 30000, -- Timeout in milliseconds
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 32768,
-          },
-        },
-        ---@type AvanteSupportedProvider
-        ollama = {
-          endpoint = "http://127.0.0.1:11434",
-          model = "codellama",
-          timeout = 30000, -- Timeout in milliseconds
-          extra_request_body = {
-            temperature = 0.75,
-            num_ctx = 20480,
-            keep_alive = "5m",
-          },
-          is_env_set = function()
-            return true
-          end,
-        },
-      },
-    },
+    -- opts = {
+    --   -- add any opts here
+    --   -- for example
+    --   provider = "ollama",
+    --   providers = {
+    --     ---@type AvanteSupportedProvider
+    --     claude = {
+    --       endpoint = "https://api.anthropic.com",
+    --       model = "claude-opus-4-20250514",
+    --       timeout = 30000, -- Timeout in milliseconds
+    --       context_window = 200000,
+    --       extra_request_body = {
+    --         temperature = 0.75,
+    --         max_tokens = 32000,
+    --       },
+    --     },
+    --     openai = {
+    --       endpoint = "https://api.openai.com/v1",
+    --       model = "o4-mini",
+    --       timeout = 30000, -- Timeout in milliseconds
+    --       extra_request_body = {
+    --         temperature = 0.75,
+    --         max_tokens = 32768,
+    --       },
+    --     },
+    --     gemini = {
+    --       endpoint = "https://generativelanguage.googleapis.com/v1beta",
+    --       model = "gemini-2.0-flash",
+    --       timeout = 30000, -- Timeout in milliseconds
+    --       extra_request_body = {
+    --         temperature = 0.75,
+    --         max_tokens = 32768,
+    --       },
+    --     },
+    --     ---@type AvanteSupportedProvider
+    --     ollama = {
+    --       endpoint = "http://127.0.0.1:11434",
+    --       model = "codellama",
+    --       timeout = 30000, -- Timeout in milliseconds
+    --       extra_request_body = {
+    --         temperature = 0.75,
+    --         num_ctx = 20480,
+    --         keep_alive = "5m",
+    --       },
+    --       is_env_set = function()
+    --         return true
+    --       end,
+    --     },
+    --   },
+    -- },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
