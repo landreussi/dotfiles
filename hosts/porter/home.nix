@@ -1,4 +1,4 @@
-super@{ config, pkgs, homebrew, ... }:
+super@{ pkgs, ... }:
 
 {
   imports = [ <home-manager/nix-darwin> ];
@@ -28,6 +28,7 @@ super@{ config, pkgs, homebrew, ... }:
         tree
         wget
         gcc
+        rectangle
         # Docker
         colima
         docker
@@ -66,12 +67,11 @@ super@{ config, pkgs, homebrew, ... }:
     };
     programs.git = import ../../programs/git.nix super;
     programs.gpg = import ../../programs/gpg.nix super;
-    programs.kitty = import ../../programs/kitty.nix super;
+    programs.kitty = import ../../programs/kitty.nix;
     programs.neovim = import ../../programs/neovim.nix super;
-    programs.ssh = import ../../programs/ssh.nix super;
-    programs.direnv = import ../../programs/direnv.nix super;
+    programs.ssh = import ../../programs/ssh.nix;
+    programs.helix = import ../../programs/helix.nix super;
+    programs.direnv = import ../../programs/direnv.nix;
     programs.home-manager.enable = true;
-
-    services.ollama.enable = true;
   };
 }

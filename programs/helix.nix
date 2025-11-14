@@ -1,7 +1,11 @@
-{ lib, pkgs, ... }: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   enable = true;
   settings = {
-    theme = "gruvbox-dark-hard";
+    theme = "gruvbox_dark_hard";
     editor = {
       auto-save = true;
       cursorline = true;
@@ -24,7 +28,7 @@
           "read-only-indicator"
           "file-modification-indicator"
         ];
-        right = [ "diagnostics" "position" "file-encoding" ];
+        right = ["diagnostics" "position" "file-encoding"];
       };
       end-of-line-diagnostics = "hint";
       inline-diagnostics = {
@@ -32,7 +36,7 @@
         other-lines = "warning";
       };
     };
-    keys.normal = { Z = { Z = ":bc"; }; };
+    keys.normal = {Z = {Z = ":bc";};};
   };
   languages.language-server.rust-analyzer.config = {
     assist.emitMustUse = true;
@@ -64,7 +68,7 @@
   };
   languages.language-server.gpt = {
     command = lib.getExe pkgs.helix-gpt;
-    args = [ "--handler" "ollama" "--logFile" "~/.cache/helix/helix-gpt.log" ];
+    args = ["--handler" "ollama" "--logFile" "~/.cache/helix/helix-gpt.log"];
   };
   languages.language-server.yaml-language-server.config = {
     yaml.keyOrdering = false;
@@ -72,11 +76,11 @@
   languages.language = [
     {
       name = "python";
-      language-servers = [ "pylyzer" "gpt" ];
+      language-servers = ["pylyzer" "gpt"];
     }
     {
       name = "rust";
-      language-servers = [ "rust-analyzer" "gpt" ];
+      language-servers = ["rust-analyzer" "gpt"];
     }
     {
       name = "nix";

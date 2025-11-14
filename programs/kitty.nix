@@ -2,7 +2,7 @@
   enable = true;
   shellIntegration.enableFishIntegration = true;
   enableGitIntegration = true;
-  darwinLaunchOptions = ["--override font_size=17"];
+  darwinLaunchOptions = [ "--override font_size=17" ];
   settings = let
     family = "JetBrainsMono Nerd Font Mono";
     fontWithStyle = style: family + " " + style;
@@ -20,7 +20,8 @@
     tab_bar_style = "powerline";
     tab_powerline_style = "slanted";
     tab_bar_align = "center";
-    tab_title_template = "{index} {tab.active_oldest_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
+    tab_title_template =
+      "{index} {tab.active_oldest_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
     enabled_layouts = "tall,stack";
     sync_to_monitor = true;
     bell_on_tab = "🔔 ";
