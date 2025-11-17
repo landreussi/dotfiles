@@ -72,6 +72,7 @@ super@{ pkgs, ... }:
     programs.ssh = import ../../programs/ssh.nix;
     programs.helix = import ../../programs/helix.nix super;
     programs.direnv = import ../../programs/direnv.nix;
+    programs.aerospace = import ../../programs/aerospace.nix;
     programs.home-manager.enable = true;
   };
 }
