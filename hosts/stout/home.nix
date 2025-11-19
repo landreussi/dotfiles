@@ -17,7 +17,7 @@ in {
         git
         brave
         nixfmt-classic
-        htop
+        btop
         neofetch
         lazygit
         fd
@@ -41,6 +41,11 @@ in {
         xdotool
         obs-studio
         obs-cmd
+<<<<<<< HEAD
+=======
+        realvnc-vnc-viewer
+        pavucontrol
+>>>>>>> f07c0f9 (feat(stout): livestream stuff)
         # C/C++
         gcc
         # Rust
@@ -78,17 +83,17 @@ in {
         gattino-kitten = with pkgs; {
           source = pkgs.stdenv.mkDerivation {
             name = "gattino";
-            src =
-              fetchFromGitHub
-              {
-                owner = "salvozappa";
-                repo = "gattino";
-                rev = "main";
-                sha256 = "sha256-YqSjWAsXH4wXhK/er/OhKb+gTXz8LGk2XKXSkJMtipk=";
-              };
+            src = fetchFromGitHub {
+              owner = "salvozappa";
+              repo = "gattino";
+              rev = "main";
+              sha256 = "sha256-YqSjWAsXH4wXhK/er/OhKb+gTXz8LGk2XKXSkJMtipk=";
+            };
             postPatch = ''
               substituteInPlace gattino.config.json \
-                  --replace-fail "/usr/local/bin/ollama" "${lib.getExe pkgs.ollama}"
+                  --replace-fail "/usr/local/bin/ollama" "${
+                lib.getExe pkgs.ollama
+              }"
 
             '';
             installPhase = ''
@@ -125,7 +130,7 @@ in {
     programs.helix = import ../../programs/helix.nix super;
     programs.kitty = import ../../programs/kitty.nix;
     programs.neovim = import ../../programs/neovim.nix super;
-    programs.direnv = import ../../programs/direnv.nix super;
+    programs.direnv = import ../../programs/direnv.nix;
     programs.ssh = import ../../programs/ssh.nix;
     programs.gpg = import ../../programs/gpg.nix super;
     services.gpg-agent = import ../../services/gpg-agent.nix super;
@@ -145,7 +150,9 @@ in {
     autoStart = false;
     openFirewall = true;
   };
+
   environment.variables.EDITOR = "hx";
+  environment.variables.XCURSOR_SIZE = "16";
 
   users.users.landreussi = {
     isNormalUser = true;

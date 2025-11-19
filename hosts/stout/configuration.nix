@@ -71,10 +71,9 @@ in {
     enable32Bit = true;
   };
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
     powerManagement.enable = true;
-    open = false;
+    open = true;
     nvidiaSettings = true;
   };
 
@@ -86,35 +85,33 @@ in {
     };
     videoDrivers = ["nvidia"];
 
-    displayManager.startx = {
-      enable = true;
-      generateScript = true;
-    };
-
     desktopManager.xterm.enable = false;
     windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [dmenu i3status i3-resurrect];
     };
-    xrandrHeads = [
-      {
-        output = "HDMI-1";
-        primary = true;
-      }
-    ];
+
+    displayManager.startx = {
+      enable = true;
+      generateScript = true;
+      # Output of arandr:
+      extraCommands = "xrandr --output HDMI-0 --mode 1920x1080 --pos 320x0 --output HDMI-1 --primary --mode 2560x1080 --rate 75 --pos 0x1080";
+    };
   };
 
   ########## Sound ##########
+  services.pipewire.enable = false;
   services.pulseaudio = {
     enable = true;
-    package = pkgs.pulseaudioFull;
+    support32Bit = true;
   };
-  # me and my homies hates pipewire and wireplumber!
-  services.pipewire.enable = false;
   ########## Bluetooth ##########
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
 
-  ########## Global Programs ##########
+  ######### Global Programs ##########
   environment.systemPackages = with pkgs;
     [
       alsa-utils
@@ -132,7 +129,7 @@ in {
   ########## Docker ##########
   virtualisation.docker = {
     enable = true;
-    extraPackages = with pkgs; [docker-compose];
+    extraPackages = [pkgs.docker-compose];
     enableOnBoot = false;
   };
 
@@ -163,6 +160,12 @@ in {
   security.rtkit.enable = true;
   security.polkit.enable = true;
   services.udisks2.enable = true;
+  services.udev = {
+    enable = true;
+    extraRules = ''
+      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
+    '';
+  };
 
   ########## Nix ##########
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -171,5 +174,5 @@ in {
     allowUnfree = true;
     cudaSupport = true;
   };
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }
