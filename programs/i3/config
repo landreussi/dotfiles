@@ -24,7 +24,7 @@ set $i3lock i3lock -c 000000
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $i3lock --nofork
 exec --no-startup-id "for i in $(seq 1 10); do i3-resurrect restore -n -w \\"$i\\" & done; wait;"
 exec_always feh --bg-scale /home/landreussi/.background-image
-
+exec_always --no-startup-id ~/.config/i3/stream_window_focus.sh
 
 # Color modifiers
 # class                 border  bground text    indicator child_border

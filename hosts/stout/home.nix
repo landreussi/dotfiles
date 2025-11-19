@@ -38,7 +38,9 @@ in {
         spotify-player
         bluetui
         libreoffice
+        xdotool
         obs-studio
+        obs-cmd
         # C/C++
         gcc
         # Rust
