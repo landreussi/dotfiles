@@ -1,8 +1,13 @@
 {
+  lib,
+  pkgs,
+  ...
+}: {
   enable = true;
   userSettings = {
-    enable-normalization-flatten-containers = true;
-    enable-normalization-opposite-orientation-for-nested-containers = true;
+    enable-normalization-flatten-containers = false;
+    enable-normalization-opposite-orientation-for-nested-containers = false;
+    default-root-container-layout = "tiles";
     start-at-login = true;
 
     gaps = {
@@ -11,10 +16,10 @@
         vertical = 0;
       };
       outer = {
-        left = 8;
-        right = 8;
-        top = 8;
-        bottom = 8;
+        left = 0;
+        right = 0;
+        top = 0;
+        bottom = 0;
       };
     };
 
@@ -23,61 +28,42 @@
     };
 
     mode.main.binding = {
-      # Launch terminal
-      cmd-return = "exec open -na kitty";
-
-      # Kill window
       cmd-q = "close";
+      cmd-enter = "exec-and-forget ${lib.getExe pkgs.kitty}";
+      cmd-shift-s = "exec-and-forget screencapture -i -c";
 
-      # Launcher (replace with your favorite)
-      cmd-d = "exec open -na 'Spotlight'";
-
-      # Focus (vim-style)
       cmd-h = "focus left";
       cmd-j = "focus down";
       cmd-k = "focus up";
       cmd-l = "focus right";
 
-      # Focus with arrows
-      cmd-left = "focus left";
-      cmd-down = "focus down";
-      cmd-up = "focus up";
-      cmd-right = "focus right";
+      cmd-left = "focus-monitor left";
+      cmd-right = "focus-monitor right";
 
-      # Move windows
       cmd-shift-h = "move left";
       cmd-shift-j = "move down";
       cmd-shift-k = "move up";
       cmd-shift-l = "move right";
 
-      cmd-shift-left = "move left";
-      cmd-shift-down = "move down";
-      cmd-shift-up = "move up";
-      cmd-shift-right = "move right";
+      cmd-shift-r = "reload-config";
 
-      # Splitting
       cmd-ctrl-h = "split horizontal";
       cmd-ctrl-v = "split vertical";
 
-      # Fullscreen
-      cmd-f = "layout fullscreen";
+      cmd-alt-h = "volume mute-toggle";
+      cmd-alt-k = "volume up";
+      cmd-alt-j = "volume down";
+      cmd-alt-o = "exec-and-forget ${lib.getExe pkgs.spotify-player} playback previous";
+      cmd-alt-p = "exec-and-forget ${lib.getExe pkgs.spotify-player} playback play-pause";
+      cmd-alt-leftSquareBracket = "exec-and-forget ${lib.getExe pkgs.spotify-player} playback next";
 
-      # Layout toggles
-      cmd-s = "layout stacking";
-      cmd-w = "layout tabbed";
-      cmd-e = "layout toggle";
+      cmd-f = "layout floating";
+      cmd-w = "layout accordion";
+      cmd-e = "layout tiling";
 
-      # Move workspace to next monitor
-      cmd-p = "move-workspace-to-monitor right";
+      cmd-shift-right = "move-node-to-monitor right";
+      cmd-shift-left = "move-node-to-monitor left";
 
-      # Floating
-      cmd-shift-space = "layout floating";
-      cmd-space = "focus toggle-float";
-
-      # Focus parent
-      cmd-a = "focus parent";
-
-      # Workspaces
       cmd-1 = "workspace 1";
       cmd-2 = "workspace 2";
       cmd-3 = "workspace 3";
@@ -100,23 +86,12 @@
       cmd-shift-9 = "move-node-to-workspace 9";
       cmd-shift-0 = "move-node-to-workspace 10";
 
-      # Reload / Restart
-      cmd-shift-c = "reload";
-      cmd-shift-r = "restart";
-
-      # Resize
       cmd-ctrl-left = "resize smart -50";
       cmd-ctrl-down = "resize smart -50";
       cmd-ctrl-up = "resize smart +50";
       cmd-ctrl-right = "resize smart +50";
     };
 
-    exec = {
-      inherit-env-vars = true;
-      after-startup-command = [
-        # Example: open a terminal on startup
-        # "exec-and-forget open -na kitty"
-      ];
-    };
+    exec.inherit-env-vars = true;
   };
 }

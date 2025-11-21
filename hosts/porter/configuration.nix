@@ -1,6 +1,5 @@
-{ pkgs, ... }:
-{
-  imports = [ ./home.nix ];
+{pkgs, ...}: {
+  imports = [./home.nix];
 
   environment.darwinConfig = "/Users/landreussi/dotfiles/hosts/porter/configuration.nix";
 
@@ -10,8 +9,9 @@
     "logseq"
     "upscayl"
     "mounty"
+    "nikitabobko/tap/aerospace"
   ];
-  homebrew.brews = [ "pinentry" ];
+  homebrew.brews = ["pinentry"];
 
   fonts.packages = with pkgs; [
     font-awesome

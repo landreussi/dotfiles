@@ -1,7 +1,5 @@
-super@{ pkgs, ... }:
-
-{
-  imports = [ <home-manager/nix-darwin> ];
+super @ {pkgs, ...}: {
+  imports = [<home-manager/nix-darwin>];
   users.users.landreussi = {
     name = "landreussi";
     home = "/Users/landreussi";
@@ -60,11 +58,13 @@ super@{ pkgs, ... }:
 
     manual.manpages.enable = false;
 
-    programs.fish = import ../../programs/fish.nix super // {
-      shellInit = ''
-        set -x PATH $PATH /opt/homebrew/bin /run/current-system/sw/bin $HOME/.cargo/bin 
-      '';
-    };
+    programs.fish =
+      import ../../programs/fish.nix super
+      // {
+        shellInit = ''
+          set -x PATH $PATH /opt/homebrew/bin /run/current-system/sw/bin $HOME/.cargo/bin
+        '';
+      };
     programs.git = import ../../programs/git.nix super;
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix;
@@ -72,7 +72,7 @@ super@{ pkgs, ... }:
     programs.ssh = import ../../programs/ssh.nix;
     programs.helix = import ../../programs/helix.nix super;
     programs.direnv = import ../../programs/direnv.nix;
-    programs.aerospace = import ../../programs/aerospace.nix;
+    programs.aerospace = import ../../programs/aerospace.nix super;
     programs.home-manager.enable = true;
   };
 }
