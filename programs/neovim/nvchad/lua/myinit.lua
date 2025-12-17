@@ -17,3 +17,13 @@ vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
     io.stdout:write("\x1b]1337;SetUserVar=in_editor\007")
   end,
 })
+
+vim.lsp.inlay_hint.enable(true)
+vim.diagnostic.config({
+  virtual_text = {
+    spacing = 4,
+    prefix = "■", 
+  },
+  underline = true,
+  update_in_insert = false, -- Don't flicker while typing
+})

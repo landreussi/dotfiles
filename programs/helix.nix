@@ -5,7 +5,7 @@
 }: {
   enable = true;
   settings = {
-    theme = "gruvbox_dark_hard";
+    theme = "varua";
     editor = {
       auto-save = true;
       cursorline = true;
@@ -66,10 +66,10 @@
     };
     references.excludeImports = true;
   };
-  languages.language-server.gpt = {
-    command = lib.getExe pkgs.helix-gpt;
-    args = ["--handler" "ollama" "--logFile" "~/.cache/helix/helix-gpt.log"];
-  };
+  # languages.language-server.gpt = {
+  #   command = lib.getExe pkgs.helix-gpt;
+  #   args = ["--handler" "ollama" "--logFile" "~/.cache/helix/helix-gpt.log"];
+  # };
   languages.language-server.yaml-language-server.config = {
     yaml.keyOrdering = false;
   };

@@ -1,10 +1,5 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: let
-  nixPath = config.nix.nixPath;
+{ lib, pkgs, config, ... }:
+let nixPath = config.nix.nixPath;
 in {
   enable = true;
   interactiveShellInit = ''
@@ -31,11 +26,14 @@ in {
     set -x NIX_PATH ${
       builtins.concatStringsSep " " nixPath
     } $HOME/.nix-defexpr/channels
+    eval (ssh-agent -c)
   '';
   shellAliases = rec {
     vim = "nvim";
     hx = ''
-      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; ${lib.getExe pkgs.helix} "$arg"'';
+      printf "\x1b]1337;SetUserVar=in_editor=MQo\007"; trap 'printf "\x1b]1337;SetUserVar=in_editor\007"' EXIT; ${
+        lib.getExe pkgs.helix
+      } "$arg"'';
     ".." = "cd ..";
     "..." = "cd ../..";
     "...." = "cd ../../..";

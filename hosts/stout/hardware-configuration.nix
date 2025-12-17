@@ -9,7 +9,7 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "nvidia_drm" "nvidia_modeset" "nvidia" "nvidia_uvm"];
   boot.initrd.kernelModules = [];
   boot.extraModulePackages = [];
 
