@@ -16,7 +16,6 @@ in {
         jq
         git
         brave
-        nixfmt-classic
         btop
         neofetch
         lazygit
@@ -41,11 +40,13 @@ in {
         xdotool
         obs-studio
         obs-cmd
-<<<<<<< HEAD
-=======
         realvnc-vnc-viewer
         pavucontrol
->>>>>>> f07c0f9 (feat(stout): livestream stuff)
+        codex
+        ankama-launcher
+        sherlock
+        obsidian
+        unzip
         # C/C++
         gcc
         # Rust
@@ -58,6 +59,7 @@ in {
         pyright
         # Nix
         nixd
+        nixfmt
         # Lua
         lua-language-server
       ];
@@ -149,6 +151,7 @@ in {
     enable = true;
     autoStart = false;
     openFirewall = true;
+    package = pkgs.sunshine.overrideAttrs {cudaSupport = true;};
   };
 
   environment.variables.EDITOR = "hx";

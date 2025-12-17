@@ -160,10 +160,10 @@ bindsym $win+$alt+Up resize grow height 5 px or 5 ppt
 bindsym $win+$alt+Right resize shrink width 5 px or 5 ppt
 
 # Media:
-bindsym $win+$alt+h exec "amixer -q set Master toggle"
-bindsym $win+$alt+j exec "amixer -q set Master 5%-"
-bindsym $win+$alt+k exec "amixer -q set Master 5%+"
-bindsym $win+$alt+l exec "amixer -q set Capture toggle"
+bindsym $win+$alt+h exec "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+bindsym $win+$alt+j exec "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+bindsym $win+$alt+k exec "pactl set-sink-volume @DEFAULT_SINK@ +5%"
+bindsym $win+$alt+l exec "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
 bindsym $win+$alt+o exec "spotify_player playback previous"
 bindsym $win+$alt+p exec "spotify_player playback play-pause"
 bindsym $win+$alt+bracketleft exec "spotify_player playback next"

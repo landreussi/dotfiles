@@ -1,37 +1,25 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
-  openrgb = pkgs.openrgb-with-all-plugins.overrideAttrs (old: {
-    src = pkgs.fetchFromGitLab {
-      owner = "landreussi";
-      repo = "OpenRGB";
-      rev = "release_candidate_1.0rc1-9280d3d5";
-      sha256 = "sha256-LxiuoniXaR5BlNGYkRhOKLHHdq7VPRPHrUOXWOwMnTE=";
-    };
-    patches = [];
-    postPatch = ''
-      patchShebangs scripts/build-udev-rules.sh
-      substituteInPlace scripts/build-udev-rules.sh \
-        --replace-fail "/bin/env chmod" "${pkgs.coreutils}/bin/chmod"
-    '';
-  });
-in {
+{pkgs, ...}: {
   imports = [./hardware-configuration.nix ./home.nix];
 
   ###### RGB (fps++) ######
   hardware.i2c.enable = true;
-  systemd.services.openrgb = {
-    after = ["network.target"];
-    wants = ["dev-usb.device"];
-    wantedBy = ["multi-user.target" "systemd-suspend.service"];
-    serviceConfig = {
-      ExecStart = "${openrgb}/bin/openrgb --server --server-port 6742 --profile /home/landreussi/.config/OpenRGB/theme.orp";
-      Restart = "always";
-      StateDirectory = "OpenRGB";
-      WorkingDirectory = "/var/lib/OpenRGB";
-    };
+  services.hardware.openrgb = {
+    enable = true;
+    package = pkgs.openrgb-with-all-plugins.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          (pkgs.fetchpatch {
+            url = "https://gitlab.com/CalcProgrammer1/OpenRGB/-/commit/f2c1f85b2faf116a71875cc1a341d8becbe472f8.patch";
+            hash = "sha256-457tUE7R7LO2yhLbYpoY/j1DcpQIc6UHgrzcMXa8nxk=";
+          })
+        ];
+      postPatch = ''
+        patchShebangs scripts/build-udev-rules.sh
+        substituteInPlace scripts/build-udev-rules.sh \
+          --replace-fail "/bin/env chmod" "${pkgs.coreutils}/bin/chmod"
+      '';
+    });
   };
 
   ########## Boot ##########
@@ -45,13 +33,14 @@ in {
   };
 
   ########## Networking ##########
-  networking.hostName = "stout";
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [
-      22
-      80
-    ];
+  networking = {
+    hostName = "stout";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [22 80];
+    };
+
+    interfaces.enp5s0.wakeOnLan.enable = true;
   };
 
   ########## TZ ##########
@@ -73,7 +62,7 @@ in {
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
-    open = true;
+    open = false;
     nvidiaSettings = true;
   };
 
@@ -160,12 +149,7 @@ in {
   security.rtkit.enable = true;
   security.polkit.enable = true;
   services.udisks2.enable = true;
-  services.udev = {
-    enable = true;
-    extraRules = ''
-      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
-    '';
-  };
+  services.udev.enable = true;
 
   ########## Nix ##########
   nix.settings.experimental-features = ["nix-command" "flakes"];
