@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   enable = true;
   settings = {
     theme = "varua";
@@ -66,26 +62,27 @@
     };
     references.excludeImports = true;
   };
-  # languages.language-server.gpt = {
-  #   command = lib.getExe pkgs.helix-gpt;
-  #   args = ["--handler" "ollama" "--logFile" "~/.cache/helix/helix-gpt.log"];
-  # };
   languages.language-server.yaml-language-server.config = {
     yaml.keyOrdering = false;
+  };
+  languages.language-server.fs_watcher_lsp = {
+    command = "${pkgs.fs-watcher-lsp}/bin/fs_watcher_lsp";
+    args = [];
   };
   languages.language = [
     {
       name = "python";
-      language-servers = ["pylyzer" "gpt"];
+      language-servers = ["pylyzer" "fs_watcher_lsp"];
     }
     {
       name = "rust";
-      language-servers = ["rust-analyzer" "gpt"];
+      language-servers = ["rust-analyzer" "fs_watcher_lsp"];
     }
     {
       name = "nix";
       auto-format = true;
       formatter.command = "${pkgs.alejandra}/bin/alejandra";
+      language-servers = ["nixd" "fs_watcher_lsp"];
     }
   ];
 }

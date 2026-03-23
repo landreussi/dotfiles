@@ -61,19 +61,11 @@ bindsym $win+j focus down
 bindsym $win+k focus up
 bindsym $win+l focus right
 
-# alternatively, you can use the cursor keys:
 bindsym $win+Left focus left
 bindsym $win+Down focus down
 bindsym $win+Up focus up
 bindsym $win+Right focus right
 
-# move focused window
-bindsym $win+Shift+h move left
-bindsym $win+Shift+j move down
-bindsym $win+Shift+k move up
-bindsym $win+Shift+l move right
-
-# alternatively, you can use the cursor keys:
 bindsym $win+Shift+Left move left
 bindsym $win+Shift+Down move down
 bindsym $win+Shift+Up move up
@@ -93,11 +85,8 @@ bindsym $win+s layout stacking
 bindsym $win+w layout tabbed
 bindsym $win+e layout toggle split
 
-# Moving workspaces between screens
-bindsym $win+p move workspace to output right
-
 # toggle tiling / floating
-bindsym $win+Shift+space floating toggle
+bindsym $win+$alt+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $win+space focus mode_toggle
@@ -106,7 +95,7 @@ bindsym $win+space focus mode_toggle
 bindsym $win+a focus parent
 
 # lock screen
-bindsym $win+Ctrl+l exec $i3lock
+bindsym $win+$alt+l exec $i3lock
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -146,11 +135,11 @@ bindsym $win+Shift+9 move container to workspace number $ws9
 bindsym $win+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $win+Shift+c reload
+bindsym $win+$alt+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $win+Shift+r restart
+bindsym $win+$alt+r restart
 # exit i3 (logs you out of your X session)
-bindsym $win+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $win+$alt+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 # i won't use resize mode.
@@ -160,17 +149,14 @@ bindsym $win+$alt+Up resize grow height 5 px or 5 ppt
 bindsym $win+$alt+Right resize shrink width 5 px or 5 ppt
 
 # Media:
-bindsym $win+$alt+h exec "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+bindsym $win+$alt+h exec "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
 bindsym $win+$alt+j exec "pactl set-sink-volume @DEFAULT_SINK@ -5%"
 bindsym $win+$alt+k exec "pactl set-sink-volume @DEFAULT_SINK@ +5%"
-bindsym $win+$alt+l exec "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
 bindsym $win+$alt+o exec "spotify_player playback previous"
 bindsym $win+$alt+p exec "spotify_player playback play-pause"
 bindsym $win+$alt+bracketleft exec "spotify_player playback next"
 
 bindsym $win+$alt+z exec "systemctl suspend"
-bindsym $win+$alt+a exec "for i in $(seq 1 10); do i3-resurrect save -w \\"$i\\" & done; wait; reboot"
-bindsym $win+$alt+q exec "for i in $(seq 1 10); do i3-resurrect save -w \\"$i\\" & done; wait; shutdown 0"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -185,7 +171,7 @@ bar {
     statusline #ebdbb2
     separator  #665c54
 
-    #             border   background  text
+    #                   border  bg      text
     focused_workspace   #458588 #458588 #282828
     active_workspace    #3c3836 #504945 #ebdbb2
     inactive_workspace  #3c3836 #32302F #a89984

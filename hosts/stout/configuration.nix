@@ -1,27 +1,6 @@
 {pkgs, ...}: {
   imports = [./hardware-configuration.nix ./home.nix];
 
-  ###### RGB (fps++) ######
-  hardware.i2c.enable = true;
-  services.hardware.openrgb = {
-    enable = true;
-    package = pkgs.openrgb-with-all-plugins.overrideAttrs (old: {
-      patches =
-        (old.patches or [])
-        ++ [
-          (pkgs.fetchpatch {
-            url = "https://gitlab.com/CalcProgrammer1/OpenRGB/-/commit/f2c1f85b2faf116a71875cc1a341d8becbe472f8.patch";
-            hash = "sha256-457tUE7R7LO2yhLbYpoY/j1DcpQIc6UHgrzcMXa8nxk=";
-          })
-        ];
-      postPatch = ''
-        patchShebangs scripts/build-udev-rules.sh
-        substituteInPlace scripts/build-udev-rules.sh \
-          --replace-fail "/bin/env chmod" "${pkgs.coreutils}/bin/chmod"
-      '';
-    });
-  };
-
   ########## Boot ##########
   boot = {
     loader = {
@@ -31,7 +10,6 @@
     kernelParams = ["acpi_enforce_resources=lax" "mem_sleep_default=deep" "acpi=force"];
     kernelModules = ["i2c-dev" "i2c-piix4"];
   };
-
   ########## Networking ##########
   networking = {
     hostName = "stout";
@@ -77,7 +55,7 @@
     desktopManager.xterm.enable = false;
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [dmenu i3status i3-resurrect];
+      extraPackages = with pkgs; [dmenu i3status i3lock];
     };
 
     displayManager.startx = {
@@ -93,6 +71,9 @@
   services.pulseaudio = {
     enable = true;
     support32Bit = true;
+    extraConfig = ''
+      set-card-profile alsa_output.pci-0000_01_00.1.hdmi-stereo off
+    '';
   };
   ########## Bluetooth ##########
   hardware.bluetooth = {

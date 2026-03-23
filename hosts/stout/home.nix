@@ -17,7 +17,7 @@ in {
         git
         brave
         btop
-        neofetch
+        fastfetch
         lazygit
         fd
         fzf
@@ -41,7 +41,6 @@ in {
         obs-studio
         obs-cmd
         realvnc-vnc-viewer
-        pavucontrol
         codex
         ankama-launcher
         sherlock
@@ -115,7 +114,10 @@ in {
     };
     xdg = {
       enable = true;
-      userDirs.enable = true;
+      userDirs = {
+        enable = true;
+        setSessionVariables = true;
+      };
     };
 
     manual.manpages.enable = false;
@@ -152,6 +154,23 @@ in {
     autoStart = false;
     openFirewall = true;
     package = pkgs.sunshine.overrideAttrs {cudaSupport = true;};
+  };
+
+  services.tailscale.enable = true;
+
+  hardware.i2c.enable = true;
+  services.hardware.openrgb = {
+    enable = true;
+    startupProfile = "${home}/.config/OpenRGB/theme.orp";
+    package = pkgs.openrgb.overrideAttrs (old: {
+      src = pkgs.fetchFromGitLab {
+        owner = "CalcProgrammer1";
+        repo = "OpenRGB";
+        rev = "master";
+        hash = "sha256-8dD+nG8Ke3Wa/VXlvsWb5VekD4x3qhJPm49boXGuNIw=";
+      };
+      patches = [];
+    });
   };
 
   environment.variables.EDITOR = "hx";

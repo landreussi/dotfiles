@@ -26,7 +26,6 @@ super @ {pkgs, ...}: {
         tree
         wget
         gcc
-        rectangle
         # Docker
         colima
         docker
