@@ -162,15 +162,17 @@ in {
   services.hardware.openrgb = {
     enable = true;
     startupProfile = "${home}/.config/OpenRGB/theme.orp";
-    package = pkgs.openrgb.overrideAttrs (old: {
-      src = pkgs.fetchFromGitLab {
-        owner = "CalcProgrammer1";
-        repo = "OpenRGB";
-        rev = "master";
-        hash = "sha256-8dD+nG8Ke3Wa/VXlvsWb5VekD4x3qhJPm49boXGuNIw=";
-      };
-      patches = [];
-    });
+    package =
+      (pkgs.openrgb.withPlugins [pkgs.openrgb-plugin-effects]).overrideAttrs
+      (old: {
+        src = pkgs.fetchFromGitLab {
+          owner = "CalcProgrammer1";
+          repo = "OpenRGB";
+          rev = "master";
+          hash = "sha256-chR/LwB+DrAJTgBxoQEEdJSb7m5sunLQkrMQu/ZRPOM=";
+        };
+        patches = [];
+      });
   };
 
   environment.variables.EDITOR = "hx";

@@ -82,19 +82,16 @@
   };
 
   ######### Global Programs ##########
-  environment.systemPackages = with pkgs;
-    [
-      alsa-utils
-      curl
-      coreutils
-      i2c-tools
-      liquidctl
-      xdg-utils
-      xdg-user-dirs
-      wget
-      nvtopPackages.nvidia
-    ]
-    ++ [openrgb];
+  environment.systemPackages = with pkgs; [
+    alsa-utils
+    curl
+    coreutils
+    i2c-tools
+    liquidctl
+    xdg-utils
+    xdg-user-dirs
+    wget
+  ];
 
   ########## Docker ##########
   virtualisation.docker = {
