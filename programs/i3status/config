@@ -24,7 +24,7 @@ disk "/" {
 
 
 tztime local {
-   format = "%d/%m/%Y %H:%M "
+   format = "%d/%m/%Y %H:%M"
 }
 
 cpu_usage {

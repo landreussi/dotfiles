@@ -34,7 +34,7 @@ super @ {pkgs, ...}: {
         sccache
         # TS/Node
         nodejs
-        nodePackages.typescript-language-server
+        typescript-language-server
         yarn
         # Python
         pyright

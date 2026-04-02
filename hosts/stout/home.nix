@@ -52,7 +52,7 @@ in {
         rust-analyzer
         sccache
         # TS/Node
-        nodePackages.typescript-language-server
+        typescript-language-server
         yarn
         # Python
         pyright
@@ -138,45 +138,17 @@ in {
     programs.ssh = import ../../programs/ssh.nix;
     programs.gpg = import ../../programs/gpg.nix super;
     services.gpg-agent = import ../../services/gpg-agent.nix super;
+
     services.ollama.enable = true;
     systemd.user.services.ollama.Install = lib.mkForce {};
+
     programs.home-manager.enable = true;
   };
 
-  programs.steam = {
-    enable = true;
-    protontricks.enable = true;
-    gamescopeSession.enable = true;
+  environment.variables = {
+    EDITOR = "hx";
+    XCURSOR_SIZE = "16";
   };
-
-  services.sunshine = {
-    enable = true;
-    autoStart = false;
-    openFirewall = true;
-    package = pkgs.sunshine.overrideAttrs {cudaSupport = true;};
-  };
-
-  services.tailscale.enable = true;
-
-  hardware.i2c.enable = true;
-  services.hardware.openrgb = {
-    enable = true;
-    startupProfile = "${home}/.config/OpenRGB/theme.orp";
-    package =
-      (pkgs.openrgb.withPlugins [pkgs.openrgb-plugin-effects]).overrideAttrs
-      (old: {
-        src = pkgs.fetchFromGitLab {
-          owner = "CalcProgrammer1";
-          repo = "OpenRGB";
-          rev = "master";
-          hash = "sha256-chR/LwB+DrAJTgBxoQEEdJSb7m5sunLQkrMQu/ZRPOM=";
-        };
-        patches = [];
-      });
-  };
-
-  environment.variables.EDITOR = "hx";
-  environment.variables.XCURSOR_SIZE = "16";
 
   users.users.landreussi = {
     isNormalUser = true;

@@ -1,4 +1,17 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  openrgb = (pkgs.openrgb.overrideAttrs
+    (old: {
+      patches =
+        old.patches
+        ++ [
+          (pkgs.fetchpatch
+            {
+              url = "https://gitlab.com/CalcProgrammer1/OpenRGB/-/commit/f2c1f85b2faf116a71875cc1a341d8becbe472f8.patch";
+              hash = "sha256-457tUE7R7LO2yhLbYpoY/j1DcpQIc6UHgrzcMXa8nxk=";
+            })
+        ];
+    })).withPlugins [pkgs.openrgb-plugin-effects pkgs.openrgb-plugin-hardwaresync];
+in {
   imports = [./hardware-configuration.nix ./home.nix];
 
   ########## Boot ##########
@@ -128,6 +141,28 @@
   security.polkit.enable = true;
   services.udisks2.enable = true;
   services.udev.enable = true;
+  services.tailscale.enable = true;
+
+  ###### Controllers ######
+  hardware.i2c.enable = true;
+
+  ######### Games #########
+  services.hardware.openrgb = {
+    enable = true;
+    package = openrgb;
+  };
+
+  services.sunshine = {
+    enable = true;
+    autoStart = false;
+    openFirewall = true;
+  };
+
+  programs.steam = {
+    enable = true;
+    protontricks.enable = true;
+    gamescopeSession.enable = true;
+  };
 
   ########## Nix ##########
   nix.settings.experimental-features = ["nix-command" "flakes"];
