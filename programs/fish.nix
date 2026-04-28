@@ -1,12 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}:
-let
-  nixPath = config.nix.nixPath;
-in
-{
+{pkgs, ...}: {
   enable = true;
   interactiveShellInit = ''
     set -g fish_cursor_default block
@@ -28,8 +20,7 @@ in
       source /etc/static/fish/config.fish
     end
     set -e fish_function_path[1]
-    set -e NIX_PATH
-    set -x NIX_PATH ${builtins.concatStringsSep " " nixPath} $HOME/.nix-defexpr/channels
+    set -x NIX_PATH $HOME/.nix-defexpr/channels
     eval (ssh-agent -c)
   '';
   shellAliases = rec {
@@ -45,7 +36,6 @@ in
     lt = "${ls} --tree";
 
     cdot = "cd ~/dotfiles";
-    nix-opt = "nix-store --optimise";
     nix-shell = "nix-shell --command fish";
   };
   functions = {

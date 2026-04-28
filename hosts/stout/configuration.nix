@@ -84,8 +84,13 @@ in {
   services.pulseaudio = {
     enable = true;
     support32Bit = true;
+    package = pkgs.pulseaudioFull; # Enables advanced BT codecs (AAC, aptX, aptX-HD, LDAC).
     extraConfig = ''
       set-card-profile alsa_output.pci-0000_01_00.1.hdmi-stereo off
+
+      ### Equalization (15-band parametric EQ, controlled via `qpaeq`).
+      load-module module-equalizer-sink
+      load-module module-dbus-protocol
     '';
   };
   ########## Bluetooth ##########
@@ -101,6 +106,7 @@ in {
     coreutils
     i2c-tools
     liquidctl
+    qpaeq # GUI for the PulseAudio equalizer sink
     xdg-utils
     xdg-user-dirs
     wget
@@ -150,6 +156,7 @@ in {
   services.hardware.openrgb = {
     enable = true;
     package = openrgb;
+    startupProfile = "/home/landreussi/.config/OpenRGB/theme.orp";
   };
 
   services.sunshine = {
@@ -162,14 +169,24 @@ in {
     enable = true;
     protontricks.enable = true;
     gamescopeSession.enable = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
   ########## Nix ##########
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    substituters = ["https://nix-community.cachix.org" "https://cache.nixos-cuda.org"];
+    trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="];
+    experimental-features = ["nix-command" "flakes"];
+  };
+
   nixpkgs.config = {
-    permittedInsecurePackages = ["electron-27.3.11" "nix-2.15.3"];
     allowUnfree = true;
     cudaSupport = true;
   };
-  system.stateVersion = "26.05";
+
+  # TODO: esp32 in rust depends on this, check if there is a way to not depend on this.
+  programs.nix-ld.enable = true;
+  system.stateVersion = "26.11";
 }

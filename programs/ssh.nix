@@ -1,7 +1,7 @@
 {
   enable = true;
   enableDefaultConfig = false;
-  matchBlocks = {
+  settings = {
     "github.com" = {
       identitiesOnly = true;
       hostname = "github.com";

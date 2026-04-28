@@ -5,6 +5,9 @@ super @ {
 }: let
   user = "landreussi";
   home = "/home/${user}";
+  concord =
+    (builtins.getFlake "github:chojs23/concord/4ea757bbe670c83c64b9a47722043e3c251a800b")
+    .packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   imports = [<home-manager/nixos>];
 
@@ -13,6 +16,7 @@ in {
       username = user;
       homeDirectory = home;
       packages = with pkgs; [
+        concord
         jq
         git
         brave
@@ -24,7 +28,7 @@ in {
         go
         gh
         grpcurl
-        logseq
+        # logseq
         pass
         tree
         scrot
@@ -35,17 +39,25 @@ in {
         gruvbox-material-gtk-theme
         adwaita-icon-theme
         spotify-player
+        pavucontrol
+        youtube-tui
+        mpv
         bluetui
         libreoffice
         xdotool
         obs-studio
         obs-cmd
-        realvnc-vnc-viewer
         codex
-        ankama-launcher
-        sherlock
+        claude-code
+        jetbrains.idea-oss
+        jetbrains.rust-rover
+        zed-editor
+        # ankama-launcher
         obsidian
         unzip
+        gimp-with-plugins
+        discord
+        winboat
         # C/C++
         gcc
         # Rust
@@ -53,6 +65,7 @@ in {
         sccache
         # TS/Node
         typescript-language-server
+        vue-language-server
         yarn
         # Python
         pyright
@@ -64,11 +77,6 @@ in {
       ];
 
       file = {
-        neovim = {
-          source = ../../programs/neovim/nvchad;
-          target = "${home}/.config/nvim";
-          recursive = true;
-        };
         i3 = {
           source = ../../programs/i3;
           target = "${home}/.config/i3";
@@ -81,32 +89,14 @@ in {
           source = ./.background-image;
           target = "${home}/.background-image";
         };
-        gattino-kitten = with pkgs; {
-          source = pkgs.stdenv.mkDerivation {
-            name = "gattino";
-            src = fetchFromGitHub {
-              owner = "salvozappa";
-              repo = "gattino";
-              rev = "main";
-              sha256 = "sha256-YqSjWAsXH4wXhK/er/OhKb+gTXz8LGk2XKXSkJMtipk=";
-            };
-            postPatch = ''
-              substituteInPlace gattino.config.json \
-                  --replace-fail "/usr/local/bin/ollama" "${
-                lib.getExe pkgs.ollama
-              }"
-
-            '';
-            installPhase = ''
-              runHook preInstall
-
-              mkdir -p $out
-              cp -r gattino.py gattino.config.json src $out/
-
-              runHook postInstall
-            '';
+        nvchad = {
+          source = pkgs.fetchFromGitHub {
+            owner = "NvChad";
+            repo = "starter";
+            rev = "main";
+            sha256 = "sha256-xdLr6tlU9uA+wu0pqha2br0fdVm+1MjgjbB5awz9ICU=";
           };
-          target = "${home}/.config/kitty/gattino";
+          target = "${home}/.config/nvim";
         };
       };
 
@@ -127,13 +117,13 @@ in {
       // {
         shellInit = ''
           set -x PATH $PATH $HOME/.cargo/bin
-          set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+          set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket) > /dev/null
         '';
       };
     programs.git = import ../../programs/git.nix super;
     programs.helix = import ../../programs/helix.nix super;
     programs.kitty = import ../../programs/kitty.nix;
-    programs.neovim = import ../../programs/neovim.nix super;
+    programs.neovim = import ../../programs/neovim.nix;
     programs.direnv = import ../../programs/direnv.nix;
     programs.ssh = import ../../programs/ssh.nix;
     programs.gpg = import ../../programs/gpg.nix super;
@@ -153,7 +143,7 @@ in {
   users.users.landreussi = {
     isNormalUser = true;
     useDefaultShell = true;
-    extraGroups = ["wheel" "docker"];
+    extraGroups = ["wheel" "docker" "dialout"];
     name = user;
     home = home;
   };

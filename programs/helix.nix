@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   enable = true;
   settings = {
     theme = "varua";
@@ -32,7 +36,19 @@
         other-lines = "warning";
       };
     };
-    keys.normal = {Z = {Z = ":bc";};};
+    keys.normal = {
+      Z = {Z = ":bc";};
+      tab = "rotate_view";
+      ";" = {
+        f = "file_picker";
+        b = "buffer_picker";
+        s = "symbol_picker";
+        a = "code_action";
+        r = "rename_symbol";
+        k = "hover";
+        "/" = "global_search";
+      };
+    };
   };
   languages.language-server.rust-analyzer.config = {
     assist.emitMustUse = true;
@@ -66,9 +82,35 @@
     yaml.keyOrdering = false;
   };
   languages.language-server.fs_watcher_lsp = {
-    command = "${pkgs.fs-watcher-lsp}/bin/fs_watcher_lsp";
+    command = lib.getExe pkgs.fs-watcher-lsp;
     args = [];
   };
+  languages.language-server.vscode-eslint-ls = {
+    command = "${pkgs.vscode-langservers-extracted}/lib/eslint-language-server";
+    args = [];
+  };
+  languages.language-server.typescript-language-server.config.plugins = [
+    {
+      name = "@vue/typescript-plugin";
+      location = "${pkgs.vue-language-server}/lib/language-tools/packages/typescript-plugin";
+      languages = ["vue"];
+    }
+  ];
+  languages.language-server.taplo.command = lib.getExe pkgs.taplo;
+  languages.language-server.jdtls.command = lib.getExe pkgs.jdt-language-server;
+  languages.language-server.clangd.command = "${pkgs.clang-tools}/bin/clangd";
+  languages.language-server.docker-langserver = {
+    command = "${pkgs.dockerfile-language-server}/bin/docker-langserver";
+    args = ["--stdio"];
+  };
+  languages.language-server.gopls.command = lib.getExe pkgs.gopls;
+  languages.language-server.zls.command = lib.getExe pkgs.zls;
+  languages.language-server.clojure-lsp.command = lib.getExe pkgs.clojure-lsp;
+  languages.language-server.terraform-ls = {
+    command = lib.getExe pkgs.terraform-ls;
+    args = ["serve"];
+  };
+  languages.language-server.sqls.command = lib.getExe pkgs.sqls;
   languages.language = [
     {
       name = "python";
@@ -81,8 +123,79 @@
     {
       name = "nix";
       auto-format = true;
-      formatter.command = "${pkgs.alejandra}/bin/alejandra";
+      formatter.command = lib.getExe pkgs.alejandra;
       language-servers = ["nixd" "fs_watcher_lsp"];
+    }
+    {
+      name = "javascript";
+      language-servers = ["typescript-language-server" "vscode-eslint-ls" "fs_watcher_lsp"];
+    }
+    {
+      name = "jsx";
+      language-servers = ["typescript-language-server" "vscode-eslint-ls" "fs_watcher_lsp"];
+    }
+    {
+      name = "typescript";
+      language-servers = ["typescript-language-server" "vscode-eslint-ls" "fs_watcher_lsp"];
+    }
+    {
+      name = "tsx";
+      language-servers = ["typescript-language-server" "vscode-eslint-ls" "fs_watcher_lsp"];
+    }
+    {
+      name = "vue";
+      auto-format = true;
+      formatter = {
+        command = lib.getExe pkgs.prettier;
+        args = ["--parser" "vue"];
+      };
+      language-servers = ["typescript-language-server" "fs_watcher_lsp"];
+    }
+    {
+      name = "toml";
+      language-servers = ["taplo" "fs_watcher_lsp"];
+    }
+    {
+      name = "java";
+      language-servers = ["jdtls" "fs_watcher_lsp"];
+    }
+    {
+      name = "c";
+      language-servers = ["clangd" "fs_watcher_lsp"];
+    }
+    {
+      name = "cpp";
+      language-servers = ["clangd" "fs_watcher_lsp"];
+    }
+    {
+      name = "dockerfile";
+      language-servers = ["docker-langserver" "fs_watcher_lsp"];
+    }
+    {
+      name = "go";
+      language-servers = ["gopls" "fs_watcher_lsp"];
+    }
+    {
+      name = "zig";
+      language-servers = ["zls" "fs_watcher_lsp"];
+    }
+    {
+      name = "hcl";
+      language-id = "terraform";
+      language-servers = ["terraform-ls" "fs_watcher_lsp"];
+    }
+    {
+      name = "tfvars";
+      language-id = "terraform-vars";
+      language-servers = ["terraform-ls" "fs_watcher_lsp"];
+    }
+    {
+      name = "sql";
+      language-servers = ["sqls" "fs_watcher_lsp"];
+    }
+    {
+      name = "clojure";
+      language-servers = ["clojure-lsp" "fs_watcher_lsp"];
     }
   ];
 }
