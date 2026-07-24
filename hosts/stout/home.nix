@@ -140,6 +140,7 @@ in {
   users.users.landreussi = {
     isNormalUser = true;
     useDefaultShell = true;
+    shell = pkgs.fish;
     extraGroups = ["wheel" "docker" "dialout"];
     name = user;
     home = home;
