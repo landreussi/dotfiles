@@ -1,17 +1,4 @@
-{pkgs, ...}: let
-  openrgb = (pkgs.openrgb.overrideAttrs
-    (old: {
-      patches =
-        old.patches
-        ++ [
-          (pkgs.fetchpatch
-            {
-              url = "https://gitlab.com/CalcProgrammer1/OpenRGB/-/commit/f2c1f85b2faf116a71875cc1a341d8becbe472f8.patch";
-              hash = "sha256-457tUE7R7LO2yhLbYpoY/j1DcpQIc6UHgrzcMXa8nxk=";
-            })
-        ];
-    })).withPlugins [pkgs.openrgb-plugin-effects pkgs.openrgb-plugin-hardwaresync];
-in {
+{pkgs, ...}: {
   imports = [./hardware-configuration.nix ./home.nix];
 
   ########## Boot ##########
@@ -147,7 +134,6 @@ in {
   security.polkit.enable = true;
   services.udisks2.enable = true;
   services.udev.enable = true;
-  services.tailscale.enable = true;
 
   ###### Controllers ######
   hardware.i2c.enable = true;
@@ -155,7 +141,7 @@ in {
   ######### Games #########
   services.hardware.openrgb = {
     enable = true;
-    package = openrgb;
+    package = pkgs.openrgb-with-all-plugins;
     startupProfile = "/home/landreussi/.config/OpenRGB/theme.orp";
   };
 
@@ -184,6 +170,7 @@ in {
   nixpkgs.config = {
     allowUnfree = true;
     cudaSupport = true;
+    permittedInsecurePackages = ["electron-40.10.5"];
   };
 
   # TODO: esp32 in rust depends on this, check if there is a way to not depend on this.

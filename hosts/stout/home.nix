@@ -5,9 +5,6 @@ super @ {
 }: let
   user = "landreussi";
   home = "/home/${user}";
-  concord =
-    (builtins.getFlake "github:chojs23/concord/4ea757bbe670c83c64b9a47722043e3c251a800b")
-    .packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   imports = [<home-manager/nixos>];
 
@@ -16,7 +13,6 @@ in {
       username = user;
       homeDirectory = home;
       packages = with pkgs; [
-        concord
         jq
         git
         brave
@@ -52,12 +48,13 @@ in {
         jetbrains.idea-oss
         jetbrains.rust-rover
         zed-editor
-        # ankama-launcher
         obsidian
         unzip
         gimp-with-plugins
         discord
+        concord-tui
         winboat
+        tailscale
         # C/C++
         gcc
         # Rust
