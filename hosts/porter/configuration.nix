@@ -1,8 +1,7 @@
-{ pkgs, ... }: {
-  imports = [ ./home.nix ];
+{pkgs, ...}: {
+  imports = [./home.nix];
 
-  environment.darwinConfig =
-    "/Users/landreussi/dotfiles/hosts/porter/configuration.nix";
+  environment.darwinConfig = "/Users/landreussi/dotfiles/hosts/porter/configuration.nix";
 
   homebrew.casks = [
     "brave-browser"
@@ -10,9 +9,8 @@
     "logseq"
     "upscayl"
     "mounty"
-    "nikitabobko/tap/aerospace"
   ];
-  homebrew.brews = [ "pinentry" ];
+  homebrew.brews = ["pinentry"];
 
   fonts.packages = with pkgs; [
     font-awesome
@@ -26,7 +24,7 @@
   nix = {
     package = pkgs.nix;
     enable = true;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = ["nix-command" "flakes"];
   };
 
   ids.gids.nixbld = 350;

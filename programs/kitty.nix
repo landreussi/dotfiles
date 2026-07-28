@@ -30,15 +30,15 @@
   };
   extraConfig = ''
     include current-theme.conf
-    map ctrl+left  neighboring_window left
-    map ctrl+right neighboring_window right
-    map ctrl+down  neighboring_window bottom
-    map ctrl+up    neighboring_window top
+    map ctrl+alt+h neighboring_window left
+    map ctrl+alt+l neighboring_window right
+    map ctrl+alt+j neighboring_window bottom
+    map ctrl+alt+k neighboring_window top
 
-    map shift+up    move_window up
-    map shift+left  move_window left
-    map shift+right move_window right
-    map shift+down  move_window down
+    map ctrl+shift+k move_window up
+    map ctrl+shift+h move_window left
+    map ctrl+shift+l move_window right
+    map ctrl+shift+j move_window down
 
     map ctrl+shift+z next_layout
     map --when-focus-on num:0 ctrl+shift+; combine : toggle_layout stack : nth_window -1

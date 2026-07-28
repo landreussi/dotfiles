@@ -19,7 +19,7 @@ super @ {pkgs, ...}: {
         jq
         lazygit
         nixfmt
-        neofetch
+        fastfetch
         pass
         ripgrep
         spotify-player
@@ -67,7 +67,7 @@ super @ {pkgs, ...}: {
     programs.git = import ../../programs/git.nix super;
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix;
-    programs.neovim = import ../../programs/neovim.nix super;
+    programs.neovim = import ../../programs/neovim.nix;
     programs.ssh = import ../../programs/ssh.nix;
     programs.helix = import ../../programs/helix.nix super;
     programs.direnv = import ../../programs/direnv.nix;

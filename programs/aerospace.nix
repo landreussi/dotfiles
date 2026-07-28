@@ -4,11 +4,21 @@
   ...
 }: {
   enable = true;
-  userSettings = {
+  launchd.enable = true;
+  settings = {
+    config-version = 2;
     enable-normalization-flatten-containers = false;
     enable-normalization-opposite-orientation-for-nested-containers = false;
     default-root-container-layout = "tiles";
     start-at-login = true;
+    auto-reload-config = true;
+    on-focused-monitor-changed = ["move-mouse monitor-lazy-center"];
+    focus-follows-mouse.enabled = true;
+    automatically-unhide-macos-hidden-apps = true;
+    workspace-to-monitor-force-assignment = {
+      "1" = ["main" "built-in"];
+      "2" = "secondary";
+    };
 
     gaps = {
       inner = {
@@ -23,9 +33,7 @@
       };
     };
 
-    key-mapping = {
-      preset = "qwerty";
-    };
+    key-mapping.preset = "qwerty";
 
     mode.main.binding = {
       cmd-q = "close";
@@ -39,6 +47,8 @@
 
       cmd-left = "focus-monitor left";
       cmd-right = "focus-monitor right";
+      cmd-up = "focus-monitor down";
+      cmd-down = "focus-monitor up";
 
       cmd-shift-h = "move left";
       cmd-shift-j = "move down";
@@ -57,12 +67,13 @@
       cmd-alt-p = "exec-and-forget ${lib.getExe pkgs.spotify-player} playback play-pause";
       cmd-alt-leftSquareBracket = "exec-and-forget ${lib.getExe pkgs.spotify-player} playback next";
 
-      cmd-f = "layout floating";
-      cmd-w = "layout accordion";
-      cmd-e = "layout tiling";
+      cmd-w = "layout v_accordion";
+      cmd-e = "layout v_tiles";
 
-      cmd-shift-right = "move-node-to-monitor right";
-      cmd-shift-left = "move-node-to-monitor left";
+      cmd-shift-right = "move-node-to-monitor right; focus-monitor right";
+      cmd-shift-left = "move-node-to-monitor left; focus-monitor left";
+      cmd-shift-up = "move-node-to-monitor down; focus-monitor down";
+      cmd-shift-down = "move-node-to-monitor up; focus-monitor up";
 
       cmd-1 = "workspace 1";
       cmd-2 = "workspace 2";
