@@ -21,7 +21,7 @@
     tab_powerline_style = "slanted";
     tab_bar_align = "center";
     tab_title_template = "{index} {tab.active_oldest_exe.replace('-', '')} {tab.active_wd.split('/')[-1]}";
-    enabled_layouts = "tall,stack";
+    enabled_layouts = "tall,stack,splits:split_axis=horizontal";
     sync_to_monitor = true;
     bell_on_tab = "🔔 ";
     window_border_width = "0pt";

@@ -21,7 +21,13 @@
     end
     set -e fish_function_path[1]
     set -x NIX_PATH $HOME/.nix-defexpr/channels
-    eval (ssh-agent -c)
+    # Only spawn a standalone ssh-agent when there isn't already a working
+    # agent socket. On stout the gpg-agent (enableSshSupport) provides it, and
+    # on macOS launchd does, so this avoids clobbering SSH_AUTH_SOCK and
+    # leaking a fresh agent on every login shell.
+    if not test -S "$SSH_AUTH_SOCK"
+      eval (ssh-agent -c)
+    end
   '';
   shellAliases = rec {
     vim = "nvim";
@@ -37,6 +43,7 @@
 
     cdot = "cd ~/dotfiles";
     nix-shell = "nix-shell --command fish";
+    claudio = "ANTHROPIC_BASE_URL=http://127.0.0.1:8001 ANTHROPIC_MODEL=unsloth/Qwen3.5-9B-GGUF claude --strict-mcp-config --mcp-config ~/.claude/no-mcp.json";
   };
   functions = {
     nix = {
@@ -76,6 +83,39 @@
         end
         echo "Project $project not found"
         return 1
+      '';
+    };
+    steam-play = {
+      description = "Pick an installed Steam game with fzf and launch it";
+      body = ''
+        set --local libraries $HOME/.local/share/Steam/steamapps
+        set --local vdf $libraries/libraryfolders.vdf
+        if test -f $vdf
+          for path in (string match --regex --groups-only '^\s*"path"\s+"(.*)"$' < $vdf)
+            if test -d $path/steamapps; and not contains $path/steamapps $libraries
+              set --append libraries $path/steamapps
+            end
+          end
+        end
+
+        set --local manifests
+        for library in $libraries
+          set --append manifests $library/appmanifest_*.acf
+        end
+        if test (count $manifests) -eq 0
+          echo "No installed Steam games found" >&2
+          return 1
+        end
+
+        set --local game (awk -F'"' '
+          FNR == 1 { named = 0 }
+          $2 == "appid" { appid = $4 }
+          $2 == "name" && !named { print $4 "\t" appid; named = 1 }
+        ' $manifests | sort --ignore-case | fzf --delimiter=\t --with-nth=1)
+
+        test -z "$game"; and return 0
+
+        steam -silent -applaunch (string split --fields 2 \t $game) >/dev/null 2>&1 &
       '';
     };
     local-psql = {

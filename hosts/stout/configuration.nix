@@ -15,7 +15,7 @@
     hostName = "stout";
     firewall = {
       enable = true;
-      allowedTCPPorts = [22 80];
+      allowedTCPPorts = [22 80 8080 8001];
     };
 
     interfaces.enp5s0.wakeOnLan.enable = true;
@@ -70,15 +70,7 @@
   services.pipewire.enable = false;
   services.pulseaudio = {
     enable = true;
-    support32Bit = true;
     package = pkgs.pulseaudioFull; # Enables advanced BT codecs (AAC, aptX, aptX-HD, LDAC).
-    extraConfig = ''
-      set-card-profile alsa_output.pci-0000_01_00.1.hdmi-stereo off
-
-      ### Equalization (15-band parametric EQ, controlled via `qpaeq`).
-      load-module module-equalizer-sink
-      load-module module-dbus-protocol
-    '';
   };
   ########## Bluetooth ##########
   hardware.bluetooth = {
@@ -93,7 +85,6 @@
     coreutils
     i2c-tools
     liquidctl
-    qpaeq # GUI for the PulseAudio equalizer sink
     xdg-utils
     xdg-user-dirs
     wget
@@ -138,27 +129,7 @@
   ###### Controllers ######
   hardware.i2c.enable = true;
 
-  ######### Games #########
-  services.hardware.openrgb = {
-    enable = true;
-    package = pkgs.openrgb-with-all-plugins;
-    startupProfile = "/home/landreussi/.config/OpenRGB/theme.orp";
-  };
-
-  services.sunshine = {
-    enable = true;
-    autoStart = false;
-    openFirewall = true;
-  };
-
-  programs.steam = {
-    enable = true;
-    protontricks.enable = true;
-    gamescopeSession.enable = true;
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-  };
+  services.udev.packages = [pkgs.openrgb-with-all-plugins];
 
   ########## Nix ##########
   nix.settings = {
@@ -170,7 +141,7 @@
   nixpkgs.config = {
     allowUnfree = true;
     cudaSupport = true;
-    permittedInsecurePackages = ["electron-40.10.5"];
+    permittedInsecurePackages = ["electron-39.8.10" "electron-40.10.5"];
   };
 
   # TODO: esp32 in rust depends on this, check if there is a way to not depend on this.

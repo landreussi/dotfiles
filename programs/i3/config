@@ -22,8 +22,8 @@ set $i3lock i3lock -c 000000
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $i3lock --nofork
-exec_always --no-startup-id feh --bg-scale /home/landreussi/.background-image
-exec_always --no-startup-id ~/.config/i3/stream_window_focus.sh
+exec_always --no-startup-id feh --bg-scale $HOME/.background-image
+exec --no-startup-id systemctl --user start dunst
 
 # Color modifiers
 # class                 border  bground text    indicator child_border

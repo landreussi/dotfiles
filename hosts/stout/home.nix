@@ -1,10 +1,15 @@
 super @ {
   pkgs,
   lib,
+  config,
   ...
 }: let
   user = "landreussi";
   home = "/home/${user}";
+  qwenChatTemplate = pkgs.fetchurl {
+    url = "https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates/resolve/main/chat_template.jinja";
+    hash = "sha256-xHyCsFRHUtRU9OQnIo2dnYw99kyeRGy9Aik2L2eUgAk=";
+  };
 in {
   imports = [<home-manager/nixos>];
 
@@ -24,7 +29,8 @@ in {
         go
         gh
         grpcurl
-        # logseq
+        logseq
+        obsidian
         pass
         tree
         scrot
@@ -32,7 +38,7 @@ in {
         xclip
         lxappearance
         feh
-        gruvbox-material-gtk-theme
+        gruvbox-dark-gtk
         adwaita-icon-theme
         spotify-player
         pavucontrol
@@ -41,14 +47,11 @@ in {
         bluetui
         libreoffice
         xdotool
+        libnotify
         obs-studio
-        obs-cmd
+        llama-cpp
         codex
         claude-code
-        jetbrains.idea-oss
-        jetbrains.rust-rover
-        zed-editor
-        obsidian
         unzip
         gimp-with-plugins
         discord
@@ -61,8 +64,7 @@ in {
         rust-analyzer
         sccache
         # TS/Node
-        typescript-language-server
-        vue-language-server
+        nodejs
         yarn
         # Python
         pyright
@@ -114,7 +116,6 @@ in {
       // {
         shellInit = ''
           set -x PATH $PATH $HOME/.cargo/bin
-          set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket) > /dev/null
         '';
       };
     programs.git = import ../../programs/git.nix super;
@@ -124,13 +125,95 @@ in {
     programs.direnv = import ../../programs/direnv.nix;
     programs.ssh = import ../../programs/ssh.nix;
     programs.gpg = import ../../programs/gpg.nix super;
+    services.dunst = import ../../services/dunst.nix;
     services.gpg-agent = import ../../services/gpg-agent.nix super;
 
-    services.ollama.enable = true;
-    systemd.user.services.ollama.Install = lib.mkForce {};
+    systemd.user.services.llama-cpp = {
+      Unit = {
+        Description = "llama.cpp server";
+        After = ["network.target"];
+      };
+      Service = {
+        ExecStart = ''
+          ${pkgs.llama-cpp}/bin/llama-server \
+            --ctx-size 32768 \
+            --cache-type-k q8_0 \
+            --cache-type-v q8_0 \
+            --hf-repo unsloth/Qwen3.5-9B-GGUF \
+            --host 127.0.0.1 \
+            --jinja \
+            --chat-template-file ${qwenChatTemplate} \
+            -ngl 99 \
+            -fit on \
+            --port 8001
+        '';
+        Restart = "on-failure";
+        RestartSec = 5;
+      };
+    };
 
     programs.home-manager.enable = true;
   };
+
+  programs.steam = {
+    enable = true;
+    protontricks.enable = true;
+  };
+
+  services.hardware.openrgb = {
+    enable = true;
+    package = pkgs.openrgb-with-all-plugins;
+    startupProfile = "${home}/.config/OpenRGB/theme.orp";
+  };
+
+  services.sunshine = {
+    enable = true;
+    autoStart = false;
+    openFirewall = true;
+    applications = {
+      apps = [
+        {
+          name = "Cyberpunk 2077 1440p";
+
+          prep-cmd = [
+            {
+              do = ''
+                ${pkgs.xorgserver}/bin/Xvfb :99 -screen 0 2560x1440x24 -nolisten tcp &
+              '';
+              undo = ''
+                ${pkgs.procps}/bin/pkill -f "Xvfb :99"
+              '';
+            }
+          ];
+
+          cmd = "DISPLAY=:99 ${pkgs.util-linux}/bin/setsid ${pkgs.steam}/bin/steam steam://rungameid/1091500";
+          auto-detach = "true";
+          exclude-global-prep-cmd = "false";
+        }
+        {
+          name = "Steam Big Picture";
+
+          prep-cmd = [
+            {
+              do = ''
+                ${pkgs.xorgserver}/bin/Xvfb :99 -screen 0 2560x1440x24 -nolisten tcp &
+              '';
+              undo = ''
+                ${pkgs.procps}/bin/pkill -f "Xvfb :99"
+              '';
+            }
+          ];
+
+          cmd = "DISPLAY=:99 ${pkgs.util-linux}/bin/setsid ${pkgs.steam}/bin/steam steam://open/bigpicture";
+          auto-detach = "true";
+          exclude-global-prep-cmd = "false";
+        }
+      ];
+    };
+  };
+
+  systemd.user.services.sunshine.serviceConfig.ExecStart =
+    lib.mkForce (lib.getExe config.services.sunshine.package);
 
   environment.variables = {
     EDITOR = "hx";
