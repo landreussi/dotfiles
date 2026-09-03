@@ -11,8 +11,6 @@ super @ {
     hash = "sha256-xHyCsFRHUtRU9OQnIo2dnYw99kyeRGy9Aik2L2eUgAk=";
   };
 in {
-  imports = [<home-manager/nixos>];
-
   home-manager.users.landreussi = {
     home = {
       username = user;
@@ -69,37 +67,22 @@ in {
         # Python
         pyright
         # Nix
-        nixd
+        nil
         nixfmt
         # Lua
         lua-language-server
       ];
 
       file = {
-        i3 = {
-          source = ../../programs/i3;
-          target = "${home}/.config/i3";
-        };
-        i3status = {
-          source = ../../programs/i3status;
-          target = "${home}/.config/i3status";
-        };
         bg = {
           source = ./.background-image;
           target = "${home}/.background-image";
         };
-        nvchad = {
-          source = pkgs.fetchFromGitHub {
-            owner = "NvChad";
-            repo = "starter";
-            rev = "main";
-            sha256 = "sha256-xdLr6tlU9uA+wu0pqha2br0fdVm+1MjgjbB5awz9ICU=";
-          };
-          target = "${home}/.config/nvim";
-        };
       };
 
-      stateVersion = "25.11";
+      sessionPath = ["$HOME/.cargo/bin"];
+
+      stateVersion = "26.11";
     };
     xdg = {
       enable = true;
@@ -111,20 +94,17 @@ in {
 
     manual.manpages.enable = false;
     programs.delta = import ../../programs/delta.nix;
-    programs.fish =
-      import ../../programs/fish.nix super
-      // {
-        shellInit = ''
-          set -x PATH $PATH $HOME/.cargo/bin
-        '';
-      };
+    programs.fish = import ../../programs/fish.nix super;
     programs.git = import ../../programs/git.nix super;
     programs.helix = import ../../programs/helix.nix super;
     programs.kitty = import ../../programs/kitty.nix;
-    programs.neovim = import ../../programs/neovim.nix;
+    programs.firefox = import ../../programs/firefox.nix (super // {bottomToolbox = true;});
+    programs.nvchad = import ../../programs/nvchad.nix super;
     programs.direnv = import ../../programs/direnv.nix;
     programs.ssh = import ../../programs/ssh.nix;
     programs.gpg = import ../../programs/gpg.nix super;
+    programs.i3status-rust = import ../../programs/i3status-rust.nix;
+    xsession.windowManager.i3 = import ../../programs/i3.nix super;
     services.dunst = import ../../services/dunst.nix;
     services.gpg-agent = import ../../services/gpg-agent.nix super;
 
@@ -151,19 +131,34 @@ in {
         RestartSec = 5;
       };
     };
-
     programs.home-manager.enable = true;
-  };
-
-  programs.steam = {
-    enable = true;
-    protontricks.enable = true;
   };
 
   services.hardware.openrgb = {
     enable = true;
     package = pkgs.openrgb-with-all-plugins;
-    startupProfile = "${home}/.config/OpenRGB/theme.orp";
+    startupProfile = "theme";
+  };
+
+  # The upstream module runs openrgb as a long-lived SDK server. We only want it
+  # to apply the profile once at boot and exit, so drop --server and turn the
+  # unit into a oneshot. Profile name resolves inside /var/lib/OpenRGB.
+  systemd.services.openrgb.serviceConfig = let
+    cfg = config.services.hardware.openrgb;
+  in {
+    Type = "oneshot";
+    RemainAfterExit = true;
+    ExecStart = lib.mkForce (lib.escapeShellArgs [
+      (lib.getExe cfg.package)
+      "--profile"
+      cfg.startupProfile
+    ]);
+    Restart = lib.mkForce "no";
+  };
+
+  programs.steam = {
+    enable = true;
+    protontricks.enable = true;
   };
 
   services.sunshine = {
@@ -224,7 +219,7 @@ in {
     isNormalUser = true;
     useDefaultShell = true;
     shell = pkgs.fish;
-    extraGroups = ["wheel" "docker" "dialout"];
+    extraGroups = ["wheel" "docker" "dialout" "i2c"];
     name = user;
     home = home;
   };
