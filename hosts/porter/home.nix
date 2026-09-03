@@ -1,5 +1,4 @@
 super @ {pkgs, ...}: {
-  imports = [<home-manager/nix-darwin>];
   users.users.landreussi = {
     name = "landreussi";
     home = "/Users/landreussi";
@@ -39,35 +38,30 @@ super @ {pkgs, ...}: {
         # Python
         pyright
         # Nix
-        nixd
+        nil
         # Lua
         lua-language-server
       ];
 
-      file = {
-        neovim = {
-          source = ../../programs/neovim/nvchad;
-          target = ".config/nvim";
-          recursive = true;
-        };
-      };
+      # Prepended to PATH for every shell home-manager manages, instead of being
+      # hammered in by fish's shellInit. The system profile arrives via
+      # nix-darwin's programs.fish.
+      sessionPath = [
+        "/opt/homebrew/bin"
+        "$HOME/.cargo/bin"
+      ];
 
       stateVersion = "25.05";
     };
 
     manual.manpages.enable = false;
 
-    programs.fish =
-      import ../../programs/fish.nix super
-      // {
-        shellInit = ''
-          set -x PATH $PATH /opt/homebrew/bin /run/current-system/sw/bin $HOME/.cargo/bin
-        '';
-      };
+    programs.fish = import ../../programs/fish.nix super;
     programs.git = import ../../programs/git.nix super;
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix;
-    programs.neovim = import ../../programs/neovim.nix;
+    programs.firefox = import ../../programs/firefox.nix (super // {bottomToolbox = true;});
+    programs.nvchad = import ../../programs/nvchad.nix super;
     programs.ssh = import ../../programs/ssh.nix;
     programs.helix = import ../../programs/helix.nix super;
     programs.direnv = import ../../programs/direnv.nix;

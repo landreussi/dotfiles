@@ -96,6 +96,7 @@
       languages = ["vue"];
     }
   ];
+  languages.language-server.nil.command = lib.getExe pkgs.nil;
   languages.language-server.taplo.command = lib.getExe pkgs.taplo;
   languages.language-server.jdtls.command = lib.getExe pkgs.jdt-language-server;
   languages.language-server.clangd.command = "${pkgs.clang-tools}/bin/clangd";
@@ -124,7 +125,7 @@
       name = "nix";
       auto-format = true;
       formatter.command = lib.getExe pkgs.alejandra;
-      language-servers = ["nixd" "fs_watcher_lsp"];
+      language-servers = ["nil" "fs_watcher_lsp"];
     }
     {
       name = "javascript";

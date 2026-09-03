@@ -1,26 +1,13 @@
 {pkgs, ...}: {
   enable = true;
   interactiveShellInit = ''
-    set -g fish_cursor_default block
-    set -g fish_cursor_insert line
-    set -g fish_cursor_replace_one underscore
-    _pure_set_default pure_show_prefix_root_prompt true
+    # pure's own conf.d runs before this file and already sets the variable, and
+    # _pure_set_default only fills in unset ones -- so it has to be set directly.
+    set -g pure_show_prefix_root_prompt true
+
+    set -g fish_greeting
   '';
   loginShellInit = ''
-    set -p fish_function_path $HOME/.config/fish/functions ${pkgs.fishPlugins.foreign-env}/share/fish/vendor_functions.d
-    set -e __HM_SESS_VARS_SOURCED
-    set -e fish_function_path[1]
-    if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-      fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    end
-    if test -e /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-      fenv source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-    end
-    if test -e /etc/static/fish/config.fish
-      source /etc/static/fish/config.fish
-    end
-    set -e fish_function_path[1]
-    set -x NIX_PATH $HOME/.nix-defexpr/channels
     # Only spawn a standalone ssh-agent when there isn't already a working
     # agent socket. On stout the gpg-agent (enableSshSupport) provides it, and
     # on macOS launchd does, so this avoids clobbering SSH_AUTH_SOCK and
@@ -31,6 +18,7 @@
   '';
   shellAliases = rec {
     vim = "nvim";
+    vi = "nvim";
     ".." = "cd ..";
     "..." = "cd ../..";
     "...." = "cd ../../..";
@@ -85,7 +73,7 @@
         return 1
       '';
     };
-    steam-play = {
+    games = {
       description = "Pick an installed Steam game with fzf and launch it";
       body = ''
         set --local libraries $HOME/.local/share/Steam/steamapps
@@ -115,35 +103,19 @@
 
         test -z "$game"; and return 0
 
-        steam -silent -applaunch (string split --fields 2 \t $game) >/dev/null 2>&1 &
-      '';
-    };
-    local-psql = {
-      argumentNames = "action";
-      description = "Start or stop local PostgreSQL instance";
-      body = ''
-        env PGPORT=5432 pg_ctl -D /usr/local/var/postgres -l /tmp/logfile $action > /dev/null 2>&1
+        # setsid detaches the game from this shell's process group, so it
+        # survives the terminal closing when the picker is a dmenu popup.
+        ${pkgs.util-linux}/bin/setsid steam -silent -applaunch (string split --fields 2 \t $game) >/dev/null 2>&1 &
+        disown
       '';
     };
   };
-  plugins = [
-    rec {
-      name = "pure";
-      src = pkgs.fetchFromGitHub {
-        owner = "rafaelrinaldi";
-        repo = name;
-        rev = "69e9a074125ad853aae244ce2aabc33811b99970";
-        sha256 = "1x1h65l8582p7h7w5986sc9vfd7b88a7hsi68dbikm090gz8nlxx";
-      };
-    }
-    rec {
-      name = "pisces";
-      src = pkgs.fetchFromGitHub {
-        owner = "laughedelic";
-        repo = name;
-        rev = "34971b9671e217cfba0c71964f5028d44b58be8c";
-        sha256 = "05wjq7v0v5hciqa27wx2xypyywa4291pxmmvfv5yvwmxm1pc02hm";
-      };
-    }
-  ];
+  # nixpkgs builds these into share/fish/vendor_*, but home-manager's loader
+  # wants the plugin source tree (functions/, completions/, conf.d/).
+  plugins =
+    map (p: {
+      inherit (p) src;
+      name = p.pname;
+    })
+    (with pkgs.fishPlugins; [pure pisces foreign-env]);
 }

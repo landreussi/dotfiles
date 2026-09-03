@@ -15,7 +15,12 @@
     hostName = "stout";
     firewall = {
       enable = true;
-      allowedTCPPorts = [22 80 8080 8001];
+      allowedTCPPorts = [
+        22
+        80
+        8080 #moonlight-web
+        8001 #llama-ui
+      ];
     };
 
     interfaces.enp5s0.wakeOnLan.enable = true;
@@ -36,7 +41,9 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = [pkgs.nvidia-vaapi-driver];
   };
+
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
@@ -55,7 +62,7 @@
     desktopManager.xterm.enable = false;
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [dmenu i3status i3lock];
+      extraPackages = with pkgs; [dmenu i3lock];
     };
 
     displayManager.startx = {
@@ -70,7 +77,7 @@
   services.pipewire.enable = false;
   services.pulseaudio = {
     enable = true;
-    package = pkgs.pulseaudioFull; # Enables advanced BT codecs (AAC, aptX, aptX-HD, LDAC).
+    package = pkgs.pulseaudioFull;
   };
   ########## Bluetooth ##########
   hardware.bluetooth = {
@@ -96,6 +103,12 @@
     extraPackages = [pkgs.docker-compose];
     enableOnBoot = false;
   };
+
+  ########## VirtualBox ##########
+  # The vboxdrv kernel module only exists if the host side is enabled here;
+  # the `virtualbox` package alone (from a dev shell, say) gives you the GUI
+  # and then fails with VERR_VM_DRIVER_NOT_INSTALLED.
+  virtualisation.virtualbox.host.enable = true;
 
   ########## Fonts ##########
   fonts = {
@@ -124,12 +137,9 @@
   security.rtkit.enable = true;
   security.polkit.enable = true;
   services.udisks2.enable = true;
-  services.udev.enable = true;
 
   ###### Controllers ######
   hardware.i2c.enable = true;
-
-  services.udev.packages = [pkgs.openrgb-with-all-plugins];
 
   ########## Nix ##########
   nix.settings = {
@@ -143,6 +153,12 @@
     cudaSupport = true;
     permittedInsecurePackages = ["electron-39.8.10" "electron-40.10.5"];
   };
+
+  # Lets `nixos-rebuild switch` find the flake with no arguments: it resolves
+  # this symlink and uses the containing directory, defaulting the attribute to
+  # the hostname. Kept a string, not a path literal, so the repo is referenced
+  # in place instead of being copied into the store.
+  environment.etc."nixos/flake.nix".source = "/home/landreussi/dotfiles/flake.nix";
 
   # TODO: esp32 in rust depends on this, check if there is a way to not depend on this.
   programs.nix-ld.enable = true;

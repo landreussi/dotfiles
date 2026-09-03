@@ -1,0 +1,6 @@
+{
+  enable = true;
+
+  commandLineArgs = [];
+  extensions = [];
+}

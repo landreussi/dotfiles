@@ -1,0 +1,5 @@
+{
+  "keyMappings": "",
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\ng: https://www.google.com/search?q=%s Google\ny: https://www.youtube.com/results?search_query=%s Youtube\nm: https://www.google.com/maps?q=%s Google maps\ngh: https://github.com/search?q=%s\ns: https://open.spotify.com/search/%s\nsc: https://soundcloud.com/search?q=%s\nno: https://search.nixos.org/options?channel=unstable&query=%s&type=options\nnp: https://search.nixos.org/options?channel=unstable&query=%s&type=packages\nhf: https://huggingface.co/search/full-text?q=%s\nrs: https://doc.rust-lang.org/stable/std/?search=%s\nrsd: http://docs.rs/%s\nrsc: https://crates.io/search?q=%s\nnpm: https://www.npmjs.com/search?q=%s\npy: https://pypi.org/search/?q=%s\ndh: https://hub.docker.com/search?q=%s\nre: https://www.reddit.com/search/?q=%s\nli: https://www.linkedin.com/search/results/all/?keywords=%s\nig: https://instagram.com/%s\ntw: https://x.com/search?q=%s",
+  "settingsVersion": "2.4.2"
+}

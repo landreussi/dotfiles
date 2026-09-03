@@ -1,13 +1,13 @@
-super@{ pkgs, ... }: {
+{
   enable = true;
   settings = {
-    draw_bold_text_with_bright_colors = true;
+    general.live_config_reload = true;
 
     font = let
       family = "JetBrainsMono Nerd Font";
-      fontWithStyle = style: { inherit family style; };
+      fontWithStyle = style: {inherit family style;};
     in {
-      medium = fontWithStyle "Medium";
+      normal = fontWithStyle "Medium";
       bold = fontWithStyle "Bold";
       italic = fontWithStyle "Italic";
       bold_italic = fontWithStyle "Bold Italic";
@@ -15,17 +15,18 @@ super@{ pkgs, ... }: {
       size = 17;
     };
 
-    live_config_reload = true;
     mouse.hide_when_typing = false;
     selection.save_to_clipboard = true;
 
     window = {
-      decorations = "full";
+      decorations = "Full";
       startup_mode = "Fullscreen";
     };
 
     # https://github.com/aarowill/base16-alacritty/blob/master/colors/base16-gruvbox-material-dark-soft.yml
     colors = {
+      draw_bold_text_with_bright_colors = true;
+
       primary = {
         background = "0x32302f";
         foreground = "0xddc7a1";

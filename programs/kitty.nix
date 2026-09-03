@@ -25,8 +25,8 @@
     sync_to_monitor = true;
     bell_on_tab = "🔔 ";
     window_border_width = "0pt";
-    allow_remote_control = true;
-    dynamic_background_opacity = true;
+    confirm_os_windows_close = false;
+    paste_actions = "quote-urls-at-prompt,replace-dangerous-control-codes";
   };
   extraConfig = ''
     include current-theme.conf
