@@ -53,6 +53,27 @@ in
           {
             # Policy-installed add-ons land in a disabled scope otherwise.
             "extensions.autoDisableScopes" = 0;
+
+            # Restored tabs stay empty shells until they are actually selected,
+            # so a 100-tab session costs one content process instead of 100.
+            # The first two are already Firefox defaults, pinned here against
+            # the day they change; the third is not - pinned tabs are otherwise
+            # loaded eagerly at startup.
+            "browser.sessionstore.restore_on_demand" = true;
+            "browser.sessionstore.restore_tabs_lazily" = true;
+            "browser.sessionstore.restore_pinned_tabs_on_demand" = true;
+
+            # Tabs that did get loaded are discarded again under memory
+            # pressure, least-recently-used first, and reload on their next
+            # focus. Ten minutes in the background makes a tab eligible; the
+            # 1-minute default is short enough to drop a tab still in an
+            # alt-tab rotation.
+            "browser.tabs.unloadOnLowMemory" = true;
+            "browser.tabs.min_inactive_duration_before_unload" = 600000;
+
+            # "Unload Tab" in the tab context menu, to reclaim a known hog
+            # without waiting for the pressure signal.
+            "browser.tabs.unloadTabInContextMenu" = true;
           }
           // lib.optionalAttrs bottomToolbox {
             # userChrome.css is ignored unless this is on.

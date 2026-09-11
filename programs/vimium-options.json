@@ -1,5 +1,15 @@
 {
-  "keyMappings": "",
-  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\ng: https://www.google.com/search?q=%s Google\ny: https://www.youtube.com/results?search_query=%s Youtube\nm: https://www.google.com/maps?q=%s Google maps\ngh: https://github.com/search?q=%s\ns: https://open.spotify.com/search/%s\nsc: https://soundcloud.com/search?q=%s\nno: https://search.nixos.org/options?channel=unstable&query=%s&type=options\nnp: https://search.nixos.org/options?channel=unstable&query=%s&type=packages\nhf: https://huggingface.co/search/full-text?q=%s\nrs: https://doc.rust-lang.org/stable/std/?search=%s\nrsd: http://docs.rs/%s\nrsc: https://crates.io/search?q=%s\nnpm: https://www.npmjs.com/search?q=%s\npy: https://pypi.org/search/?q=%s\ndh: https://hub.docker.com/search?q=%s\nre: https://www.reddit.com/search/?q=%s\nli: https://www.linkedin.com/search/results/all/?keywords=%s\nig: https://instagram.com/%s\ntw: https://x.com/search?q=%s",
+  "exclusionRules": [
+    {
+      "passKeys": "",
+      "pattern": "https?://mail.google.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://www.linkedin.com/*"
+    }
+  ],
+  "keyMappings": "unmap O\nmap <space> Vomnibar.activateInNewTab",
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\ng: https://www.google.com/search?q=%s Google\ny: https://www.youtube.com/results?search_query=%s Youtube\nm: https://www.google.com/maps?q=%s Google Maps\ngh: https://github.com/search?q=%s GitHub\ns: https://open.spotify.com/search/%s Spotify\nsc: https://soundcloud.com/search?q=%s SoundCloud\nno: https://search.nixos.org/options?channel=unstable&query=%s&type=options NixOS Options\nnp: https://search.nixos.org/options?channel=unstable&query=%s&type=packages NixOS Packages\nhf: https://huggingface.co/search/full-text?q=%s Huggingface\nrs: https://doc.rust-lang.org/stable/std/?search=%s std-rs\nrsd: http://docs.rs/%s docs.rs\nrsc: https://crates.io/search?q=%s crates.io\nnpm: https://www.npmjs.com/search?q=%s npm\npy: https://pypi.org/search/?q=%s pypi\ndh: https://hub.docker.com/search?q=%s Docker Hub\nre: https://www.reddit.com/search/?q=%s Reddit\nli: https://www.linkedin.com/search/results/all/?keywords=%s LinkedIn\nig: https://instagram.com/%s Instagram\ntw: https://x.com/search?q=%s Twitter",
   "settingsVersion": "2.4.2"
 }
