@@ -134,6 +134,13 @@
   };
 
   ######### Utils #########
+  # scrcpy drives the phone over adb's TCP socket, so the phone only has to be
+  # reachable by IP. Tailscale is what makes that true off the LAN.
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+  };
+
   security.rtkit.enable = true;
   security.polkit.enable = true;
   services.udisks2.enable = true;

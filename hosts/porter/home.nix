@@ -25,6 +25,9 @@ super @ {pkgs, ...}: {
         tree
         wget
         gcc
+        # Android
+        android-tools
+        scrcpy
         # Docker
         colima
         docker

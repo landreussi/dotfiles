@@ -73,6 +73,28 @@
         return 1
       '';
     };
+    phone = {
+      argumentNames = "port";
+      description = "Mirror the phone's screen with scrcpy over adb's TCP socket";
+      body = ''
+        set --local hosts 192.168.68.112 toscanello.tail46787c.ts.net
+
+        set --local target
+        for host in $hosts
+          if string match --quiet '*connected to *' (adb connect $host:$port 2>&1)
+            set target $host:$port
+            break
+          end
+        end
+
+        if test -z "$target"
+          echo "phone: no adb on port $port at $hosts" >&2
+          return 1
+        end
+
+        scrcpy --tcpip=$target $argv[2..] &
+      '';
+    };
     games = {
       description = "Pick an installed Steam game with fzf and launch it";
       body = ''

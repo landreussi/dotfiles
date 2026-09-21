@@ -99,8 +99,25 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nix4nvchad": "nix4nvchad",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "soloist": "soloist"
       }
+    },
+    "soloist": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./soloist",
+        "type": "path"
+      },
+      "original": {
+        "path": "./soloist",
+        "type": "path"
+      },
+      "parent": []
     }
   },
   "root": "root",
