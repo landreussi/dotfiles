@@ -39,7 +39,6 @@ in {
         gruvbox-dark-gtk
         adwaita-icon-theme
         spotify-player
-        soloist
         pavucontrol
         youtube-tui
         mpv
@@ -55,6 +54,7 @@ in {
         gimp-with-plugins
         discord
         concord-tui
+        nchat
         winboat
         android-tools
         scrcpy
@@ -94,6 +94,10 @@ in {
       };
     };
 
+    # aerc spans programs.aerc and accounts.email, so it comes in as a module
+    # rather than a single `programs.<x> = import ...` like the rest.
+    imports = [../../programs/aerc.nix];
+
     manual.manpages.enable = false;
     programs.alacritty = import ../../programs/alacritty.nix;
     programs.delta = import ../../programs/delta.nix;
@@ -112,27 +116,6 @@ in {
     xsession.windowManager.i3 = import ../../programs/i3.nix super;
     services.dunst = import ../../services/dunst.nix;
     services.gpg-agent = import ../../services/gpg-agent.nix super;
-
-    # Headless Spotify Connect endpoint, so phones can push playback at this
-    # box's speakers without spotify-player being open. See soloist/README.md
-    # for the API key and for the 90-day build expiry.
-    services.soloist = {
-      enable = false;
-      # This host runs PulseAudio, not PipeWire, so the pipewire closure would
-      # be ~600 MiB of dead weight.
-      package = pkgs.soloist.override {withPipeWire = false;};
-      deviceName = "stout";
-      # Pulled from the password store at start-up rather than a file on disk.
-      # gpg-agent has to already hold the key when the unit starts, since
-      # pinentry-curses has no terminal to prompt on from inside a unit; until
-      # it does the unit just keeps retrying.
-      apiKeyCommand = [(lib.getExe pkgs.pass) "soloist"];
-      initialVolume = 60;
-      cacheSizeMB = 2048;
-      # Loopback only; `soloist ctl` discovers the endpoint through the data
-      # directory, so nothing has to reach it from off the box.
-      websocket.enable = true;
-    };
 
     systemd.user.services.llama-cpp = {
       Unit = {

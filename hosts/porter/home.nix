@@ -57,6 +57,10 @@ super @ {pkgs, ...}: {
       stateVersion = "25.05";
     };
 
+    # aerc spans programs.aerc and accounts.email, so it comes in as a module
+    # rather than a single `programs.<x> = import ...` like the rest.
+    imports = [../../programs/aerc.nix];
+
     manual.manpages.enable = false;
 
     programs.fish = import ../../programs/fish.nix super;
