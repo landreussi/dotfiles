@@ -22,6 +22,7 @@ super @ {pkgs, ...}: {
         pass
         ripgrep
         spotify-player
+        nchat
         tree
         wget
         gcc
@@ -33,7 +34,6 @@ super @ {pkgs, ...}: {
         docker
         # Rust
         rust-analyzer
-        sccache
         # TS/Node
         nodejs
         typescript-language-server
@@ -57,9 +57,13 @@ super @ {pkgs, ...}: {
       stateVersion = "25.05";
     };
 
-    # aerc spans programs.aerc and accounts.email, so it comes in as a module
-    # rather than a single `programs.<x> = import ...` like the rest.
-    imports = [../../programs/aerc.nix];
+    # These span several option trees (aerc: programs.aerc + accounts.email;
+    # rust: home.file + xdg.configFile + sessionVariables), so they come in as
+    # modules rather than a single `programs.<x> = import ...` like the rest.
+    imports = [
+      ../../programs/aerc.nix
+      ../../programs/sccache.nix
+    ];
 
     manual.manpages.enable = false;
 
