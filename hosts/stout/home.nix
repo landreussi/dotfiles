@@ -39,6 +39,8 @@ in {
         gruvbox-dark-gtk
         adwaita-icon-theme
         spotify-player
+        spotifast
+        zapfast
         pavucontrol
         youtube-tui
         mpv
@@ -62,7 +64,6 @@ in {
         gcc
         # Rust
         rust-analyzer
-        sccache
         # TS/Node
         nodejs
         yarn
@@ -94,9 +95,13 @@ in {
       };
     };
 
-    # aerc spans programs.aerc and accounts.email, so it comes in as a module
-    # rather than a single `programs.<x> = import ...` like the rest.
-    imports = [../../programs/aerc.nix];
+    # These span several option trees (aerc: programs.aerc + accounts.email;
+    # rust: home.file + xdg.configFile + sessionVariables), so they come in as
+    # modules rather than a single `programs.<x> = import ...` like the rest.
+    imports = [
+      ../../programs/aerc.nix
+      ../../programs/sccache.nix
+    ];
 
     manual.manpages.enable = false;
     programs.alacritty = import ../../programs/alacritty.nix;

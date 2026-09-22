@@ -99,7 +99,93 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nix4nvchad": "nix4nvchad",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "spotifast": "spotifast",
+        "zapfast": "zapfast"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "spotifast",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787834454,
+        "narHash": "sha256-jXSvqn04IOecJCvSvl8+g3PsbDVNP6qKs6dKUs/b16k=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "dc2fd1acc537f3583744e1373597a5731ff7a6e3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "zapfast",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789977098,
+        "narHash": "sha256-fKY4BedarKx4aR0+UOHk65hhDW8pxFytFkaUi0VYDYk=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "2776e42828203ec89511699c8dcdedec69ab98e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "spotifast": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1791138721,
+        "narHash": "sha256-JGQKn6TAQH9bSzU9DFNWK1MYoWV7rZLOdbkgxVzWKIQ=",
+        "owner": "crmne",
+        "repo": "spotifast",
+        "rev": "7048219716fb8bbf2f1af0934f545801f52cb29b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "crmne",
+        "repo": "spotifast",
+        "type": "github"
+      }
+    },
+    "zapfast": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1791139135,
+        "narHash": "sha256-TX2HxymJ6SxkNVi2E5tke/wgIVy0mlCZBvlExgsX0w0=",
+        "owner": "crmne",
+        "repo": "zapfast",
+        "rev": "63ed17c80ffa3df555f9d65a040eee92afff5644",
+        "type": "github"
+      },
+      "original": {
+        "owner": "crmne",
+        "repo": "zapfast",
+        "type": "github"
       }
     }
   },
