@@ -69,7 +69,7 @@
       enable = true;
       generateScript = true;
       # Output of arandr:
-      extraCommands = "xrandr --output HDMI-0 --mode 1920x1080 --pos 320x0 --output HDMI-1 --primary --mode 2560x1080 --rate 75 --pos 0x1080";
+      # extraCommands = "xrandr --output HDMI-0 --mode 1920x1080 --pos 320x0 --output HDMI-1 --primary --mode 2560x1080 --rate 75 --pos 0x1080";
     };
   };
 
@@ -90,6 +90,7 @@
     alsa-utils
     curl
     coreutils
+    gpclient # GlobalProtect VPN (openconnect-based): `gpclient connect <portal>`
     i2c-tools
     liquidctl
     xdg-utils
@@ -137,8 +138,24 @@
   # scrcpy drives the phone over adb's TCP socket, so the phone only has to be
   # reachable by IP. Tailscale is what makes that true off the LAN.
   services.tailscale = {
-    enable = true;
+    enable = false;
     openFirewall = true;
+  };
+
+  ########## OOM ##########
+  # earlyoom, not systemd-oomd: oomd only reacts to PSI pressure or swap usage,
+  # has no "prefer this process" knob, and Brave's renderers share
+  # session-1.scope with X/i3, so an oomd cgroup kill would take the desktop.
+  # MemAvailable already counts droppable cache, so 5% means nothing is left to
+  # reclaim. Swap thresholds at 100 disable the swap check: trigger on RAM alone.
+  # Brave gets +300 on top of Chromium's own oom_score_adj (renderers 200-300,
+  # browser 0), so the heaviest background tab goes first, one per round.
+  services.earlyoom = {
+    enable = true;
+    freeMemThreshold = 5;
+    freeSwapThreshold = 100;
+    freeSwapKillThreshold = 100;
+    extraArgs = ["--prefer" "^brave$"];
   };
 
   security.rtkit.enable = true;
@@ -165,9 +182,12 @@
   # this symlink and uses the containing directory, defaulting the attribute to
   # the hostname. Kept a string, not a path literal, so the repo is referenced
   # in place instead of being copied into the store.
-  environment.etc."nixos/flake.nix".source = "/home/landreussi/dotfiles/flake.nix";
+  environment = {
+    etc."nixos/flake.nix".source = "/home/landreussi/dotfiles/flake.nix";
+    # memoryAllocator.provider = "jemalloc";
+  };
 
   # TODO: esp32 in rust depends on this, check if there is a way to not depend on this.
-  programs.nix-ld.enable = true;
+  # programs.nix-ld.enable = true;
   system.stateVersion = "26.11";
 }

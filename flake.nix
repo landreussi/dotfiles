@@ -21,16 +21,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Not in nixpkgs; the overlay below exposes these as `pkgs.spotifast` and
-    # `pkgs.zapfast` so hosts can list them alongside everything else in
-    # `home.packages`.
-    spotifast = {
-      url = "github:crmne/spotifast";
+    # Slack TUI. Not in nixpkgs; the overlay below exposes it as `pkgs.slk`.
+    slk = {
+      url = "github:gammons/slk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zapfast = {
-      url = "github:crmne/zapfast";
+    # Jira/Confluence CLI. Not in nixpkgs either, and upstream ships no flake,
+    # so ./atlcli packages its prebuilt release binaries; the overlay below
+    # exposes it as `pkgs.atlcli`.
+    atlcli = {
+      url = "path:./atlcli";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -41,8 +42,8 @@
     home-manager,
     nix-darwin,
     nix4nvchad,
-    spotifast,
-    zapfast,
+    slk,
+    atlcli,
     ...
   }: let
     # Every host runs home-manager with the same extra modules available.
@@ -53,8 +54,8 @@
     overlays = {
       nixpkgs.overlays = [
         (final: prev: {
-          spotifast = spotifast.packages.${prev.stdenv.hostPlatform.system}.default;
-          zapfast = zapfast.packages.${prev.stdenv.hostPlatform.system}.default;
+          slk = slk.packages.${prev.stdenv.hostPlatform.system}.default;
+          atlcli = atlcli.packages.${prev.stdenv.hostPlatform.system}.default;
         })
       ];
     };
@@ -77,6 +78,12 @@
         overlays
       ];
     };
+
+    # `nix run .#update-atlcli` re-pins ./atlcli/pins.json to the latest
+    # upstream release.
+    apps = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-darwin"] (system: {
+      update-atlcli = atlcli.apps.${system}.update;
+    });
 
     # `nix fmt`
     formatter = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-darwin"] (

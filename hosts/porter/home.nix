@@ -1,4 +1,8 @@
 super @ {pkgs, ...}: {
+  # Preserve existing files (for example Firefox's profiles.ini) when adopting
+  # them, so a collision does not block package installation during activation.
+  home-manager.backupFileExtension = "hm-backup";
+
   users.users.landreussi = {
     name = "landreussi";
     home = "/Users/landreussi";
@@ -10,24 +14,21 @@ super @ {pkgs, ...}: {
       homeDirectory = "/Users/landreussi";
       packages = with pkgs; [
         fd
-        fzf
         gh
-        go
-        grpcurl
-        htop
+        btop
         jq
-        lazygit
         nixfmt
         fastfetch
         pass
         ripgrep
         spotify-player
-        spotifast
-        zapfast
+        awscli2
+        glow
         nchat
+        slk
+        atlcli
         tree
         wget
-        gcc
         # Android
         android-tools
         scrcpy
@@ -73,7 +74,7 @@ super @ {pkgs, ...}: {
     programs.git = import ../../programs/git.nix super;
     programs.gpg = import ../../programs/gpg.nix super;
     programs.kitty = import ../../programs/kitty.nix;
-    programs.firefox = import ../../programs/firefox.nix (super // {bottomToolbox = true;});
+    # programs.firefox = import ../../programs/firefox.nix (super // {bottomToolbox = true;});
     programs.nvchad = import ../../programs/nvchad.nix super;
     programs.ssh = import ../../programs/ssh.nix;
     programs.helix = import ../../programs/helix.nix super;

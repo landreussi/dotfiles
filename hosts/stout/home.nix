@@ -19,6 +19,7 @@ in {
         jq
         git
         brave
+        tor-browser
         btop
         fastfetch
         lazygit
@@ -39,8 +40,6 @@ in {
         gruvbox-dark-gtk
         adwaita-icon-theme
         spotify-player
-        spotifast
-        zapfast
         pavucontrol
         youtube-tui
         mpv
@@ -57,6 +56,12 @@ in {
         discord
         concord-tui
         nchat
+        slk
+        atlcli
+        pritunl-client
+        awscli2
+        zoom-us
+        glow
         winboat
         android-tools
         scrcpy
@@ -133,10 +138,8 @@ in {
             --ctx-size 32768 \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
-            --hf-repo unsloth/Qwen3.5-9B-GGUF \
+            --hf-repo unsloth/gpt-oss-20b-GGUF \
             --host 127.0.0.1 \
-            --jinja \
-            --chat-template-file ${qwenChatTemplate} \
             -ngl 99 \
             -fit on \
             --port 8001
@@ -223,6 +226,17 @@ in {
 
   systemd.user.services.sunshine.serviceConfig.ExecStart =
     lib.mkForce (lib.getExe config.services.sunshine.package);
+
+  systemd = {
+    packages = [pkgs.pritunl-client];
+    targets.multi-user.wants = ["pritunl-client.service"];
+  };
+
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [user];
+  };
 
   environment.variables = {
     EDITOR = "hx";

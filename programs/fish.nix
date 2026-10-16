@@ -7,15 +7,6 @@
 
     set -g fish_greeting
   '';
-  loginShellInit = ''
-    # Only spawn a standalone ssh-agent when there isn't already a working
-    # agent socket. On stout the gpg-agent (enableSshSupport) provides it, and
-    # on macOS launchd does, so this avoids clobbering SSH_AUTH_SOCK and
-    # leaking a fresh agent on every login shell.
-    if not test -S "$SSH_AUTH_SOCK"
-      eval (ssh-agent -c)
-    end
-  '';
   shellAliases = rec {
     vim = "nvim";
     vi = "nvim";
@@ -58,10 +49,10 @@
             if test -d ~/.pyenv/version/$project
               pyenv activate $project
             end
-            if test -f $project_dir/shell.nix
-              nix-shell
-            else if test -f $project_dir/flake.nix
+            if test -f $project_dir/flake.nix
               nix develop
+            else if test -f $project_dir/shell.nix
+              nix-shell
             end
             function __on_exit --on-event fish_exit --inherit-variable prev_dir
               cd $prev_dir
