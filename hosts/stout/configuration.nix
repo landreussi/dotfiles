@@ -90,6 +90,7 @@
     alsa-utils
     curl
     coreutils
+    gpclient # GlobalProtect VPN (openconnect-based): `gpclient connect <portal>`
     i2c-tools
     liquidctl
     xdg-utils
