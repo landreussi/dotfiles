@@ -21,16 +21,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Not in nixpkgs; the overlay below exposes these as `pkgs.spotifast` and
-    # `pkgs.zapfast` so hosts can list them alongside everything else in
-    # `home.packages`.
-    spotifast = {
-      url = "github:crmne/spotifast";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    zapfast = {
-      url = "github:crmne/zapfast";
+    # Slack TUI. Not in nixpkgs; the overlay below exposes it as `pkgs.slk`.
+    slk = {
+      url = "github:gammons/slk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -41,8 +34,7 @@
     home-manager,
     nix-darwin,
     nix4nvchad,
-    spotifast,
-    zapfast,
+    slk,
     ...
   }: let
     # Every host runs home-manager with the same extra modules available.
@@ -53,8 +45,7 @@
     overlays = {
       nixpkgs.overlays = [
         (final: prev: {
-          spotifast = spotifast.packages.${prev.stdenv.hostPlatform.system}.default;
-          zapfast = zapfast.packages.${prev.stdenv.hostPlatform.system}.default;
+          slk = slk.packages.${prev.stdenv.hostPlatform.system}.default;
         })
       ];
     };

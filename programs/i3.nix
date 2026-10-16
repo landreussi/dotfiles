@@ -185,7 +185,7 @@ in {
 
     bars = [
       {
-        position = "bottom";
+        position = "top";
         trayOutput = "HDMI-0";
         fonts = {
           names = ["JetBrainsMono Nerd Font Propo"];

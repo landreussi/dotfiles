@@ -10,7 +10,7 @@
 
       origin = "top-right";
       # Vertical offset clears the i3bar, which also lives on HDMI-0.
-      offset = "(10, 10)";
+      offset = "(10, 30)";
       width = "(200, 450)";
       height = "(0, 300)";
       notification_limit = 7;

@@ -30,10 +30,10 @@
   };
   extraConfig = ''
     include current-theme.conf
-    map ctrl+alt+h neighboring_window left
-    map ctrl+alt+l neighboring_window right
-    map ctrl+alt+j neighboring_window bottom
-    map ctrl+alt+k neighboring_window top
+    map ctrl+h neighboring_window left
+    map ctrl+l neighboring_window right
+    map ctrl+j neighboring_window bottom
+    map ctrl+k neighboring_window top
 
     map ctrl+shift+k move_window up
     map ctrl+shift+h move_window left

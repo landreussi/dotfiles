@@ -90,6 +90,7 @@
     alsa-utils
     curl
     coreutils
+    gpclient # GlobalProtect VPN (openconnect-based): `gpclient connect <portal>`
     i2c-tools
     liquidctl
     xdg-utils
@@ -165,9 +166,12 @@
   # this symlink and uses the containing directory, defaulting the attribute to
   # the hostname. Kept a string, not a path literal, so the repo is referenced
   # in place instead of being copied into the store.
-  environment.etc."nixos/flake.nix".source = "/home/landreussi/dotfiles/flake.nix";
+  environment = {
+    etc."nixos/flake.nix".source = "/home/landreussi/dotfiles/flake.nix";
+    # memoryAllocator.provider = "jemalloc";
+  };
 
   # TODO: esp32 in rust depends on this, check if there is a way to not depend on this.
-  programs.nix-ld.enable = true;
+  # programs.nix-ld.enable = true;
   system.stateVersion = "26.11";
 }

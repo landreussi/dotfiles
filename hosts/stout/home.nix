@@ -19,6 +19,7 @@ in {
         jq
         git
         brave
+        tor-browser
         btop
         fastfetch
         lazygit
@@ -39,8 +40,6 @@ in {
         gruvbox-dark-gtk
         adwaita-icon-theme
         spotify-player
-        spotifast
-        zapfast
         pavucontrol
         youtube-tui
         mpv
@@ -57,6 +56,10 @@ in {
         discord
         concord-tui
         nchat
+        slk
+        pritunl-client
+        awscli2
+        glow
         winboat
         android-tools
         scrcpy
@@ -99,7 +102,7 @@ in {
     # rust: home.file + xdg.configFile + sessionVariables), so they come in as
     # modules rather than a single `programs.<x> = import ...` like the rest.
     imports = [
-      ../../programs/aerc.nix
+      # ../../programs/aerc.nix
       ../../programs/sccache.nix
     ];
 
@@ -223,6 +226,17 @@ in {
 
   systemd.user.services.sunshine.serviceConfig.ExecStart =
     lib.mkForce (lib.getExe config.services.sunshine.package);
+
+  systemd = {
+    packages = [pkgs.pritunl-client];
+    targets.multi-user.wants = ["pritunl-client.service"];
+  };
+
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [user];
+  };
 
   environment.variables = {
     EDITOR = "hx";
