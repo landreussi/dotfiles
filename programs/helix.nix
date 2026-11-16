@@ -53,7 +53,11 @@
   languages.language-server.rust-analyzer.config = {
     assist.emitMustUse = true;
     cargo.features = "all";
-    check.command = "clippy";
+    # Flycheck only the package of the saved file (-p) instead of --workspace.
+    check = {
+      command = "clippy";
+      workspace = false;
+    };
     checkOnSave = true;
     completion = {
       limit = 20;

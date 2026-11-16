@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "path": "./atlcli",
+        "path": "./programs/atlcli",
         "type": "path"
       },
       "original": {
-        "path": "./atlcli",
+        "path": "./programs/atlcli",
         "type": "path"
       },
       "parent": []
@@ -33,6 +33,22 @@
         "repo": "flake-utils",
         "type": "github"
       }
+    },
+    "google-calendar-tui": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./programs/google-calendar-tui",
+        "type": "path"
+      },
+      "original": {
+        "path": "./programs/google-calendar-tui",
+        "type": "path"
+      },
+      "parent": []
     },
     "home-manager": {
       "inputs": {
@@ -131,6 +147,7 @@
     "root": {
       "inputs": {
         "atlcli": "atlcli",
+        "google-calendar-tui": "google-calendar-tui",
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nix4nvchad": "nix4nvchad",

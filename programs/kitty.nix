@@ -30,27 +30,40 @@
   };
   extraConfig = ''
     include current-theme.conf
-    map ctrl+h neighboring_window left
-    map ctrl+l neighboring_window right
-    map ctrl+j neighboring_window bottom
-    map ctrl+k neighboring_window top
 
-    map ctrl+shift+k move_window up
-    map ctrl+shift+h move_window left
-    map ctrl+shift+l move_window right
-    map ctrl+shift+j move_window down
+    map alt+h neighboring_window left
+    map alt+l neighboring_window right
+    map alt+j neighboring_window bottom
+    map alt+k neighboring_window top
 
-    map ctrl+shift+z next_layout
-    map --when-focus-on num:0 ctrl+shift+; combine : toggle_layout stack : nth_window -1
-    map --when-focus-on title:terminal ctrl+shift+; combine : neighboring_window left : toggle_layout stack
-    map ctrl+shift+enter launch --title=terminal --cwd=current --copy-env --bias=-20
-    map ctrl+shift+1 goto_tab 1
-    map ctrl+shift+2 goto_tab 2
-    map ctrl+shift+3 goto_tab 3
-    map ctrl+shift+4 goto_tab 4
-    map ctrl+shift+5 goto_tab 5
-    map ctrl+shift+6 goto_tab 6
-    map ctrl+shift+7 goto_tab 7
-    map ctrl+shift+8 goto_tab 8
+    map alt+shift+k move_window up
+    map alt+shift+h move_window left
+    map alt+shift+l move_window right
+    map alt+shift+j move_window down
+    map alt+z       next_layout
+    map alt+q       close_window
+
+    map alt+shift+, move_tab_backward
+    map alt+shift+. move_tab_forward
+    map alt+t       new_tab
+    map alt+,       previous_tab
+    map alt+.       next_tab
+    map alt+1       goto_tab 1
+    map alt+2       goto_tab 2
+    map alt+3       goto_tab 3
+    map alt+4       goto_tab 4
+    map alt+5       goto_tab 5
+    map alt+6       goto_tab 6
+    map alt+7       goto_tab 7
+    map alt+8       goto_tab 8
+
+    map --when-focus-on title:terminal alt+; combine : neighboring_window left : toggle_layout stack
+    map --when-focus-on num:0          alt+; combine : toggle_layout stack : nth_window -1
+    map                                alt+enter launch --title=terminal --cwd=current --copy-env --bias=-20
+    # A separate kitty instance; i3 matches the class and sends it to the portrait
+    # screen. launch has no layout flag, so the instance overrides enabled_layouts
+    # to start stacked vertically (stack stays so alt+; still toggles).
+    map                                alt+shift+enter launch --type=background --cwd=current --copy-env kitty --class=kitty-detached -o enabled_layouts=vertical,stack
+
   '';
 }

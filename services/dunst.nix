@@ -2,14 +2,13 @@
   enable = true;
   settings = {
     global = {
-      # Pin notifications to the secondary display instead of the X primary
-      # output (HDMI-1). "follow = none" keeps them there regardless of where
-      # the mouse or the focused window is.
+      # Pin notifications to the primary 100Hz ultrawide. "follow = none" keeps
+      # them there regardless of where the mouse or the focused window is.
       monitor = "HDMI-0";
       follow = "none";
 
       origin = "top-right";
-      # Vertical offset clears the i3bar, which also lives on HDMI-0.
+      # Vertical offset clears the i3bar.
       offset = "(10, 30)";
       width = "(200, 450)";
       height = "(0, 300)";
@@ -20,7 +19,7 @@
       corner_radius = 4;
       gap_size = 5;
 
-      font = "JetBrainsMono Nerd Font Propo 9";
+      font = "JetBrainsMono Nerd Font Propo 11";
       markup = "full";
       format = "<b>%s</b>\\n%b";
       word_wrap = true;

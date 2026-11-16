@@ -5,7 +5,7 @@
 # from there instead of downloading ~300 MiB of binaries.
 set -euo pipefail
 
-pins=${1:-atlcli/pins.json}
+pins=${1:-programs/atlcli/pins.json}
 repo=BjoernSchotte/atlcli
 tag=${2:-$(curl --fail --location --silent --show-error \
   "https://api.github.com/repos/$repo/releases/latest" | jq -r .tag_name)}

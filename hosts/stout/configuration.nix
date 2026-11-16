@@ -21,6 +21,18 @@
         8080 #moonlight-web
         8001 #llama-ui
       ];
+      # Path MTU is 1480, not 1500: clamp TCP MSS on VPN tunnels so large
+      # packets (e.g. TLS ServerHello) don't get fragmented and dropped.
+      extraCommands = ''
+        iptables -t mangle -D OUTPUT -o tun+ -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340 2>/dev/null || true
+        iptables -t mangle -D PREROUTING -i tun+ -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340 2>/dev/null || true
+        iptables -t mangle -A OUTPUT -o tun+ -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340
+        iptables -t mangle -A PREROUTING -i tun+ -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340
+      '';
+      extraStopCommands = ''
+        iptables -t mangle -D OUTPUT -o tun+ -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340 2>/dev/null || true
+        iptables -t mangle -D PREROUTING -i tun+ -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340 2>/dev/null || true
+      '';
     };
 
     interfaces.enp5s0.wakeOnLan.enable = true;
@@ -54,10 +66,17 @@
   services.xserver = {
     enable = true;
     xkb = {
+      layout = "us";
       variant = "intl";
       options = "caps:escape";
     };
     videoDrivers = ["nvidia"];
+    # Layout from nvidia-settings: the ultrawide on the left, the 1080p in
+    # portrait to its right. The ultrawide sits 240px down so it is vertically
+    # centred against the 1920px-tall portrait screen.
+    screenSection = ''
+      Option "metamodes" "HDMI-0: 3440x1440_100 +0+240, HDMI-1: nvidia-auto-select +3440+0 {rotation=right}"
+    '';
 
     desktopManager.xterm.enable = false;
     windowManager.i3 = {
@@ -68,8 +87,8 @@
     displayManager.startx = {
       enable = true;
       generateScript = true;
-      # Output of arandr:
-      # extraCommands = "xrandr --output HDMI-0 --mode 1920x1080 --pos 320x0 --output HDMI-1 --primary --mode 2560x1080 --rate 75 --pos 0x1080";
+      # metamodes has no notion of a RandR primary output.
+      extraCommands = "${pkgs.xrandr}/bin/xrandr --output HDMI-0 --primary";
     };
   };
 
@@ -78,6 +97,9 @@
   services.pulseaudio = {
     enable = true;
     package = pkgs.pulseaudioFull;
+    # Make newly connected sinks (bluetooth) the default, so @DEFAULT_SINK@
+    # in the i3 volume keys follows whatever is actually playing.
+    extraConfig = "load-module module-switch-on-connect";
   };
   ########## Bluetooth ##########
   hardware.bluetooth = {
@@ -103,6 +125,11 @@
     enable = true;
     extraPackages = [pkgs.docker-compose];
     enableOnBoot = false;
+    autoPrune = {
+      enable = true;
+      allVolumes.enable = true;
+      flags = ["--all"];
+    };
   };
 
   ########## VirtualBox ##########

@@ -13,9 +13,21 @@ in {
   # rustc-wrapper through PATH, and a `nix develop` shell replaces PATH with the
   # devshell's own (no ~/.nix-profile/bin), so the bare name breaks every build
   # run inside a project flake that doesn't itself ship sccache.
+  #
+  # `jobs` caps concurrent rustc processes; peak RAM scales with it, and with
+  # 12 cores a big workspace check/clippy runs ~12 multi-GB rustcs at once.
+  # Debuginfo is most of rustc codegen and linker memory in `cargo test`, so
+  # keep line tables (backtraces still show file:line) and drop it for deps.
   home.file.".cargo/config.toml".text = ''
     [build]
     rustc-wrapper = "${pkgs.sccache}/bin/sccache"
+    jobs = 8
+
+    [profile.dev]
+    debug = "line-tables-only"
+
+    [profile.dev.package."*"]
+    debug = false
   '';
 
   # sccache reads this from XDG on Linux but from ~/Library/Application Support

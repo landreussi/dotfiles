@@ -58,6 +58,12 @@ in {
         nchat
         slk
         atlcli
+        # google-calendar-tui reads GNOME Online Accounts by default, which i3
+        # doesn't run, so feed it the calendar's "Secret address in iCal
+        # format" from pass instead (`pass insert gcal`).
+        (writeShellScriptBin "gcal" ''
+          exec ${lib.getExe google-calendar-tui} --ics "$(${lib.getExe pass} gcal)" "$@"
+        '')
         pritunl-client
         awscli2
         zoom-us
@@ -85,6 +91,15 @@ in {
         bg = {
           source = ./.background-image;
           target = "${home}/.background-image";
+        };
+        # The en_US compose table maps us-intl's ' + c to ć; make it ç instead.
+        xcompose = {
+          target = "${home}/.XCompose";
+          text = ''
+            include "%L"
+            <dead_acute> <c> : "ç" ccedilla
+            <dead_acute> <C> : "Ç" Ccedilla
+          '';
         };
       };
 

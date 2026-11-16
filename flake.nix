@@ -28,10 +28,18 @@
     };
 
     # Jira/Confluence CLI. Not in nixpkgs either, and upstream ships no flake,
-    # so ./atlcli packages its prebuilt release binaries; the overlay below
+    # so ./programs/atlcli packages its prebuilt release binaries; the overlay below
     # exposes it as `pkgs.atlcli`.
     atlcli = {
-      url = "path:./atlcli";
+      url = "path:./programs/atlcli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Google Calendar agenda TUI. Not in nixpkgs and no upstream flake, so
+    # ./programs/google-calendar-tui builds it from source; the overlay below
+    # exposes it as `pkgs.google-calendar-tui`.
+    google-calendar-tui = {
+      url = "path:./programs/google-calendar-tui";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -44,6 +52,7 @@
     nix4nvchad,
     slk,
     atlcli,
+    google-calendar-tui,
     ...
   }: let
     # Every host runs home-manager with the same extra modules available.
@@ -56,6 +65,7 @@
         (final: prev: {
           slk = slk.packages.${prev.stdenv.hostPlatform.system}.default;
           atlcli = atlcli.packages.${prev.stdenv.hostPlatform.system}.default;
+          google-calendar-tui = google-calendar-tui.packages.${prev.stdenv.hostPlatform.system}.default;
         })
       ];
     };
@@ -79,7 +89,7 @@
       ];
     };
 
-    # `nix run .#update-atlcli` re-pins ./atlcli/pins.json to the latest
+    # `nix run .#update-atlcli` re-pins ./programs/atlcli/pins.json to the latest
     # upstream release.
     apps = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-darwin"] (system: {
       update-atlcli = atlcli.apps.${system}.update;
